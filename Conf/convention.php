@@ -144,6 +144,9 @@ return  array(
     'JUMP_MODE'             => 0, // 跳转方式，0(普通模式)，1(直接模式)
     'JUMP_SESSION'          => false,
     'JUMP_SESSION_INFO'     => 'jump_session_info',
-    'JUMP_SESSION_STATUS'   => 'jump_session_status'
+    'JUMP_SESSION_STATUS'   => 'jump_session_status',
+
+    /* 加载设置 */
+    'LOAD_EXT_FUNCTION'     => 'helper,extend'
 
 );

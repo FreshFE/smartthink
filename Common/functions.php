@@ -698,9 +698,9 @@ function load_ext_file() {
     }
 
     // 加载外部拓展函数
-    if(true) {
+    if(C('LOAD_EXT_FUNCTION')) {
         $files = explode(',', C('LOAD_EXT_FUNCTION'));
-        array_push($files, 'helper');
+        // array_push($files, 'helper');
         foreach ($files as $file) {
             $file = EXTEND_PATH . '/Function/' . $file . '.php';
             if(is_file($file)) include $file;
