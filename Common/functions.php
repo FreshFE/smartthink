@@ -533,17 +533,33 @@ function data_to_xml($data, $item='item', $id='id') {
  * @param string|array $name session名称 如果为数组则表示进行session设置
  * @param mixed $value session值
  * @return mixed
+ *
+ * @conf SESSION_PREFIX
+ * @conf VAR_SESSION_ID sessionID的提交变量
+ * @conf SESSION_TYPE
+ * @conf SESSION_AUTO_START
  */
 function session($name,$value='') {
-    $prefix   =  C('SESSION_PREFIX');
-    if(is_array($name)) { // session初始化 在session_start 之前调用
-        if(isset($name['prefix'])) C('SESSION_PREFIX',$name['prefix']);
-        if(C('VAR_SESSION_ID') && isset($_REQUEST[C('VAR_SESSION_ID')])){
+
+    // 获得前缀，默认空值
+    $prefix = C('SESSION_PREFIX');
+
+    // name是数组则表示使用详细配置，在session_start前先配置好session再启用
+    // id, name, path, prefix, expire, domain, use_cookies, use_trans_sid,type
+    if(is_array($name)) {
+
+        // 如果设置了前缀，则替换conf
+        if(isset($name['prefix'])) C('SESSION_PREFIX', $name['prefix']);
+
+        // 根据默认值设置获得根据定义的id设置
+        if(C('VAR_SESSION_ID') && isset($_REQUEST[C('VAR_SESSION_ID')]))
             session_id($_REQUEST[C('VAR_SESSION_ID')]);
-        }elseif(isset($name['id'])) {
+        elseif(isset($name['id']))
             session_id($name['id']);
-        }
+
+        // 配置参考，http://www.php.net/manual/zh/session.configuration.php
         ini_set('session.auto_start', 0);
+        
         if(isset($name['name']))            session_name($name['name']);
         if(isset($name['path']))            session_save_path($name['path']);
         if(isset($name['domain']))          ini_set('session.cookie_domain', $name['domain']);
@@ -553,64 +569,104 @@ function session($name,$value='') {
         if(isset($name['cache_limiter']))   session_cache_limiter($name['cache_limiter']);
         if(isset($name['cache_expire']))    session_cache_expire($name['cache_expire']);
         if(isset($name['type']))            C('SESSION_TYPE',$name['type']);
-        if(C('SESSION_TYPE')) { // 读取session驱动
-            $class      = 'Session'. ucwords(strtolower(C('SESSION_TYPE')));
-            // 检查驱动类
+
+        // 如果存在其他session类型
+        if(C('SESSION_TYPE')) {
+
+            // 读取session驱动
+            $class = 'Session'. ucwords(strtolower(C('SESSION_TYPE')));
+
+            // 检查驱动类是否存在并加载，不存在则抛出错误
             if(require_cache(EXTEND_PATH.'Driver/Session/'.$class.'.class.php')) {
+
                 $hander = new $class();
                 $hander->execute();
+
             }else {
                 // 类没有定义
                 throw_exception(L('_CLASS_NOT_EXIST_').': ' . $class);
             }
         }
+
         // 启动session
         if(C('SESSION_AUTO_START'))  session_start();
-    }elseif('' === $value){ 
-        if(0===strpos($name,'[')) { // session 操作
-            if('[pause]'==$name){ // 暂停session
+
+    // 启用session管理
+    } elseif('' === $value) {
+
+        // session 操作
+        if(0===strpos($name,'[')) {
+
+            // 暂停session
+            if('[pause]' == $name) {
+
                 session_write_close();
-            }elseif('[start]'==$name){ // 启动session
+
+            // 启动session
+            } elseif('[start]' == $name) {
+
                 session_start();
-            }elseif('[destroy]'==$name){ // 销毁session
+
+            // 销毁session
+            } elseif('[destroy]' == $name) {
+
                 $_SESSION =  array();
                 session_unset();
                 session_destroy();
-            }elseif('[regenerate]'==$name){ // 重新生成id
+
+            // 重新生成id
+            } elseif('[regenerate]' == $name) {
+
                 session_regenerate_id();
             }
-        }elseif(0===strpos($name,'?')){ // 检查session
-            $name   =  substr($name,1);
-            if($prefix) {
+
+        // 检查session是否存在，以?起头
+        } elseif(0 === strpos($name, '?')) {
+
+            $name = substr($name, 1);
+
+            if($prefix)
                 return isset($_SESSION[$prefix][$name]);
-            }else{
+            else
                 return isset($_SESSION[$name]);
-            }
-        }elseif(is_null($name)){ // 清空session
-            if($prefix) {
+
+        // 清空所有的session
+        } elseif(is_null($name)) {
+
+            if($prefix)
                 unset($_SESSION[$prefix]);
-            }else{
+            else
                 $_SESSION = array();
-            }
-        }elseif($prefix){ // 获取session
-            return isset($_SESSION[$prefix][$name])?$_SESSION[$prefix][$name]:null;
-        }else{
-            return isset($_SESSION[$name])?$_SESSION[$name]:null;
+
+        // 获取session，当存在前缀和不存在前缀的情况下
+        } elseif($prefix) {
+
+            return isset($_SESSION[$prefix][$name]) ? $_SESSION[$prefix][$name] : null;
+
+        } else {
+
+            return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
         }
-    }elseif(is_null($value)){ // 删除session
-        if($prefix){
+
+    // 删除session
+    } elseif(is_null($value)) {
+
+        if($prefix)
             unset($_SESSION[$prefix][$name]);
-        }else{
+        else
             unset($_SESSION[$name]);
-        }
-    }else{ // 设置session
-        if($prefix){
-            if (!is_array($_SESSION[$prefix])) {
-                $_SESSION[$prefix] = array();
-            }
-            $_SESSION[$prefix][$name]   =  $value;
-        }else{
-            $_SESSION[$name]  =  $value;
+
+    // 设置session
+    } else {
+
+        if($prefix) {
+
+            if(!is_array($_SESSION[$prefix])) $_SESSION[$prefix] = array();
+            $_SESSION[$prefix][$name] = $value;
+
+        } else {
+
+            $_SESSION[$name] = $value;
         }
     }
 }
