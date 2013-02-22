@@ -529,17 +529,44 @@ function data_to_xml($data, $item='item', $id='id') {
 }
 
 /**
- * session管理函数
- * @param string|array $name session名称 如果为数组则表示进行session设置
- * @param mixed $value session值
+ * @session管理函数
+ *
+ * @详细配置
+ * @param array $name
+ * @return void
+ *
+ * @session管理
+ * @param string $name session名称，'[start]', '[pause]', '[destory]', '[regenerate]'
+ * @return void
+ *
+ * @获得session
+ * @param string $name session名称，得到该名称的session值
  * @return mixed
+ *
+ * @查询session
+ * @param string $name 带'?'前缀的session名称，查询是否存在该名称的session
+ * @return bealoon
+ *
+ * @删除所有session
+ * @param null
+ * @return void
+ *
+ * @删除指定session
+ * @param string $name session名称
+ * @param null
+ * @return void
+ *
+ * @设置一个session
+ * @param string $name session名称
+ * @param string|array 保存的内容
+ * @return void
  *
  * @conf SESSION_PREFIX
  * @conf VAR_SESSION_ID sessionID的提交变量
  * @conf SESSION_TYPE
  * @conf SESSION_AUTO_START
  */
-function session($name,$value='') {
+function session($name, $value = '') {
 
     // 获得前缀，默认空值
     $prefix = C('SESSION_PREFIX');
@@ -554,12 +581,14 @@ function session($name,$value='') {
         // 根据默认值设置获得根据定义的id设置
         if(C('VAR_SESSION_ID') && isset($_REQUEST[C('VAR_SESSION_ID')]))
             session_id($_REQUEST[C('VAR_SESSION_ID')]);
+
         elseif(isset($name['id']))
             session_id($name['id']);
 
-        // 配置参考，http://www.php.net/manual/zh/session.configuration.php
+        // session 函数参考，http://www.php.net/manual/zh/ref.session.php
+        // session runtime 配置参考，http://www.php.net/manual/zh/session.configuration.php
         ini_set('session.auto_start', 0);
-        
+
         if(isset($name['name']))            session_name($name['name']);
         if(isset($name['path']))            session_save_path($name['path']);
         if(isset($name['domain']))          ini_set('session.cookie_domain', $name['domain']);
