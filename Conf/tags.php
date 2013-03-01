@@ -15,6 +15,7 @@ return array(
     ),
     'app_begin'     =>  array(
         'ReadHtmlCache', // 读取静态缓存
+        'CheckLang' // 读取Lang
     ),
     'route_check'   =>  array(
         'CheckRoute', // 路由检测
