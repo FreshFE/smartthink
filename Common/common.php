@@ -364,24 +364,36 @@ function R($url,$vars=array(),$layer='') {
  * @param string $value 语言值
  * @return mixed
  */
-function L($name=null, $value=null) {
+function L($name = null, $value = null) {
+    
+    // 定义静态数组
     static $_lang = array();
+
     // 空参数返回所有定义
     if (empty($name))
         return $_lang;
+
     // 判断语言获取(或设置)
     // 若不存在,直接返回全大写$name
     if (is_string($name)) {
+
         $name = strtoupper($name);
+
+        // 如果空的则读取
         if (is_null($value))
             return isset($_lang[$name]) ? $_lang[$name] : $name;
-        $_lang[$name] = $value; // 语言定义
-        return;
+
+        // 定义语言
+        $_lang[$name] = $value;
+
+        return $value;
     }
+
     // 批量定义
     if (is_array($name))
         $_lang = array_merge($_lang, array_change_key_case($name, CASE_UPPER));
-    return;
+
+    return $name;
 }
 
 /**
