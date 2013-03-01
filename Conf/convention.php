@@ -147,6 +147,6 @@ return  array(
     'JUMP_SESSION_STATUS'   => 'jump_session_status',
 
     /* 加载设置 */
-    'LOAD_EXT_FUNCTION'     => 'helper,extend'
+    'LOAD_EXT_FUNCTION'     => ''
 
 );
