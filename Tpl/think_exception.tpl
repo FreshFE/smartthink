@@ -8,7 +8,7 @@ html{ overflow-y: scroll; }
 body{ background: #fff; font-family: '微软雅黑'; color: #333; font-size: 16px; }
 img{ border: 0; }
 .error{ padding: 24px 48px; }
-.face{ font-size: 100px; font-weight: normal; line-height: 120px; margin-bottom: 12px; }
+.face{ font-size: 60px; font-weight: normal; line-height: 120px; margin-bottom: 12px; }
 h1{ font-size: 32px; line-height: 48px; }
 .error .content{ padding-top: 10px}
 .error .info{ margin-bottom: 12px; }
@@ -21,7 +21,7 @@ h1{ font-size: 32px; line-height: 48px; }
 </head>
 <body>
 <div class="error">
-<p class="face">:(</p>
+<p class="face">App error</p>
 <h1><?php echo strip_tags($e['message']);?></h1>
 <div class="content">
 <?php if(isset($e['file'])) {?>
@@ -47,7 +47,6 @@ h1{ font-size: 32px; line-height: 48px; }
 </div>
 </div>
 <div class="copyright">
-<p><a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a><sup><?php echo THINK_VERSION ?></sup> { Fast & Simple OOP PHP Framework } -- [ WE CAN DO IT JUST THINK ]</p>
 </div>
 </body>
 </html>
