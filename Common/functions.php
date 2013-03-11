@@ -372,28 +372,51 @@ function redirect($url, $time=0, $msg='') {
  * @param mixed $options 缓存参数
  * @return mixed
  */
-function S($name,$value='',$options=null) {
-    static $cache   =   '';
-    if(is_array($options)){
-        // 缓存操作的同时初始化
-        $type       =   isset($options['type'])?$options['type']:'';
-        $cache      =   Cache::getInstance($type,$options);
-    }elseif(is_array($name)) { // 缓存初始化
-        $type       =   isset($name['type'])?$name['type']:'';
-        $cache      =   Cache::getInstance($type,$name);
-        return $cache;
-    }elseif(empty($cache)) { // 自动初始化
-        $cache      =   Cache::getInstance();
+function S($name, $value = '', $options = null) {
+
+    static $cache = '';
+
+    // 缓存操作的同时初始化
+    if(is_array($options)) {
+
+        $type = isset($options['type']) ? $options['type'] : '';
+        $cache = Cache::getInstance($type, $options);
     }
-    if(''=== $value){ // 获取缓存
+
+    // 缓存初始化
+    else if(is_array($name)) {
+
+        $type = isset($name['type']) ? $name['type'] : '';
+        $cache = Cache::getInstance($type, $name);
+        return $cache;
+    }
+
+    // 自动初始化
+    else if(empty($cache)) {
+
+        $cache = Cache::getInstance();
+    }
+
+    // 获取缓存
+    if($value === '') {
+
         return $cache->get($name);
-    }elseif(is_null($value)) { // 删除缓存
+    }
+
+    // 删除缓存
+    else if(is_null($value)) {
+
         return $cache->rm($name);
-    }else { // 缓存数据
-        $expire     =   is_numeric($options)?$options:NULL;
+    }
+
+    // 缓存数据
+    else {
+        
+        $expire = is_numeric($options) ? $options : NULL;
         return $cache->set($name, $value, $expire);
     }
 }
+
 // S方法的别名 已经废除 不再建议使用
 function cache($name,$value='',$options=null){
     return S($name,$value,$options);
