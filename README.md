@@ -24,3 +24,27 @@
 2. 将Common下的common.php和functions.php内的函数调整到class类内
 3. 废弃原Extend拓展的加载方式，使用PHP composer方式加载和管理
 4. ...
+
+##安装Smart ThinkPHP
+
+**PS: 看该安装方式可能会比较模糊**
+
+###下载框架和拓展
+	
+	git clone https://github.com/minowu/thinkphp.git
+	git clone https://github.com/minowu/extend.git
+
+###根据ThinkPHP入口文件的方式，编辑index.php内容
+
+	// 调试模式
+	define('APP_DEBUG', true);
+
+	// 项目核心
+	define('ENTRY_PATH', './');
+
+	define('APP_PATH', '../App/');
+	define('THINK_PATH', '../../framework/thinkphp/');
+	define('EXTEND_PATH', '../../framework/extend/');
+
+	// 加载框架并运行
+	require THINK_PATH . 'ThinkPHP.php';
