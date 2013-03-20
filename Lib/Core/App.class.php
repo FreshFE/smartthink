@@ -270,7 +270,9 @@ class App {
         }
 
         // 生成路径
-        $classfile = realpath($base . $class . $ext);
+        // $classfile = realpath($base . $class . $ext);
+        $classfile = $base . $class . $ext;
+        $classfile = realpath($classfile);
         
         // 检查加载
         if($classfile) {

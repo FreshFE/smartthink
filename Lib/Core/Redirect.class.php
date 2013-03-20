@@ -24,7 +24,7 @@ class Redirect {
 	 *
 	 * @return void
 	 */
-	static public function succees(string $message, string $url) {
+	static public function success(string $message, string $url) {
 
 		Redirect::to($message, $url, true);
 	}
