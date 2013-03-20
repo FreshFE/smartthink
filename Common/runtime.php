@@ -66,6 +66,7 @@ if(!IS_CLI) {
 // 路径设置 可在入口文件中重新定义 所有路径常量都必须以/ 结尾
 defined('CORE_PATH')    or define('CORE_PATH',      THINK_PATH.'Lib/'); // 系统核心类库目录
 
+// TODO: 删除相关的扩展文件夹
 defined('MODE_PATH')    or define('MODE_PATH',      EXTEND_PATH.'Mode/'); // 模式扩展目录
 defined('ENGINE_PATH')  or define('ENGINE_PATH',    EXTEND_PATH.'Engine/'); // 引擎扩展目录
 defined('VENDOR_PATH')  or define('VENDOR_PATH',    EXTEND_PATH.'Vendor/'); // 第三方类库目录
@@ -88,6 +89,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . VENDOR_PATH);
 
 // 加载运行时所需要的文件 并负责自动目录生成
 function load_runtime_file() {
+
     // 加载系统基础函数库
     require THINK_PATH.'Common/common.php';
     // 读取核心文件列表
