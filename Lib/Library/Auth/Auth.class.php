@@ -139,7 +139,9 @@ class Auth {
 	 * @return null|int，返回null表示用户未登录，返回int表示的是用户的$user_id
 	 */
 	public function session() {
-
+		
+		// $this->logout();
+		// dump('aa');
 		return session($this->auth_key);
 	}
 
