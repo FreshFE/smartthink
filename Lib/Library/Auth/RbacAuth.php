@@ -11,7 +11,7 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-import('Auth', dirname(__FILE__));
+App::import('Auth', dirname(__FILE__));
 
 /**
  * 配置方法
