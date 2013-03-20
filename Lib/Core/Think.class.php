@@ -103,6 +103,7 @@ class Think {
                 CORE_PATH.'Core/App.class.php',   // 应用程序类
                 CORE_PATH.'Core/Action.class.php', // 控制器类
                 CORE_PATH.'Core/View.class.php',  // 视图类
+                CORE_PATH.'Core/Redirect.class.php'
             );
         }
         // 项目追加核心编译列表文件

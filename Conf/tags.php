@@ -15,7 +15,10 @@ return array(
     ),
     'app_begin'     =>  array(
         'ReadHtmlCache', // 读取静态缓存
-        'CheckLang', // 读取Lang
+        'CheckLang' // 读取Lang
+        
+    ),
+    'app_session_start' => array(
         'CheckAuth'
     ),
     'route_check'   =>  array(
