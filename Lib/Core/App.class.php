@@ -203,6 +203,8 @@ class App {
         tag('app_begin');
         // Session初始化
         session(C('SESSION_OPTIONS'));
+        // 项目session初始化
+        tag('app_session_start');
         // 记录应用初始化时间
         G('initTime');
         App::exec();
@@ -234,7 +236,7 @@ class App {
      *
      * @return bealoon
      */
-    static public function import(string $class, string $base, $ext = '.php') {
+    static public function import(string $class, string $base, $ext = '.class.php') {
 
         // 静态数组
         static $_file = array();

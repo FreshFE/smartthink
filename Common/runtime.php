@@ -150,7 +150,7 @@ function build_runtime_cache($append='') {
         THINK_PATH.'Common/common.php',
         CORE_PATH.'Core/Think.class.php',
         CORE_PATH.'Core/ThinkException.class.php',
-        CORE_PATH.'Core/Behavior.class.php',
+        CORE_PATH.'Core/Behavior.class.php'
     );
     foreach ($list as $file){
         $content .= compile($file);
