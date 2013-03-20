@@ -35,14 +35,20 @@ class CheckAuthBehavior extends Behavior {
 	private function rbac() {
 
 		$auth = new RbacAuth(C('AUTH_KEY'), C('AUTH_RULES'), C('AUTH_ROLES'));
+		
+		// dump(['check()', $auth->check(), $auth->session()]);
 
 		if(!$auth->check()) {
 
 			if($auth->session()) {
-				redirect(U('Index/index'));
+				Redirect::error('您已经登录', U('Index/index'));
+				// echo '您已经登录';
+				// exit();
 			}
 			else {
-				redirect(U('Account/login'));
+				Redirect::error('您未登录，请先登录', U('Account/login'));
+				// echo '您未登录';
+				// exit();
 			}
 		}
 
