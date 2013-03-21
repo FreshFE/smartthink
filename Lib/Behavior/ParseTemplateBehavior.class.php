@@ -1,24 +1,12 @@
 <?php
 
-defined('THINK_PATH') or exit();
-/**
- * 系统行为类：模板解析引擎
- * @category    Think
- * @package     Think
- * @subpackage  Behavior
- * @author      minowu
- */
 class ParseTemplateBehavior extends Behavior {
 
-    protected $options   =  array(
+    protected $options = array(
+        // 模板引擎的类型
+        'TMPL_ENGINE_TYPE' => 'Smarty'
+    );    
 
-        'TMPL_ENGINE_TYPE'      =>  'Smarty',     // 默认模板引擎，改用Smarty
-    );
-
-    
-    /**
-     * 行为入口
-     */
     public function run(&$_data){
 
         // 配置引擎
