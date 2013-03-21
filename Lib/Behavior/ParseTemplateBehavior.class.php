@@ -1,5 +1,7 @@
 <?php
 
+App::import('View/Helper', 'Think');
+
 class ParseTemplateBehavior extends Behavior {
 
     protected $options = array(
