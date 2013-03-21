@@ -1495,8 +1495,7 @@ class Model {
      *
      * @return $this
      */
-    public function page(int $page, $listRows = null, &$pager = false) {
-        $this->options['page'] =   is_null($listRows) ? $page : $page . ',' . $listRows;
+    public function page($page, $listRows = null, &$pager = false) {
 
         // 如果totalRows不等于false则计算
         if($pager !== false) {
@@ -1505,6 +1504,8 @@ class Model {
             $Pager = new Pager();
             $pager = $Pager->output($this->count(), $listRows);
         }
+
+        $this->options['page'] = is_null($listRows) ? $page : $page . ',' . $listRows;
 
         return $this;
     }
