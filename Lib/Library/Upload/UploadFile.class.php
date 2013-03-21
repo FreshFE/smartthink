@@ -18,6 +18,8 @@
  * @author      minowu
  */
 
+App::import('Image', dirname(__FILE__));
+
 /*
 array(11) {
     ["thumbname"] => string(12) "thumb,banner",varchar-50
@@ -57,7 +59,6 @@ class UploadFile {
 
         // 缩略图
         'thumb'             => false,               // 使用对上传图片进行缩略图处理
-        'imageClassPath'    => 'ORG.Util.Image',    // 图库类包路径
         'thumbRemoveOrigin' => false,               // 是否移除原图
         'thumbType'         => 'PROJ_THUMB_TYPE',   // 缩略图的默认配置参数
         'thumbTypeNames'    => 'thumb',             // 处理哪些缩略图类型
@@ -218,7 +219,6 @@ class UploadFile {
             if(false !== $image) {
 
                 // 导入图片类包
-                import($this->imageClassPath);
 
                 // 获得参数
                 $thumbType = C($this->thumbType);
