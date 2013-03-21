@@ -1495,19 +1495,18 @@ class Model {
      *
      * @return $this
      */
-    public function page($page, $listRows = null, &$pager = false) {
+    public function page(int $page, int $listRows) {
 
-        // 如果totalRows不等于false则计算
-        if($pager !== false) {
-
-            App::import('Library/Pager', 'Think');
-            $Pager = new Pager();
-            $pager = $Pager->output($this->count(), $listRows);
-        }
-
-        $this->options['page'] = is_null($listRows) ? $page : $page . ',' . $listRows;
-
+        $this->options['page'] = $page . ',' . $listRows;
         return $this;
+    }
+
+    public function pager(int $page, int $listRows) {
+
+        App::import('Library/Pager', 'Think');
+        $Pager = new Pager();
+        
+        return $Pager->output($this->count(), $listRows);
     }
 
     /**
