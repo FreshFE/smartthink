@@ -21,7 +21,7 @@ class CheckLangBehavior extends Behavior {
 
     // 行为参数定义（默认值） 可在项目配置中覆盖
     protected $options   =  array(
-        'LANG_SWITCH_ON'        => false,           // 默认关闭语言包功能
+        'LANG_SWITCH_ON'        => on,           // 默认关闭语言包功能
         'LANG_AUTO_DETECT'      => true,            // 自动侦测语言 开启多语言功能后有效
         'LANG_LIST'             => 'zh-cn,en-us',   // 允许切换的语言列表 用逗号分隔
         'VAR_LANGUAGE'          => 'lang',          // 默认语言切换变量

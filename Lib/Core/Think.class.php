@@ -58,10 +58,6 @@ class Think {
         // 加载核心惯例配置文件
         C(include THINK_PATH.'Conf/convention.php');
 
-        // 加载扩展配置文件
-        if(is_file(EXTEND_PATH . 'Conf/convention.php'))
-            C(include EXTEND_PATH . 'Conf/convention.php');
-
         // 加载模式配置文件
         if(isset($mode['config'])) {
             C( is_array($mode['config'])?$mode['config']:include $mode['config'] );
