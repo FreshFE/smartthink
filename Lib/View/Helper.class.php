@@ -10,7 +10,7 @@ class Helper {
 	 * @param number $offset 处理字符串的起始点
 	 * @return string
 	 */
-	public static function ms_substr($str, $num, $ellipsis, $offset = 0){
+	public static function mssubstr($str, $num, $ellipsis, $offset = 0){
 
 		$encodeArr 	= array('UTF-8', 'gbk', 'gb2312', 'CP936', 'ascii');
 		$encode 	= mb_detect_encoding($str, $encodeArr);
@@ -83,17 +83,16 @@ class Helper {
 	 * @param array $data 小插件需要传递的数组
 	 * @return string
 	 */
-	public static function widget($action, $data) {
-
+	public static function widget($action, $data, $base) {
+		
 		// 如果action前带有'@.'，则表示本模块内的调用
-		if(strpos($action, '@.') === 0) {
-
-			return R(MODULE_NAME . '/' . substr($action, 2));
+		if($base) {
+			return R(MODULE_NAME . '/' . $action, array($data));
 		}
 
 		// 指定widget小插件数据，$action => 指定操作名，$data传递数组数据
 		else {
-			return R(GROUP_NAME.'/Widget/'.$action, array($data));
+			return R(GROUP_NAME . '/Widget/' . $action, array($data));
 		}
 	}
 
