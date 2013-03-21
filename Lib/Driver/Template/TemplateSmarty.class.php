@@ -1,22 +1,21 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+/**
+ * Driver/Template/TemplateSmarty.class.php
+ * Smart ThinkPHP
+ * Copyright (c) 2004-2013 Methink
+ *
+ * @copyright     Copyright (c) Methink
+ * @link          https://github.com/minowu/thinkphp
+ * @package       Driver/Template/TemplateSmarty
+ * @since         Smart ThinkPHP 2.0.0
+ * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
+ */
 
 App::import('Library/Smarty/Smarty', 'Think');
 
 /**
- * Smarty模板引擎驱动 
- * @category   Extend
- * @package  Extend
- * @subpackage  Driver.Template
- * @author    liu21st <liu21st@gmail.com>
+ * TemplateSmarty Class
+ * Smarty模板引擎的驱动
  */
 class TemplateSmarty {
 
@@ -29,16 +28,15 @@ class TemplateSmarty {
      */
     public function fetch($templateFile, $var) {
 
-        $templateFile = substr($templateFile, strlen(THEME_PATH));
-
+        // 实例化
         $tpl = new Smarty();
 
         // 是否开启缓存, 模板目录, 编译目录, 缓存目录
-        $tpl->caching       = C('TMPL_CACHE_ON');
-        $tpl->template_dir  = THEME_PATH;
-        $tpl->compile_dir   = CACHE_PATH;
-        $tpl->cache_dir     = TEMP_PATH;
-        $tpl->debugging     = false;
+        $tpl->caching           = C('TMPL_CACHE_ON');
+        $tpl->template_dir      = THEME_PATH;
+        $tpl->compile_dir       = CACHE_PATH;
+        $tpl->cache_dir         = TEMP_PATH;
+        $tpl->debugging         = false;
         $tpl->left_delimiter    = '{{';
         $tpl->right_delimiter   = '}}';
 
