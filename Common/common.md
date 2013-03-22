@@ -5,7 +5,7 @@
 	N();
 
 	// 字符串命名风格转换
-	parse_name()
+	parse_name();
 
 	// 优化的require_once
 	require_cache();

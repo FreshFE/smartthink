@@ -100,18 +100,18 @@ function parse_name($name, $type=0) {
  * @param string $filename 文件地址
  * @return boolean
  */
-function require_cache($filename) {
-    static $_importFiles = array();
-    if (!isset($_importFiles[$filename])) {
-        if (file_exists_case($filename)) {
-            require $filename;
-            $_importFiles[$filename] = true;
-        } else {
-            $_importFiles[$filename] = false;
-        }
-    }
-    return $_importFiles[$filename];
-}
+// function require_cache($filename) {
+//     static $_importFiles = array();
+//     if (!isset($_importFiles[$filename])) {
+//         if (file_exists_case($filename)) {
+//             require $filename;
+//             $_importFiles[$filename] = true;
+//         } else {
+//             $_importFiles[$filename] = false;
+//         }
+//     }
+//     return $_importFiles[$filename];
+// }
 
 /**
  * 批量导入文件 成功则返回
@@ -119,28 +119,28 @@ function require_cache($filename) {
  * @param boolean $return 加载成功后是否返回
  * @return boolean
  */
-function require_array($array,$return=false){
-    foreach ($array as $file){
-        if (require_cache($file) && $return) return true;
-    }
-    if($return) return false;
-}
+// function require_array($array,$return=false){
+//     foreach ($array as $file){
+//         if (require_cache($file) && $return) return true;
+//     }
+//     if($return) return false;
+// }
 
 /**
  * 区分大小写的文件存在判断
  * @param string $filename 文件地址
  * @return boolean
  */
-function file_exists_case($filename) {
-    if (is_file($filename)) {
-        if (IS_WIN && C('APP_FILE_CASE')) {
-            if (basename(realpath($filename)) != basename($filename))
-                return false;
-        }
-        return true;
-    }
-    return false;
-}
+// function file_exists_case($filename) {
+//     if (is_file($filename)) {
+//         if (IS_WIN && C('APP_FILE_CASE')) {
+//             if (basename(realpath($filename)) != basename($filename))
+//                 return false;
+//         }
+//         return true;
+//     }
+//     return false;
+// }
 
 /**
  * 导入所需的类库 同java的Import 本函数有缓存功能
@@ -153,75 +153,75 @@ function file_exists_case($filename) {
  * @param string $ext 导入的文件扩展名
  * @return boolean
  */
-function import($class, $baseUrl = '', $ext = '.class.php') {
+// function import($class, $baseUrl = '', $ext = '.class.php') {
 
-    // 已载入库列表
-    static $_file = array();
+//     // 已载入库列表
+//     static $_file = array();
 
-    // 转义
-    $class = str_replace(array('.', '#'), array('/', '.'), $class);
+//     // 转义
+//     $class = str_replace(array('.', '#'), array('/', '.'), $class);
 
-    // 检查别名导入
-    if('' === $baseUrl && false === strpos($class, '/')) {
-        return alias_import($class);
-    }
+//     // 检查别名导入
+//     if('' === $baseUrl && false === strpos($class, '/')) {
+//         return alias_import($class);
+//     }
 
-    // 检查是否已经载入
-    if (isset($_file[$class . $baseUrl])) {
-        return true;
-    }
-    // 添加到载入列表
-    else {
-        $_file[$class . $baseUrl] = true;
-    }
+//     // 检查是否已经载入
+//     if (isset($_file[$class . $baseUrl])) {
+//         return true;
+//     }
+//     // 添加到载入列表
+//     else {
+//         $_file[$class . $baseUrl] = true;
+//     }
 
-    // 解析$class
-    $class_strut = explode('/', $class);
+//     // 解析$class
+//     $class_strut = explode('/', $class);
 
-    // 如果$baseUrl为空则解析$class
-    if(empty($baseUrl)) {
+//     // 如果$baseUrl为空则解析$class
+//     if(empty($baseUrl)) {
 
-        $libPath = defined('BASE_LIB_PATH') ? BASE_LIB_PATH : LIB_PATH;
+//         $libPath = defined('BASE_LIB_PATH') ? BASE_LIB_PATH : LIB_PATH;
 
-        // 加载当前项目应用类库
-        if('@' == $class_strut[0] || APP_NAME == $class_strut[0]) {
+//         // 加载当前项目应用类库
+//         if('@' == $class_strut[0] || APP_NAME == $class_strut[0]) {
             
-            $baseUrl = dirname($libPath);
-            $class   = substr_replace($class, basename($libPath) . '/', 0, strlen($class_strut[0]) + 1);
-        }
+//             $baseUrl = dirname($libPath);
+//             $class   = substr_replace($class, basename($libPath) . '/', 0, strlen($class_strut[0]) + 1);
+//         }
 
-        // think 官方基类库
-        elseif('think' == strtolower($class_strut[0])) {
-            $baseUrl = CORE_PATH;
-            $class   = substr($class,6);
-        }
+//         // think 官方基类库
+//         elseif('think' == strtolower($class_strut[0])) {
+//             $baseUrl = CORE_PATH;
+//             $class   = substr($class,6);
+//         }
 
-        // org 第三方公共类库 com 企业公共类库
-        elseif(in_array(strtolower($class_strut[0]), array('org', 'com'))) {
+//         // org 第三方公共类库 com 企业公共类库
+//         elseif(in_array(strtolower($class_strut[0]), array('org', 'com'))) {
 
-            $baseUrl = LIBRARY_PATH;
-        }
+//             $baseUrl = LIBRARY_PATH;
+//         }
 
-        // 加载其他项目应用类库
-        else {
-            $class = substr_replace($class, '', 0, strlen($class_strut[0]) + 1);
-            $baseUrl = APP_PATH . '../' . $class_strut[0] . '/'.basename($libPath).'/';
-        }
-    }
+//         // 加载其他项目应用类库
+//         else {
+//             $class = substr_replace($class, '', 0, strlen($class_strut[0]) + 1);
+//             $baseUrl = APP_PATH . '../' . $class_strut[0] . '/'.basename($libPath).'/';
+//         }
+//     }
 
-    // 分析后缀
-    if(substr($baseUrl, -1) != '/') {
-        $baseUrl .= '/';
-    }
+//     // 分析后缀
+//     if(substr($baseUrl, -1) != '/') {
+//         $baseUrl .= '/';
+//     }
 
-    // 合并classfile
-    $classfile = $baseUrl . $class . $ext;
+//     // 合并classfile
+//     $classfile = $baseUrl . $class . $ext;
 
-    // 如果类不存在 则导入类库文件
-    if (!class_exists(basename($class),false)) {
-        return require_cache($classfile);
-    }
-}
+//     // 如果类不存在 则导入类库文件
+//     if (!class_exists(basename($class),false)) {
+//         return require_cache($classfile);
+//     }
+// }
 
 /**
  * 基于命名空间方式导入函数库
@@ -267,22 +267,22 @@ function vendor($class, $baseUrl = '', $ext='.php') {
  * @param string $classfile 对应类库
  * @return boolean
  */
-function alias_import($alias, $classfile='') {
-    static $_alias = array();
-    if (is_string($alias)) {
-        if(isset($_alias[$alias])) {
-            return require_cache($_alias[$alias]);
-        }elseif ('' !== $classfile) {
-            // 定义别名导入
-            $_alias[$alias] = $classfile;
-            return;
-        }
-    }elseif (is_array($alias)) {
-        $_alias   =  array_merge($_alias,$alias);
-        return;
-    }
-    return false;
-}
+// function alias_import($alias, $classfile='') {
+//     static $_alias = array();
+//     if (is_string($alias)) {
+//         if(isset($_alias[$alias])) {
+//             return require_cache($_alias[$alias]);
+//         }elseif ('' !== $classfile) {
+//             // 定义别名导入
+//             $_alias[$alias] = $classfile;
+//             return;
+//         }
+//     }elseif (is_array($alias)) {
+//         $_alias   =  array_merge($_alias,$alias);
+//         return;
+//     }
+//     return false;
+// }
 
 /**
  * D函数用于实例化Model 格式 项目://分组/模块
