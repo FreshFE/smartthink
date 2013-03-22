@@ -299,7 +299,7 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
  */
 function W($name, $data=array(), $return=false) {
     $class      =   $name . 'Widget';
-    require_cache(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
+    Import::require_cache(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
     if (!class_exists($class))
         throw_exception(L('_CLASS_NOT_EXIST_') . ':' . $class);
     $widget     =   Think::instance($class);
@@ -629,7 +629,7 @@ function session($name, $value = '') {
             $class = 'Session'. ucwords(strtolower(C('SESSION_TYPE')));
 
             // 检查驱动类是否存在并加载，不存在则抛出错误
-            if(require_cache(EXTEND_PATH.'Driver/Session/'.$class.'.class.php')) {
+            if(Import::require_cache(EXTEND_PATH.'Driver/Session/'.$class.'.class.php')) {
 
                 $hander = new $class();
                 $hander->execute();

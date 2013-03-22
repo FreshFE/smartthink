@@ -73,7 +73,7 @@ abstract class Widget {
             }else{ // 扩展驱动
                 $path = EXTEND_PATH;
             }
-            require_cache($path.'Driver/Template/'.$class.'.class.php');
+            Import::require_cache($path.'Driver/Template/'.$class.'.class.php');
             $tpl   =  new $class;
             $tpl->fetch($templateFile,$var);
         }

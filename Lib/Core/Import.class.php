@@ -144,7 +144,7 @@ class Import {
 	}
 
 	// TODO: 重构
-	protected static function file_exists_case($filename) {
+	public static function file_exists_case($filename) {
 
 	    if (is_file($filename)) {
 	        if (IS_WIN && C('APP_FILE_CASE')) {
@@ -155,5 +155,86 @@ class Import {
 	    }
 
 	    return false;
+	}
+
+	/**
+	 * 导入所需的类库 同java的Import 本函数有缓存功能
+	 * @param string $class 类库命名空间字符串
+	 *  @|APP_NAME表示该项目的lib
+	 *  think表示框架内的lib
+	 *  org|com表示extend/library下项目
+	 *  other表示其他项目
+	 * @param string $baseUrl 起始路径
+	 * @param string $ext 导入的文件扩展名
+	 * @return boolean
+	 */
+	public static function old($class, $baseUrl = '', $ext = '.class.php') {
+
+	    // 已载入库列表
+	    static $_file = array();
+
+	    // 转义
+	    $class = str_replace(array('.', '#'), array('/', '.'), $class);
+
+	    // 检查别名导入
+	    if('' === $baseUrl && false === strpos($class, '/')) {
+	        return static::alias_import($class);
+	    }
+
+	    // 检查是否已经载入
+	    if (isset($_file[$class . $baseUrl])) {
+	        return true;
+	    }
+	    // 添加到载入列表
+	    else {
+	        $_file[$class . $baseUrl] = true;
+	    }
+
+	    // 解析$class
+	    $class_strut = explode('/', $class);
+
+	    // 如果$baseUrl为空则解析$class
+	    if(empty($baseUrl)) {
+
+	        $libPath = defined('BASE_LIB_PATH') ? BASE_LIB_PATH : LIB_PATH;
+
+	        // 加载当前项目应用类库
+	        if('@' == $class_strut[0] || APP_NAME == $class_strut[0]) {
+	            
+	            $baseUrl = dirname($libPath);
+	            $class   = substr_replace($class, basename($libPath) . '/', 0, strlen($class_strut[0]) + 1);
+	        }
+
+	        // think 官方基类库
+	        elseif('think' == strtolower($class_strut[0])) {
+	            $baseUrl = CORE_PATH;
+	            $class   = substr($class,6);
+	        }
+
+	        // org 第三方公共类库 com 企业公共类库
+	        elseif(in_array(strtolower($class_strut[0]), array('org', 'com'))) {
+
+	            $baseUrl = LIBRARY_PATH;
+	        }
+
+	        // 加载其他项目应用类库
+	        else {
+	            $class = substr_replace($class, '', 0, strlen($class_strut[0]) + 1);
+	            $baseUrl = APP_PATH . '../' . $class_strut[0] . '/'.basename($libPath).'/';
+	        }
+	    }
+
+	    // 分析后缀
+	    if(substr($baseUrl, -1) != '/') {
+	        $baseUrl .= '/';
+	    }
+
+	    // 合并classfile
+	    $classfile = $baseUrl . $class . $ext;
+
+	    // 如果类不存在 则导入类库文件
+	    if (!class_exists(basename($class),false)) {
+	        return static::require_cache($classfile);
+	    }
 	}
 }

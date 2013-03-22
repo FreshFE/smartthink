@@ -179,7 +179,7 @@ function build_runtime_cache($append='') {
     $content .= build_tags_cache();
     
     $alias      = include THINK_PATH.'Conf/alias.php';
-    $content   .= 'alias_import('.var_export($alias,true).');';
+    $content   .= 'Import::alias_import('.var_export($alias,true).');';
     // 编译框架默认语言包和配置参数
     $content   .= $append."\nL(".var_export(L(),true).");C(".var_export(C(),true).');G(\'loadTime\');Think::Start();';
     file_put_contents(RUNTIME_FILE,strip_whitespace('<?php '.str_replace("defined('THINK_PATH') or exit();",' ',$content)));

@@ -245,7 +245,7 @@ function load($name, $baseUrl='', $ext='.php') {
     }
     if (substr($baseUrl, -1) != '/')
         $baseUrl       .= '/';
-    require_cache($baseUrl . $name . $ext);
+    Import::require_cache($baseUrl . $name . $ext);
 }
 
 /**
@@ -303,9 +303,9 @@ function D($name='',$layer='') {
     $path           =   explode('/',$name);
     if(count($path)>3 && 1 == C('APP_GROUP_MODE')) { // 独立分组
         $baseUrl    =   $path[0]== '@' ? dirname(BASE_LIB_PATH) : APP_PATH.'../'.$path[0].'/'.C('APP_GROUP_PATH').'/';
-        import($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
+        Import::old($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
     }else{
-        import($name.$layer);
+        Import::old($name.$layer);
     } 
     $class          =   basename($name.$layer);
     if(class_exists($class)) {
@@ -360,7 +360,7 @@ function A($name,$layer='',$common=false) {
     }elseif($common) { // 加载公共类库目录
         import(str_replace('@/','',$name).$layer,LIB_PATH);
     }else{
-        import($name.$layer);
+        Import::old($name.$layer);
     }
     $class      =   basename($name.$layer);
     if(class_exists($class,false)) {
