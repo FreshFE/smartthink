@@ -89,6 +89,7 @@ function load_runtime_file() {
     // TODO: 重新编辑该文件，对象化
     // 加载系统基础函数库
     require THINK_PATH.'Common/common.php';
+    require CORE_PATH.'Core/Import.class.php';
 
     // TODO: 分析重构
     // 读取核心文件列表
@@ -99,12 +100,12 @@ function load_runtime_file() {
     );
     // 加载模式文件列表
     foreach ($list as $key=>$file){
-        if(is_file($file))  require_cache($file);
+        if(is_file($file))  Import::require_cache($file);
     }
 
     // TODO: 分析删除该代码
     // 加载系统类库别名定义
-    alias_import(include THINK_PATH.'Conf/alias.php');
+    Import::alias_import(include THINK_PATH.'Conf/alias.php');
 
     // 创建项目目录结构
     if(!is_dir(LIB_PATH)) {

@@ -18,7 +18,7 @@
  * @author      minowu
  */
 
-App::import('Image', dirname(__FILE__));
+Import::uses('Image', dirname(__FILE__));
 
 /*
 array(11) {

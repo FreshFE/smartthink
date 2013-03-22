@@ -1,7 +1,7 @@
 <?php
 
 // 依赖关系
-App::import('Library/Auth/RbacAuth', 'Think');
+Import::uses('Library/Auth/RbacAuth', 'Core');
 
 // 检查登录状态的行为类
 class CheckAuthBehavior extends Behavior {

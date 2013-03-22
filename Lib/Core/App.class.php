@@ -236,58 +236,58 @@ class App {
      *
      * @return bealoon
      */
-    static public function import(string $class, string $base, $ext = '.class.php') {
+    // static public function import(string $class, string $base, $ext = '.class.php') {
 
-        // 静态数组
-        static $_file = array();
+    //     // 静态数组
+    //     static $_file = array();
 
-        // 路径别名
-        if($base == 'Think') {
-            $base = CORE_PATH;
-        }
+    //     // 路径别名
+    //     if($base == 'Think') {
+    //         $base = CORE_PATH;
+    //     }
 
-        // 别名路径解析
-        switch ($base) {
-            case 'Think':
-                $base = CORE_PATH;
-                break;
+    //     // 别名路径解析
+    //     switch ($base) {
+    //         case 'Think':
+    //             $base = CORE_PATH;
+    //             break;
 
-            case 'App':
-                $base = APP_PATH;
-                break;
+    //         case 'App':
+    //             $base = APP_PATH;
+    //             break;
 
-            case 'Extend':
-                $base = EXTEND_PATH;
-                break;
+    //         case 'Extend':
+    //             $base = EXTEND_PATH;
+    //             break;
             
-            default:
-                break;
-        }
+    //         default:
+    //             break;
+    //     }
 
-        // 解析地址后缀'/'
-        if(substr($base, -1) != '/') {
-            $base .= '/';
-        }
+    //     // 解析地址后缀'/'
+    //     if(substr($base, -1) != '/') {
+    //         $base .= '/';
+    //     }
 
-        // 生成路径
-        // $classfile = realpath($base . $class . $ext);
-        $classfile = $base . $class . $ext;
-        $classfile = realpath($classfile);
+    //     // 生成路径
+    //     // $classfile = realpath($base . $class . $ext);
+    //     $classfile = $base . $class . $ext;
+    //     $classfile = realpath($classfile);
         
-        // 检查加载
-        if($classfile) {
+    //     // 检查加载
+    //     if($classfile) {
 
-            // 检查缓存
-            if($_file[$classfile]){
+    //         // 检查缓存
+    //         if($_file[$classfile]){
 
-                return false;
-            }
-            else {
+    //             return false;
+    //         }
+    //         else {
 
-                // 加入缓存
-                $_file[$classfile] = true;
-                return require_cache($classfile);
-            }
-        }
-    }
+    //             // 加入缓存
+    //             $_file[$classfile] = true;
+    //             return require_cache($classfile);
+    //         }
+    //     }
+    // }
 }

@@ -1503,7 +1503,7 @@ class Model {
 
     public function pager(int $page, int $listRows) {
 
-        App::import('Library/Pager', 'Think');
+        Import::uses('Library/Pager', 'Core');
         $Pager = new Pager();
         
         return $Pager->output($this->count(), $listRows);
