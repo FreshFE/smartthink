@@ -35,21 +35,10 @@ class Import {
 		// 解析路径
 		$base = static::parse_alias($base);
 		$base = static::parse_uri_suffix($base);
-		
 
-		// 生成路径
-		$classfile = $base . $class . $ext;
-		$classfile = realpath($classfile);
-		
-		// 存在该类文件，并该文件没有被加载过
-		if($classfile && !static::$file[$classfile]) {
-
-	        // 加入缓存
-	        static::$file[$classfile] = true;
-	        return static::require_cache($classfile);
-		}
-
-		return false;
+		// 载入
+		$filename = $base . $class . $ext;
+		return static::load($filename);
 	}
 
 	/**
@@ -92,26 +81,32 @@ class Import {
 	/**
 	 * 带缓存导入
 	 */
-	public static function require_cache($filename) {
+	public static function load($filename) {
 
-	    static $_importFiles = array();
+	    static $_files = array();
+	    
+	    $filename = realpath($filename);
 
-	    if(!isset($_importFiles[$filename])) {
+	    if(!isset($_files[$filename])) {
 
 	    	// 未载入过，载入
 	        if(static::file_exists_case($filename)) {
 
 	            require $filename;
-	            $_importFiles[$filename] = true;
+	            $_files[$filename] = true;
 	        }
 
 	        // 已经载入过
 	        else {
-	            $_importFiles[$filename] = false;
+	            $_files[$filename] = false;
 	        }
 	    }
 
-	    return $_importFiles[$filename];
+	    return $_files[$filename];
+	}
+
+	public static function require_cache($filename) {
+		return static::load($filename);
 	}
 
 	/**
@@ -120,10 +115,14 @@ class Import {
 	public static function require_array($array, $return = false) {
 
 	    foreach ($array as $file) {
-	        if (static::require_cache($file) && $return) return true;
+	        if(static::load($file) && $return) {
+	        	return true;
+	        }
 	    }
 
-	    if($return) return false;
+	    if($return) {
+	    	return false;
+	    }
 	}
 
 	public static function alias_import($alias, $classfile='') {
@@ -234,7 +233,7 @@ class Import {
 
 	    // 如果类不存在 则导入类库文件
 	    if (!class_exists(basename($class),false)) {
-	        return static::require_cache($classfile);
+	        return static::load($classfile);
 	    }
 	}
 }

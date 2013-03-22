@@ -100,7 +100,7 @@ function load_runtime_file() {
     );
     // 加载模式文件列表
     foreach ($list as $key=>$file){
-        if(is_file($file))  Import::require_cache($file);
+        if(is_file($file))  Import::load($file);
     }
 
     // TODO: 分析删除该代码
