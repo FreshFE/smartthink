@@ -130,12 +130,17 @@ function _404($msg='',$url='') {
     }
 }
 
+// TODO: 删除
 /**
  * 设置当前页面的布局
  * @param string|false $layout 布局名称 为false的时候表示关闭布局
  * @return void
  */
 function layout($layout) {
+
+    throw_exception('即将删除的函数，layout()');
+    exit();
+
     if(false !== $layout) {
         // 开启布局
         C('LAYOUT_ON',true);
@@ -290,6 +295,7 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
         return $url;
 }
 
+// TODO: 重构
 /**
  * 渲染输出Widget
  * @param string $name Widget名称
@@ -336,6 +342,7 @@ function is_ssl() {
     return false;
 }
 
+// 删除尺寸代码，改用Redirect类的方法
 /**
  * URL重定向
  * @param string $url 重定向的URL地址
@@ -344,6 +351,10 @@ function is_ssl() {
  * @return void
  */
 function redirect($url, $time=0, $msg='') {
+
+    throw_exception('即将废除的函数');
+    exit();
+
     //多行URL地址支持
     $url        = str_replace(array("\n", "\r"), '', $url);
     if (empty($msg))
