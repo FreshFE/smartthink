@@ -356,9 +356,9 @@ function A($name,$layer='',$common=false) {
     $path           =   explode('/',$name);
     if(count($path)>3 && 1 == C('APP_GROUP_MODE')) { // 独立分组
         $baseUrl    =   $path[0]== '@' ? dirname(BASE_LIB_PATH) : APP_PATH.'../'.$path[0].'/'.C('APP_GROUP_PATH').'/';
-        import($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
+        Import::old($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
     }elseif($common) { // 加载公共类库目录
-        import(str_replace('@/','',$name).$layer,LIB_PATH);
+        Import::old(str_replace('@/','',$name).$layer,LIB_PATH);
     }else{
         Import::old($name.$layer);
     }
