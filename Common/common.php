@@ -95,42 +95,14 @@ function parse_name($name, $type=0) {
     }
 }
 
-/**
- * 基于命名空间方式导入函数库
- * load('@.Util.Array')
- * @param string $name 函数库命名空间字符串
- * @param string $baseUrl 起始路径
- * @param string $ext 导入的文件扩展名
- * @return void
- */
+// TODO: 删除
 function load($name, $baseUrl='', $ext='.php') {
-    $name = str_replace(array('.', '#'), array('/', '.'), $name);
-    if (empty($baseUrl)) {
-        if (0 === strpos($name, '@/')) {
-            //加载当前项目函数库
-            $baseUrl    = COMMON_PATH;
-            $name       = substr($name, 2);
-        } else {
-            //加载ThinkPHP 系统函数库
-            $baseUrl    = EXTEND_PATH . 'Function/';
-        }
-    }
-    if (substr($baseUrl, -1) != '/')
-        $baseUrl       .= '/';
-    Import::require_cache($baseUrl . $name . $ext);
+    throw_exception('此处使用load函数，将被删除');
+    exit();
 }
-
-/**
- * 快速导入第三方框架类库 所有第三方框架的类库文件统一放到 系统的Vendor目录下面
- * @param string $class 类库
- * @param string $baseUrl 基础目录
- * @param string $ext 类库后缀 
- * @return boolean
- */
 function vendor($class, $baseUrl = '', $ext='.php') {
-    if (empty($baseUrl))
-        $baseUrl = VENDOR_PATH;
-    return import($class, $baseUrl, $ext);
+    throw_exception('此处使用vendor函数，将被删除');
+    exit();
 }
 
 /**
