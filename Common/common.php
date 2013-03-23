@@ -122,11 +122,12 @@ function D($name='',$layer='') {
     }
     if(isset($_model[$name]))   return $_model[$name];
     $path           =   explode('/',$name);
+    // dump(str_replace('@', '', $name).$layer);
     if(count($path)>3 && 1 == C('APP_GROUP_MODE')) { // 独立分组
         $baseUrl    =   $path[0]== '@' ? dirname(BASE_LIB_PATH) : APP_PATH.'../'.$path[0].'/'.C('APP_GROUP_PATH').'/';
-        Import::old($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
+        Import::uses($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
     }else{
-        Import::old($name.$layer);
+        Import::uses(str_replace('@', '', $name).$layer, LIB_PATH);
     } 
     $class          =   basename($name.$layer);
     if(class_exists($class)) {
@@ -165,30 +166,53 @@ function M($name='', $tablePrefix='',$connection='') {
  * @param boolean $common 是否公共目录
  * @return Action|false
  */
-function A($name,$layer='',$common=false) {
+function A($name, $layer='') {
+
+    // 缓存
     static $_action = array();
-    $layer      =   $layer?$layer:C('DEFAULT_C_LAYER');
-    if(strpos($name,'://')) {// 指定项目
-        $name   =  str_replace('://','/'.$layer.'/',$name);
-    }else{
-        $name   =  '@/'.$layer.'/'.$name;
+
+    // 默认控制器名称
+    $layer = $layer?$layer:C('DEFAULT_C_LAYER');
+
+    // 指定项目
+    if(strpos($name,'://')) {
+        $name = str_replace('://','/'.$layer.'/',$name);
     }
-    if(isset($_action[$name]))  return $_action[$name];
-    $path           =   explode('/',$name);
-    if(count($path)>3 && 1 == C('APP_GROUP_MODE')) { // 独立分组
-        $baseUrl    =   $path[0]== '@' ? dirname(BASE_LIB_PATH) : APP_PATH.'../'.$path[0].'/'.C('APP_GROUP_PATH').'/';
-        Import::old($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
-    }elseif($common) { // 加载公共类库目录
-        Import::old(str_replace('@/','',$name).$layer,LIB_PATH);
-    }else{
-        Import::old($name.$layer);
+    // 本地项目
+    else{
+        $name = '@/'.$layer.'/'.$name;
     }
-    $class      =   basename($name.$layer);
+
+    // 静态缓存内是否存在
+    if(isset($_action[$name])) {
+        return $_action[$name];
+    }
+
+    // 解析
+    $path = explode('/',$name);
+    
+    // 独立分组
+    if(count($path)>3 && 1 == C('APP_GROUP_MODE')) {
+        $baseUrl = $path[0] == '@' ? dirname(BASE_LIB_PATH) : APP_PATH . '../' . $path[0] . '/' . C('APP_GROUP_PATH') . '/';
+        Import::uses($path[2] . '/' . $path[1] . '/' . $path[3] . $layer, $baseUrl);
+    }
+    // 加载LIB_PATH
+    else{
+        Import::uses(str_replace('@/','',$name).$layer, LIB_PATH);
+    }
+
+    // 生成class名称
+    $class = basename($name.$layer);
+
+    // 检测导入的文件是否存在该类
+    // 存在则写入缓存
     if(class_exists($class,false)) {
-        $action             =   new $class();
-        $_action[$name]     =   $action;
+        $action = new $class();
+        $_action[$name] = $action;
         return $action;
-    }else {
+    }
+    // 不存在则返回
+    else {
         return false;
     }
 }
