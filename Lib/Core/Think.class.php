@@ -161,7 +161,7 @@ class Think {
      * @return void
      */
     public static function autoload($class) {
-
+        
         // 检查是否存在别名定义
         if(Import::alias_import($class)) return ;
 
@@ -189,7 +189,7 @@ class Think {
             }
         }
         // 加载控制器
-        else if(substr($class,-6)=='Controller'){
+        else if(substr($class,-10)=='Controller'){
             if(Import::require_array(array(
                 LIB_PATH.'Controller/'.$group.$file,
                 $libPath.'Controller/'.$file),true)) {
