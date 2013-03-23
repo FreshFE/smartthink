@@ -148,6 +148,7 @@ class Think {
                 C(include CONF_PATH.$status.'.php');
         }else{
             // 部署模式下面生成编译文件
+            throw_exception('找不到build_runtime_cache方法，该功能被抛弃');
             build_runtime_cache($compile);
         }
         return ;
