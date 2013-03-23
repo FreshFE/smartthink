@@ -30,14 +30,16 @@ class Import {
 	 *
 	 * @return bealoon
 	 */
-	public static function uses(string $class, string $base, $ext = '.class.php') {
+	public static function uses(string $class, $alias = '', $ext = '.class.php') {
 
 		// 解析路径
-		$base = static::parse_alias($base);
-		$base = static::parse_uri_suffix($base);
+		if($alias != '') {
+			$alias = static::parse_alias($alias);
+			$alias = static::parse_uri_suffix($alias);
+		}
 
 		// 载入
-		$filename = $base . $class . $ext;
+		$filename = $alias . $class . $ext;
 		return static::load($filename);
 	}
 
