@@ -110,7 +110,7 @@ class ShowPageTraceBehavior extends Behavior {
         unset($files,$info,$base);
         // 调用Trace页面模板
         ob_start();
-        include C('TMPL_TRACE_FILE')
+        include C('TMPL_TRACE_FILE');
         return ob_get_clean();
     }
 
