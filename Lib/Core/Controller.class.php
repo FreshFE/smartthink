@@ -16,7 +16,7 @@
  * @subpackage  Core
  * @author   liu21st <liu21st@gmail.com>
  */
-abstract class Action {
+abstract class Controller {
 
     /**
      * 视图实例对象
