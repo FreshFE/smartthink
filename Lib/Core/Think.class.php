@@ -97,9 +97,12 @@ class Think {
                 CORE_PATH.'Core/Log.class.php',    // 日志处理类
                 CORE_PATH.'Core/Dispatcher.class.php', // URL调度类
                 CORE_PATH.'Core/App.class.php',   // 应用程序类
-                CORE_PATH.'Core/Action.class.php', // 控制器类
+                CORE_PATH.'Core/Controller.class.php', // 控制器类
                 CORE_PATH.'Core/View.class.php',  // 视图类
-                CORE_PATH.'Core/Redirect.class.php'
+
+                // 自定义
+                CORE_PATH.'Core/Redirect.class.php', // 重定向类
+                CORE_PATH.'View/Helper.class.php' // 视图助手
             );
         }
         // 项目追加核心编译列表文件
@@ -158,55 +161,65 @@ class Think {
      * @return void
      */
     public static function autoload($class) {
+
         // 检查是否存在别名定义
         if(Import::alias_import($class)) return ;
-        $libPath    =   defined('BASE_LIB_PATH')?BASE_LIB_PATH:LIB_PATH;
+
+        // 定义基本文件
+        $libPath    =   defined('BASE_LIB_PATH') ? BASE_LIB_PATH : LIB_PATH;
         $group      =   defined('GROUP_NAME') && C('APP_GROUP_MODE')==0 ?GROUP_NAME.'/':'';
         $file       =   $class.'.class.php';
-        if(substr($class,-8)=='Behavior') { // 加载行为
+
+        // 加载行为
+        if(substr($class,-8)=='Behavior') {
             if(Import::require_array(array(
                 CORE_PATH.'Behavior/'.$file,
-                EXTEND_PATH.'Behavior/'.$file,
                 LIB_PATH.'Behavior/'.$file,
                 $libPath.'Behavior/'.$file),true)
                 || (defined('MODE_NAME') && Import::require_cache(MODE_PATH.ucwords(MODE_NAME).'/Behavior/'.$file))) {
                 return ;
             }
-        }elseif(substr($class,-5)=='Model'){ // 加载模型
+        }
+        // 加载模型
+        else if(substr($class,-5)=='Model'){
             if(Import::require_array(array(
                 LIB_PATH.'Model/'.$group.$file,
-                $libPath.'Model/'.$file,
-                EXTEND_PATH.'Model/'.$file),true)) {
+                $libPath.'Model/'.$file),true)) {
                 return ;
             }
-        }elseif(substr($class,-6)=='Action'){ // 加载控制器
+        }
+        // 加载控制器
+        else if(substr($class,-6)=='Controller'){
             if(Import::require_array(array(
-                LIB_PATH.'Action/'.$group.$file,
-                $libPath.'Action/'.$file,
-                EXTEND_PATH.'Action/'.$file),true)) {
+                LIB_PATH.'Controller/'.$group.$file,
+                $libPath.'Controller/'.$file),true)) {
                 return ;
             }
-        }elseif(substr($class,0,5)=='Cache'){ // 加载缓存驱动
+        }
+        // 加载缓存驱动
+        else if(substr($class,0,5)=='Cache'){
             if(Import::require_array(array(
-                EXTEND_PATH.'Driver/Cache/'.$file,
                 CORE_PATH.'Driver/Cache/'.$file),true)){
                 return ;
             }
-        }elseif(substr($class,0,2)=='Db'){ // 加载数据库驱动
+        }
+        // 加载数据库驱动
+        else if(substr($class,0,2)=='Db'){
             if(Import::require_array(array(
-                EXTEND_PATH.'Driver/Db/'.$file,
                 CORE_PATH.'Driver/Db/'.$file),true)){
                 return ;
             }
-        }elseif(substr($class,0,8)=='Template'){ // 加载模板引擎驱动
+        }
+        // 加载模板引擎驱动
+        else if(substr($class,0,8)=='Template'){
             if(Import::require_array(array(
-                EXTEND_PATH.'Driver/Template/'.$file,
                 CORE_PATH.'Driver/Template/'.$file),true)){
                 return ;
             }
-        }elseif(substr($class,0,6)=='TagLib'){ // 加载标签库驱动
+        }
+        // 加载标签库驱动
+        else if(substr($class,0,6)=='TagLib'){
             if(Import::require_array(array(
-                EXTEND_PATH.'Driver/TagLib/'.$file,
                 CORE_PATH.'Driver/TagLib/'.$file),true)) {
                 return ;
             }

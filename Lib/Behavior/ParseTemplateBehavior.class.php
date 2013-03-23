@@ -1,6 +1,6 @@
 <?php
 
-Import::uses('View/Helper', 'Core');
+// Import::uses('View/Helper', 'Core');
 
 class ParseTemplateBehavior extends Behavior {
 
