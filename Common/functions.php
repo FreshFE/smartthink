@@ -130,28 +130,6 @@ function _404($msg='',$url='') {
     }
 }
 
-// TODO: 删除
-/**
- * 设置当前页面的布局
- * @param string|false $layout 布局名称 为false的时候表示关闭布局
- * @return void
- */
-function layout($layout) {
-
-    throw_exception('即将删除的函数，layout()');
-    exit();
-
-    if(false !== $layout) {
-        // 开启布局
-        C('LAYOUT_ON',true);
-        if(is_string($layout)) { // 设置新的布局模板
-            C('LAYOUT_NAME',$layout);
-        }
-    }else{// 临时关闭布局
-        C('LAYOUT_ON',false);
-    }
-}
-
 /**
  * URL组装 支持不同URL模式
  * @param string $url URL表达式，格式：'[分组/模块/操作#锚点@域名]?参数1=值1&参数2=值2...'
@@ -342,40 +320,6 @@ function is_ssl() {
     return false;
 }
 
-// 删除尺寸代码，改用Redirect类的方法
-/**
- * URL重定向
- * @param string $url 重定向的URL地址
- * @param integer $time 重定向的等待时间（秒）
- * @param string $msg 重定向前的提示信息
- * @return void
- */
-function redirect($url, $time=0, $msg='') {
-
-    throw_exception('即将废除的函数');
-    exit();
-
-    //多行URL地址支持
-    $url        = str_replace(array("\n", "\r"), '', $url);
-    if (empty($msg))
-        $msg    = "系统将在{$time}秒之后自动跳转到{$url}！";
-    if (!headers_sent()) {
-        // redirect
-        if (0 === $time) {
-            header('Location: ' . $url);
-        } else {
-            header("refresh:{$time};url={$url}");
-            echo($msg);
-        }
-        exit();
-    } else {
-        $str    = "<meta http-equiv='Refresh' content='{$time};URL={$url}'>";
-        if ($time != 0)
-            $str .= $msg;
-        exit($str);
-    }
-}
-
 /**
  * 缓存管理
  * @param mixed $name 缓存名称，如果为数组表示进行缓存设置
@@ -426,11 +370,6 @@ function S($name, $value = '', $options = null) {
         $expire = is_numeric($options) ? $options : NULL;
         return $cache->set($name, $value, $expire);
     }
-}
-
-// S方法的别名 已经废除 不再建议使用
-function cache($name,$value='',$options=null){
-    return S($name,$value,$options);
 }
 
 /**
