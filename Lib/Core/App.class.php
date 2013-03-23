@@ -204,7 +204,7 @@ class App {
         // Session初始化
         session(C('SESSION_OPTIONS'));
         // 项目session初始化
-        tag('app_session_start');
+        tag('app_session_begin');
         // 记录应用初始化时间
         G('initTime');
         App::exec();

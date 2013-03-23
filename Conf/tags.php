@@ -18,7 +18,7 @@ return array(
         'CheckLang' // 读取Lang
         
     ),
-    'app_session_start' => array(
+    'app_session_begin' => array(
         'CheckAuth'
     ),
     'route_check'   =>  array(
