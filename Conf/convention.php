@@ -29,7 +29,7 @@ return  array(
     'APP_SUB_DOMAIN_DEPLOY' => false,   // 是否开启子域名部署
     'APP_SUB_DOMAIN_RULES'  => array(), // 子域名部署规则
     'APP_SUB_DOMAIN_DENY'   => array(), //  子域名禁用列表
-    'APP_GROUP_LIST'        => '',      // 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
+    'APP_GROUP_LIST'        => 'Home,Admin,Api',      // 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
     'APP_GROUP_MODE'        =>  0,  // 分组模式 0 普通分组 1 独立分组
     'APP_GROUP_PATH'        =>  'Modules', // 分组目录 独立分组模式下面有效
     'ACTION_SUFFIX'         =>  '', // 操作方法后缀
@@ -41,8 +41,8 @@ return  array(
     'COOKIE_PREFIX'         => '',      // Cookie前缀 避免冲突
 
     /* 默认设定 */
-    'DEFAULT_M_LAYER'       =>  'Model', // 默认的模型层名称
-    'DEFAULT_C_LAYER'       =>  'Action', // 默认的控制器层名称
+    'DEFAULT_M_LAYER'       => 'Model', // 默认的模型层名称
+    'DEFAULT_C_LAYER'       => 'Controller', // 默认的控制器层名称
     'DEFAULT_APP'           => '@',     // 默认项目名称，@表示当前项目
     'DEFAULT_LANG'          => 'zh-cn', // 默认语言
     'DEFAULT_THEME'         => '',	// 默认模板主题名称
@@ -109,9 +109,10 @@ return  array(
 
     /* 模板引擎设置 */
     'TMPL_CONTENT_TYPE'     => 'text/html', // 默认模板输出类型
-    'TMPL_ACTION_ERROR'     => THINK_PATH.'Tpl/dispatch_jump.tpl', // 默认错误跳转对应的模板文件
-    'TMPL_ACTION_SUCCESS'   => THINK_PATH.'Tpl/dispatch_jump.tpl', // 默认成功跳转对应的模板文件
-    'TMPL_EXCEPTION_FILE'   => THINK_PATH.'Tpl/think_exception.tpl',// 异常页面的模板文件
+    'TMPL_TRACE_FILE'       => THINK_PATH.'Tpl/page_trace.html',    // 调用trace页面
+    'TMPL_ACTION_ERROR'     => THINK_PATH.'Tpl/dispatch_jump.html', // 默认错误跳转对应的模板文件
+    'TMPL_ACTION_SUCCESS'   => THINK_PATH.'Tpl/dispatch_jump.html', // 默认成功跳转对应的模板文件
+    'TMPL_EXCEPTION_FILE'   => THINK_PATH.'Tpl/think_exception.html',// 异常页面的模板文件
     'TMPL_DETECT_THEME'     => false,       // 自动侦测模板主题
     'TMPL_TEMPLATE_SUFFIX'  => '.html',     // 默认模板文件后缀
     'TMPL_FILE_DEPR'        =>  '/', //模板文件MODULE_NAME与ACTION_NAME之间的分割符
@@ -141,16 +142,8 @@ return  array(
     'HTTP_CACHE_CONTROL'    =>  'private', // 网页缓存控制
 
     /* URL 跳转设置 */
-    'JUMP_MODE'             => 0, // 跳转方式，0(普通模式)，1(直接模式)
-    'JUMP_SESSION'          => false,
+    'JUMP_SESSION_ON'       => true,
     'JUMP_SESSION_INFO'     => 'jump_session_info',
-    'JUMP_SESSION_STATUS'   => 'jump_session_status',
-
-    /* 加载设置 */
-    'LOAD_EXT_FUNCTION'     => '',      // 加载扩展函数
-
-    /* 跳转模式 */
-    'JUMP_MODE'             => 1,       // 跳转模式
-    'JUMP_SESSION'          => true     // 是否开启跳转时的session记录
+    'JUMP_SESSION_STATUS'   => 'jump_session_status'
 
 );

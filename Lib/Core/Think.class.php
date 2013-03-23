@@ -58,10 +58,6 @@ class Think {
         // 加载核心惯例配置文件
         C(include THINK_PATH.'Conf/convention.php');
 
-        // 加载扩展配置文件
-        if(is_file(EXTEND_PATH . 'Conf/convention.php'))
-            C(include EXTEND_PATH . 'Conf/convention.php');
-
         // 加载模式配置文件
         if(isset($mode['config'])) {
             C( is_array($mode['config'])?$mode['config']:include $mode['config'] );
@@ -101,8 +97,12 @@ class Think {
                 CORE_PATH.'Core/Log.class.php',    // 日志处理类
                 CORE_PATH.'Core/Dispatcher.class.php', // URL调度类
                 CORE_PATH.'Core/App.class.php',   // 应用程序类
-                CORE_PATH.'Core/Action.class.php', // 控制器类
+                CORE_PATH.'Core/Controller.class.php', // 控制器类
                 CORE_PATH.'Core/View.class.php',  // 视图类
+
+                // 自定义
+                CORE_PATH.'Core/Redirect.class.php', // 重定向类
+                CORE_PATH.'View/Helper.class.php' // 视图助手
             );
         }
         // 项目追加核心编译列表文件
@@ -111,7 +111,7 @@ class Think {
         }
         foreach ($list as $file){
             if(is_file($file))  {
-                require_cache($file);
+                Import::require_cache($file);
                 if(!APP_DEBUG)   $compile .= compile($file);
             }
         }
@@ -126,15 +126,15 @@ class Think {
         // 加载模式别名定义
         if(isset($mode['alias'])) {
             $alias = is_array($mode['alias'])?$mode['alias']:include $mode['alias'];
-            alias_import($alias);
-            if(!APP_DEBUG) $compile .= 'alias_import('.var_export($alias,true).');';               
+            Import::alias_import($alias);
+            if(!APP_DEBUG) $compile .= 'Import::alias_import('.var_export($alias,true).');';               
         }
      
         // 加载项目别名定义
         if(is_file(CONF_PATH.'alias.php')){ 
             $alias = include CONF_PATH.'alias.php';
             alias_import($alias);
-            if(!APP_DEBUG) $compile .= 'alias_import('.var_export($alias,true).');';
+            if(!APP_DEBUG) $compile .= 'Import::alias_import('.var_export($alias,true).');';
         }
 
         if(APP_DEBUG) {
@@ -148,6 +148,7 @@ class Think {
                 C(include CONF_PATH.$status.'.php');
         }else{
             // 部署模式下面生成编译文件
+            throw_exception('找不到build_runtime_cache方法，该功能被抛弃');
             build_runtime_cache($compile);
         }
         return ;
@@ -161,55 +162,65 @@ class Think {
      * @return void
      */
     public static function autoload($class) {
+        
         // 检查是否存在别名定义
-        if(alias_import($class)) return ;
-        $libPath    =   defined('BASE_LIB_PATH')?BASE_LIB_PATH:LIB_PATH;
+        if(Import::alias_import($class)) return ;
+
+        // 定义基本文件
+        $libPath    =   defined('BASE_LIB_PATH') ? BASE_LIB_PATH : LIB_PATH;
         $group      =   defined('GROUP_NAME') && C('APP_GROUP_MODE')==0 ?GROUP_NAME.'/':'';
         $file       =   $class.'.class.php';
-        if(substr($class,-8)=='Behavior') { // 加载行为
-            if(require_array(array(
+
+        // 加载行为
+        if(substr($class,-8)=='Behavior') {
+            if(Import::require_array(array(
                 CORE_PATH.'Behavior/'.$file,
-                EXTEND_PATH.'Behavior/'.$file,
                 LIB_PATH.'Behavior/'.$file,
                 $libPath.'Behavior/'.$file),true)
-                || (defined('MODE_NAME') && require_cache(MODE_PATH.ucwords(MODE_NAME).'/Behavior/'.$file))) {
+                || (defined('MODE_NAME') && Import::require_cache(MODE_PATH.ucwords(MODE_NAME).'/Behavior/'.$file))) {
                 return ;
             }
-        }elseif(substr($class,-5)=='Model'){ // 加载模型
-            if(require_array(array(
+        }
+        // 加载模型
+        else if(substr($class,-5)=='Model'){
+            if(Import::require_array(array(
                 LIB_PATH.'Model/'.$group.$file,
-                $libPath.'Model/'.$file,
-                EXTEND_PATH.'Model/'.$file),true)) {
+                $libPath.'Model/'.$file),true)) {
                 return ;
             }
-        }elseif(substr($class,-6)=='Action'){ // 加载控制器
-            if(require_array(array(
-                LIB_PATH.'Action/'.$group.$file,
-                $libPath.'Action/'.$file,
-                EXTEND_PATH.'Action/'.$file),true)) {
+        }
+        // 加载控制器
+        else if(substr($class,-10)=='Controller'){
+            if(Import::require_array(array(
+                LIB_PATH.'Controller/'.$group.$file,
+                $libPath.'Controller/'.$file),true)) {
                 return ;
             }
-        }elseif(substr($class,0,5)=='Cache'){ // 加载缓存驱动
-            if(require_array(array(
-                EXTEND_PATH.'Driver/Cache/'.$file,
+        }
+        // 加载缓存驱动
+        else if(substr($class,0,5)=='Cache'){
+            if(Import::require_array(array(
                 CORE_PATH.'Driver/Cache/'.$file),true)){
                 return ;
             }
-        }elseif(substr($class,0,2)=='Db'){ // 加载数据库驱动
-            if(require_array(array(
-                EXTEND_PATH.'Driver/Db/'.$file,
+        }
+        // 加载数据库驱动
+        else if(substr($class,0,2)=='Db'){
+            if(Import::require_array(array(
                 CORE_PATH.'Driver/Db/'.$file),true)){
                 return ;
             }
-        }elseif(substr($class,0,8)=='Template'){ // 加载模板引擎驱动
-            if(require_array(array(
-                EXTEND_PATH.'Driver/Template/'.$file,
+        }
+        // 加载模板引擎驱动
+        else if(substr($class,0,8)=='Template'){
+            if(Import::require_array(array(
                 CORE_PATH.'Driver/Template/'.$file),true)){
                 return ;
             }
-        }elseif(substr($class,0,6)=='TagLib'){ // 加载标签库驱动
-            if(require_array(array(
-                EXTEND_PATH.'Driver/TagLib/'.$file,
+        }
+        // 加载标签库驱动
+        else if(substr($class,0,6)=='TagLib'){
+            if(Import::require_array(array(
                 CORE_PATH.'Driver/TagLib/'.$file),true)) {
                 return ;
             }
@@ -217,8 +228,9 @@ class Think {
 
         // 根据自动加载路径设置进行尝试搜索
         $paths  =   explode(',',C('APP_AUTOLOAD_PATH'));
+
         foreach ($paths as $path){
-            if(import($path.'.'.$class))
+            if(Import::uses($path.'/'.$class))
                 // 如果加载类成功则返回
                 return ;
         }

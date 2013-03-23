@@ -40,12 +40,12 @@ abstract class Widget {
     protected function renderFile($templateFile='',$var='') {
         ob_start();
         ob_implicit_flush(0);
-        if(!file_exists_case($templateFile)){
+        if(!Import::file_exists_case($templateFile)){
             // 自动定位模板文件
             $name   = substr(get_class($this),0,-6);
             $filename   =  empty($templateFile)?$name:$templateFile;
             $templateFile = BASE_LIB_PATH.'Widget/'.$name.'/'.$filename.C('TMPL_TEMPLATE_SUFFIX');
-            if(!file_exists_case($templateFile))
+            if(!Import::file_exists_case($templateFile))
                 throw_exception(L('_TEMPLATE_NOT_EXIST_').'['.$templateFile.']');
         }
         $template   =  strtolower($this->template?$this->template:(C('TMPL_ENGINE_TYPE')?C('TMPL_ENGINE_TYPE'):'php'));
@@ -73,7 +73,7 @@ abstract class Widget {
             }else{ // 扩展驱动
                 $path = EXTEND_PATH;
             }
-            require_cache($path.'Driver/Template/'.$class.'.class.php');
+            Import::require_cache($path.'Driver/Template/'.$class.'.class.php');
             $tpl   =  new $class;
             $tpl->fetch($templateFile,$var);
         }

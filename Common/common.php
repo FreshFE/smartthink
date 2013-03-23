@@ -95,193 +95,14 @@ function parse_name($name, $type=0) {
     }
 }
 
-/**
- * 优化的require_once
- * @param string $filename 文件地址
- * @return boolean
- */
-function require_cache($filename) {
-    static $_importFiles = array();
-    if (!isset($_importFiles[$filename])) {
-        if (file_exists_case($filename)) {
-            require $filename;
-            $_importFiles[$filename] = true;
-        } else {
-            $_importFiles[$filename] = false;
-        }
-    }
-    return $_importFiles[$filename];
-}
-
-/**
- * 批量导入文件 成功则返回
- * @param array $array 文件数组
- * @param boolean $return 加载成功后是否返回
- * @return boolean
- */
-function require_array($array,$return=false){
-    foreach ($array as $file){
-        if (require_cache($file) && $return) return true;
-    }
-    if($return) return false;
-}
-
-/**
- * 区分大小写的文件存在判断
- * @param string $filename 文件地址
- * @return boolean
- */
-function file_exists_case($filename) {
-    if (is_file($filename)) {
-        if (IS_WIN && C('APP_FILE_CASE')) {
-            if (basename(realpath($filename)) != basename($filename))
-                return false;
-        }
-        return true;
-    }
-    return false;
-}
-
-/**
- * 导入所需的类库 同java的Import 本函数有缓存功能
- * @param string $class 类库命名空间字符串
- *  @|APP_NAME表示该项目的lib
- *  think表示框架内的lib
- *  org|com表示extend/library下项目
- *  other表示其他项目
- * @param string $baseUrl 起始路径
- * @param string $ext 导入的文件扩展名
- * @return boolean
- */
-function import($class, $baseUrl = '', $ext = '.class.php') {
-
-    // 已载入库列表
-    static $_file = array();
-
-    // 转义
-    $class = str_replace(array('.', '#'), array('/', '.'), $class);
-
-    // 检查别名导入
-    if('' === $baseUrl && false === strpos($class, '/')) {
-        return alias_import($class);
-    }
-
-    // 检查是否已经载入
-    if (isset($_file[$class . $baseUrl])) {
-        return true;
-    }
-    // 添加到载入列表
-    else {
-        $_file[$class . $baseUrl] = true;
-    }
-
-    // 解析$class
-    $class_strut = explode('/', $class);
-
-    // 如果$baseUrl为空则解析$class
-    if(empty($baseUrl)) {
-
-        $libPath = defined('BASE_LIB_PATH') ? BASE_LIB_PATH : LIB_PATH;
-
-        // 加载当前项目应用类库
-        if('@' == $class_strut[0] || APP_NAME == $class_strut[0]) {
-            
-            $baseUrl = dirname($libPath);
-            $class   = substr_replace($class, basename($libPath) . '/', 0, strlen($class_strut[0]) + 1);
-        }
-
-        // think 官方基类库
-        elseif('think' == strtolower($class_strut[0])) {
-            $baseUrl = CORE_PATH;
-            $class   = substr($class,6);
-        }
-
-        // org 第三方公共类库 com 企业公共类库
-        elseif(in_array(strtolower($class_strut[0]), array('org', 'com'))) {
-
-            $baseUrl = LIBRARY_PATH;
-        }
-
-        // 加载其他项目应用类库
-        else {
-            $class = substr_replace($class, '', 0, strlen($class_strut[0]) + 1);
-            $baseUrl = APP_PATH . '../' . $class_strut[0] . '/'.basename($libPath).'/';
-        }
-    }
-
-    // 分析后缀
-    if(substr($baseUrl, -1) != '/') {
-        $baseUrl .= '/';
-    }
-
-    // 合并classfile
-    $classfile = $baseUrl . $class . $ext;
-
-    // 如果类不存在 则导入类库文件
-    if (!class_exists(basename($class),false)) {
-        return require_cache($classfile);
-    }
-}
-
-/**
- * 基于命名空间方式导入函数库
- * load('@.Util.Array')
- * @param string $name 函数库命名空间字符串
- * @param string $baseUrl 起始路径
- * @param string $ext 导入的文件扩展名
- * @return void
- */
+// TODO: 删除
 function load($name, $baseUrl='', $ext='.php') {
-    $name = str_replace(array('.', '#'), array('/', '.'), $name);
-    if (empty($baseUrl)) {
-        if (0 === strpos($name, '@/')) {
-            //加载当前项目函数库
-            $baseUrl    = COMMON_PATH;
-            $name       = substr($name, 2);
-        } else {
-            //加载ThinkPHP 系统函数库
-            $baseUrl    = EXTEND_PATH . 'Function/';
-        }
-    }
-    if (substr($baseUrl, -1) != '/')
-        $baseUrl       .= '/';
-    require_cache($baseUrl . $name . $ext);
+    throw_exception('此处使用load函数，将被删除');
+    exit();
 }
-
-/**
- * 快速导入第三方框架类库 所有第三方框架的类库文件统一放到 系统的Vendor目录下面
- * @param string $class 类库
- * @param string $baseUrl 基础目录
- * @param string $ext 类库后缀 
- * @return boolean
- */
 function vendor($class, $baseUrl = '', $ext='.php') {
-    if (empty($baseUrl))
-        $baseUrl = VENDOR_PATH;
-    return import($class, $baseUrl, $ext);
-}
-
-/**
- * 快速定义和导入别名 支持批量定义
- * @param string|array $alias 类库别名
- * @param string $classfile 对应类库
- * @return boolean
- */
-function alias_import($alias, $classfile='') {
-    static $_alias = array();
-    if (is_string($alias)) {
-        if(isset($_alias[$alias])) {
-            return require_cache($_alias[$alias]);
-        }elseif ('' !== $classfile) {
-            // 定义别名导入
-            $_alias[$alias] = $classfile;
-            return;
-        }
-    }elseif (is_array($alias)) {
-        $_alias   =  array_merge($_alias,$alias);
-        return;
-    }
-    return false;
+    throw_exception('此处使用vendor函数，将被删除');
+    exit();
 }
 
 /**
@@ -301,11 +122,12 @@ function D($name='',$layer='') {
     }
     if(isset($_model[$name]))   return $_model[$name];
     $path           =   explode('/',$name);
+    // dump(str_replace('@', '', $name).$layer);
     if(count($path)>3 && 1 == C('APP_GROUP_MODE')) { // 独立分组
         $baseUrl    =   $path[0]== '@' ? dirname(BASE_LIB_PATH) : APP_PATH.'../'.$path[0].'/'.C('APP_GROUP_PATH').'/';
-        import($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
+        Import::uses($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
     }else{
-        import($name.$layer);
+        Import::uses(str_replace('@', '', $name).$layer, LIB_PATH);
     } 
     $class          =   basename($name.$layer);
     if(class_exists($class)) {
@@ -344,30 +166,53 @@ function M($name='', $tablePrefix='',$connection='') {
  * @param boolean $common 是否公共目录
  * @return Action|false
  */
-function A($name,$layer='',$common=false) {
+function A($name, $layer='') {
+
+    // 缓存
     static $_action = array();
-    $layer      =   $layer?$layer:C('DEFAULT_C_LAYER');
-    if(strpos($name,'://')) {// 指定项目
-        $name   =  str_replace('://','/'.$layer.'/',$name);
-    }else{
-        $name   =  '@/'.$layer.'/'.$name;
+
+    // 默认控制器名称
+    $layer = $layer?$layer:C('DEFAULT_C_LAYER');
+
+    // 指定项目
+    if(strpos($name,'://')) {
+        $name = str_replace('://','/'.$layer.'/',$name);
     }
-    if(isset($_action[$name]))  return $_action[$name];
-    $path           =   explode('/',$name);
-    if(count($path)>3 && 1 == C('APP_GROUP_MODE')) { // 独立分组
-        $baseUrl    =   $path[0]== '@' ? dirname(BASE_LIB_PATH) : APP_PATH.'../'.$path[0].'/'.C('APP_GROUP_PATH').'/';
-        import($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
-    }elseif($common) { // 加载公共类库目录
-        import(str_replace('@/','',$name).$layer,LIB_PATH);
-    }else{
-        import($name.$layer);
+    // 本地项目
+    else{
+        $name = '@/'.$layer.'/'.$name;
     }
-    $class      =   basename($name.$layer);
+
+    // 静态缓存内是否存在
+    if(isset($_action[$name])) {
+        return $_action[$name];
+    }
+
+    // 解析
+    $path = explode('/',$name);
+    
+    // 独立分组
+    if(count($path)>3 && 1 == C('APP_GROUP_MODE')) {
+        $baseUrl = $path[0] == '@' ? dirname(BASE_LIB_PATH) : APP_PATH . '../' . $path[0] . '/' . C('APP_GROUP_PATH') . '/';
+        Import::uses($path[2] . '/' . $path[1] . '/' . $path[3] . $layer, $baseUrl);
+    }
+    // 加载LIB_PATH
+    else{
+        Import::uses(str_replace('@/','',$name).$layer, LIB_PATH);
+    }
+
+    // 生成class名称
+    $class = basename($name.$layer);
+
+    // 检测导入的文件是否存在该类
+    // 存在则写入缓存
     if(class_exists($class,false)) {
-        $action             =   new $class();
-        $_action[$name]     =   $action;
+        $action = new $class();
+        $_action[$name] = $action;
         return $action;
-    }else {
+    }
+    // 不存在则返回
+    else {
         return false;
     }
 }

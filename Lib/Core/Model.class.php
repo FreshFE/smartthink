@@ -1486,15 +1486,27 @@ class Model {
     }
 
     /**
-     * 指定分页
-     * @access public
-     * @param mixed $page 页数
-     * @param mixed $listRows 每页数量
-     * @return Model
+     * 指定分页，并根据分页的需要生成页码数组
+     * 返回链式操作的$this
+     *
+     * @param int $page 页数
+     * @param int|null $listRows 每页数量
+     * @param array|bealoon &$pager 由参数传入并可被修改
+     *
+     * @return $this
      */
-    public function page($page,$listRows=null){
-        $this->options['page'] =   is_null($listRows)?$page:$page.','.$listRows;
+    public function page(int $page, int $listRows) {
+
+        $this->options['page'] = $page . ',' . $listRows;
         return $this;
+    }
+
+    public function pager(int $page, int $listRows) {
+
+        Import::uses('Library/Pager', 'Core');
+        $Pager = new Pager();
+        
+        return $Pager->output($this->count(), $listRows);
     }
 
     /**

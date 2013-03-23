@@ -131,23 +131,6 @@ function _404($msg='',$url='') {
 }
 
 /**
- * 设置当前页面的布局
- * @param string|false $layout 布局名称 为false的时候表示关闭布局
- * @return void
- */
-function layout($layout) {
-    if(false !== $layout) {
-        // 开启布局
-        C('LAYOUT_ON',true);
-        if(is_string($layout)) { // 设置新的布局模板
-            C('LAYOUT_NAME',$layout);
-        }
-    }else{// 临时关闭布局
-        C('LAYOUT_ON',false);
-    }
-}
-
-/**
  * URL组装 支持不同URL模式
  * @param string $url URL表达式，格式：'[分组/模块/操作#锚点@域名]?参数1=值1&参数2=值2...'
  * @param string|array $vars 传入的参数，支持数组和字符串
@@ -290,6 +273,7 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
         return $url;
 }
 
+// TODO: 重构
 /**
  * 渲染输出Widget
  * @param string $name Widget名称
@@ -299,7 +283,7 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
  */
 function W($name, $data=array(), $return=false) {
     $class      =   $name . 'Widget';
-    require_cache(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
+    Import::require_cache(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
     if (!class_exists($class))
         throw_exception(L('_CLASS_NOT_EXIST_') . ':' . $class);
     $widget     =   Think::instance($class);
@@ -334,35 +318,6 @@ function is_ssl() {
         return true;
     }
     return false;
-}
-
-/**
- * URL重定向
- * @param string $url 重定向的URL地址
- * @param integer $time 重定向的等待时间（秒）
- * @param string $msg 重定向前的提示信息
- * @return void
- */
-function redirect($url, $time=0, $msg='') {
-    //多行URL地址支持
-    $url        = str_replace(array("\n", "\r"), '', $url);
-    if (empty($msg))
-        $msg    = "系统将在{$time}秒之后自动跳转到{$url}！";
-    if (!headers_sent()) {
-        // redirect
-        if (0 === $time) {
-            header('Location: ' . $url);
-        } else {
-            header("refresh:{$time};url={$url}");
-            echo($msg);
-        }
-        exit();
-    } else {
-        $str    = "<meta http-equiv='Refresh' content='{$time};URL={$url}'>";
-        if ($time != 0)
-            $str .= $msg;
-        exit($str);
-    }
 }
 
 /**
@@ -415,11 +370,6 @@ function S($name, $value = '', $options = null) {
         $expire = is_numeric($options) ? $options : NULL;
         return $cache->set($name, $value, $expire);
     }
-}
-
-// S方法的别名 已经废除 不再建议使用
-function cache($name,$value='',$options=null){
-    return S($name,$value,$options);
 }
 
 /**
@@ -629,7 +579,7 @@ function session($name, $value = '') {
             $class = 'Session'. ucwords(strtolower(C('SESSION_TYPE')));
 
             // 检查驱动类是否存在并加载，不存在则抛出错误
-            if(require_cache(EXTEND_PATH.'Driver/Session/'.$class.'.class.php')) {
+            if(Import::require_cache(EXTEND_PATH.'Driver/Session/'.$class.'.class.php')) {
 
                 $hander = new $class();
                 $hander->execute();
@@ -802,15 +752,6 @@ function load_ext_file() {
         $files      =  explode(',',C('LOAD_EXT_FILE'));
         foreach ($files as $file){
             $file   = COMMON_PATH.$file.'.php';
-            if(is_file($file)) include $file;
-        }
-    }
-
-    // 加载外部拓展函数
-    if(C('LOAD_EXT_FUNCTION')) {
-        $files = explode(',', C('LOAD_EXT_FUNCTION'));
-        foreach ($files as $file) {
-            $file = EXTEND_PATH . '/Function/' . $file . '.php';
             if(is_file($file)) include $file;
         }
     }
