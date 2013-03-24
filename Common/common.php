@@ -95,16 +95,6 @@ function parse_name($name, $type=0) {
     }
 }
 
-// TODO: 删除
-function load($name, $baseUrl='', $ext='.php') {
-    throw_exception('此处使用load函数，将被删除');
-    exit();
-}
-function vendor($class, $baseUrl = '', $ext='.php') {
-    throw_exception('此处使用vendor函数，将被删除');
-    exit();
-}
-
 /**
  * D函数用于实例化Model 格式 项目://分组/模块
  * @param string $name Model资源地址
@@ -326,39 +316,39 @@ function C($name=null, $value=null) {
  * @param mixed $params 传入参数
  * @return mixed
  */
-function tag($tag, &$params=NULL) {
-    // 系统标签扩展
-    $extends    = C('extends.' . $tag);
-    // 应用标签扩展
-    $tags       = C('tags.' . $tag);
-    if (!empty($tags)) {
-        if(empty($tags['_overlay']) && !empty($extends)) { // 合并扩展
-            $tags = array_unique(array_merge($extends,$tags));
-        }elseif(isset($tags['_overlay'])){ // 通过设置 '_overlay'=>1 覆盖系统标签
-            unset($tags['_overlay']);
-        }
-    }elseif(!empty($extends)) {
-        $tags = $extends;
-    }
-    if($tags) {
-        if(APP_DEBUG) {
-            G($tag.'Start');
-            trace('[ '.$tag.' ] --START--','','INFO');
-        }
-        // 执行扩展
-        foreach ($tags as $key=>$name) {
-            if(!is_int($key)) { // 指定行为类的完整路径 用于模式扩展
-                $name   = $key;
-            }
-            B($name, $params);
-        }
-        if(APP_DEBUG) { // 记录行为的执行日志
-            trace('[ '.$tag.' ] --END-- [ RunTime:'.G($tag.'Start',$tag.'End',6).'s ]','','INFO');
-        }
-    }else{ // 未执行任何行为 返回false
-        return false;
-    }
-}
+// function tag($tag, &$params=NULL) {
+//     // 系统标签扩展
+//     $extends    = C('extends.' . $tag);
+//     // 应用标签扩展
+//     $tags       = C('tags.' . $tag);
+//     if (!empty($tags)) {
+//         if(empty($tags['_overlay']) && !empty($extends)) { // 合并扩展
+//             $tags = array_unique(array_merge($extends,$tags));
+//         }elseif(isset($tags['_overlay'])){ // 通过设置 '_overlay'=>1 覆盖系统标签
+//             unset($tags['_overlay']);
+//         }
+//     }elseif(!empty($extends)) {
+//         $tags = $extends;
+//     }
+//     if($tags) {
+//         if(APP_DEBUG) {
+//             G($tag.'Start');
+//             trace('[ '.$tag.' ] --START--','','INFO');
+//         }
+//         // 执行扩展
+//         foreach ($tags as $key=>$name) {
+//             if(!is_int($key)) { // 指定行为类的完整路径 用于模式扩展
+//                 $name   = $key;
+//             }
+//             B($name, $params);
+//         }
+//         if(APP_DEBUG) { // 记录行为的执行日志
+//             trace('[ '.$tag.' ] --END-- [ RunTime:'.G($tag.'Start',$tag.'End',6).'s ]','','INFO');
+//         }
+//     }else{ // 未执行任何行为 返回false
+//         return false;
+//     }
+// }
 
 /**
  * 动态添加行为扩展到某个标签
@@ -448,38 +438,6 @@ function strip_whitespace($content) {
     }
     return $stripStr;
 }
-
-//[RUNTIME]
-// 编译文件
-function compile($filename) {
-    $content        = file_get_contents($filename);
-    // 替换预编译指令
-    $content        = preg_replace('/\/\/\[RUNTIME\](.*?)\/\/\[\/RUNTIME\]/s', '', $content);
-    $content        = substr(trim($content), 5);
-    if ('?>' == substr($content, -2))
-        $content    = substr($content, 0, -2);
-    return $content;
-}
-
-// 根据数组生成常量定义
-function array_define($array,$check=true) {
-    $content = "\n";
-    foreach ($array as $key => $val) {
-        $key = strtoupper($key);
-        if($check)   $content .= 'defined(\'' . $key . '\') or ';
-        if (is_int($val) || is_float($val)) {
-            $content .= "define('" . $key . "'," . $val . ');';
-        } elseif (is_bool($val)) {
-            $val = ($val) ? 'true' : 'false';
-            $content .= "define('" . $key . "'," . $val . ');';
-        } elseif (is_string($val)) {
-            $content .= "define('" . $key . "','" . addslashes($val) . "');";
-        }
-        $content    .= "\n";
-    }
-    return $content;
-}
-//[/RUNTIME]
 
 /**
  * 添加和获取页面Trace记录

@@ -42,7 +42,7 @@ class App {
         define('IS_AJAX',       ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || !empty($_POST[C('VAR_AJAX_SUBMIT')]) || !empty($_GET[C('VAR_AJAX_SUBMIT')])) ? true : false);
 
         // URL调度结束标签
-        tag('url_dispatch');         
+        Tag::mark('url_dispatch');
         // 页面压缩输出支持
         if(C('OUTPUT_ENCODE')){
             $zlib = ini_get('zlib.output_compression');
@@ -197,19 +197,19 @@ class App {
     static public function run() {
 
         // 项目初始化标签
-        tag('app_init');
+        Tag::mark('app_init');
         App::init();
         // 项目开始标签
-        tag('app_begin');
+        Tag::mark('app_begin');
         // Session初始化
         session(C('SESSION_OPTIONS'));
         // 项目session初始化
-        tag('app_session_begin');
+        Tag::mark('app_session_begin');
         // 记录应用初始化时间
         G('initTime');
         App::exec();
         // 项目结束标签
-        tag('app_end');
+        Tag::mark('app_end');
         // 保存日志记录
         if(C('LOG_RECORD')) Log::save();
         return ;

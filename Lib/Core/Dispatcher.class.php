@@ -90,7 +90,7 @@ class Dispatcher {
         }
         $depr = C('URL_PATHINFO_DEPR');
         if(!empty($_SERVER['PATH_INFO'])) {
-            tag('path_info');
+            Tag::mark('path_info');
             $part =  pathinfo($_SERVER['PATH_INFO']);
             define('__EXT__', isset($part['extension'])?strtolower($part['extension']):'');
             if(C('URL_HTML_SUFFIX')) {

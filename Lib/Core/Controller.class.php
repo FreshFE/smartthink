@@ -51,7 +51,7 @@ abstract class Controller {
      * @access public
      */
     public function __construct() {
-        tag('action_begin',$this->config);
+        Tag::mark('action_begin',$this->config);
         //控制器初始化
         if(method_exists($this,'_initialize'))
             $this->_initialize();
@@ -326,7 +326,7 @@ abstract class Controller {
                 exit($data);            
             default     :
                 // 用于扩展其他返回格式数据
-                tag('ajax_return',$data);
+                Tag::mark('ajax_return',$data);
         }
     }
 
@@ -338,6 +338,6 @@ abstract class Controller {
         // 保存日志
         if(C('LOG_RECORD')) Log::save();
         // 执行后续操作
-        tag('action_end');
+        Tag::mark('action_end');
     }
 }

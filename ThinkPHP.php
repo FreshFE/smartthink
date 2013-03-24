@@ -193,6 +193,7 @@ class ThinkPHP {
 
         // 载入核心，异常和行为
         Import::load(THINK_PATH.'Common/common.php');
+        Import::load(CORE_PATH.'Core/Tag.class.php');
         Import::load(CORE_PATH.'Core/Think.class.php');
         Import::load(CORE_PATH.'Core/ThinkException.class.php');
         Import::load(CORE_PATH.'Core/Behavior.class.php');
@@ -202,7 +203,7 @@ class ThinkPHP {
         Import::alias_import(include THINK_PATH.'Conf/alias.php');
 
         // 调试模式下检查路径和文件
-        if(APP_DEBUG){
+        if(APP_DEBUG) {
             // 创建项目目录结构
             if(!is_dir(LIB_PATH)) {
                 throw_exception('不存在项目目录结构');
