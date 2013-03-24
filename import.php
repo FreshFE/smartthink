@@ -36,42 +36,6 @@ class Import {
 		return static::load($filename);
 	}
 
-	/**
-	 * 解析uri是否存在'/'后缀，不存在则添加
-	 *
-	 * @param string $uri
-	 *
-	 * @return string
-	 */
-	protected static function parse_uri_suffix($uri) {
-
-		// 解析地址后缀'/'
-		if(substr($uri, -1) != '/') {
-		    $uri .= '/';
-		}
-
-		return $uri;
-	}
-
-	/**
-	 * 解析别名映射表
-	 *
-	 * @param string $alias
-	 *
-	 * @return string
-	 */
-	protected static function parse_alias($alias) {
-
-		// 遍历查找别名映射表
-		foreach (static::$alias as $key => $value) {
-			if($key == $alias) {
-				$alias = $value;
-			}
-		}
-
-		return $alias;
-	}
-
 	// TODO: 重构
 	/**
 	 * 带缓存导入
@@ -117,34 +81,6 @@ class Import {
 	}
 
 	/**
-	 * 导入别名
-	 * 数组表示合并别名
-	 *
-	 * @param string $alias 别名
-	 * @param string $classfile 类名，应该是和文件名不同的情况下
-	 *
-	 * @return bealoon
-	 */
-	public static function alias($alias, $classfile='') {
-	    
-	    static $_alias = array();
-
-	    if (is_string($alias)) {
-	        if(isset($_alias[$alias])) {
-	            return static::load($_alias[$alias]);
-	        }elseif ('' !== $classfile) {
-	            // 定义别名导入
-	            $_alias[$alias] = $classfile;
-	            return;
-	        }
-	    }elseif (is_array($alias)) {
-	        $_alias   =  array_merge($_alias,$alias);
-	        return;
-	    }
-	    return false;
-	}
-
-	/**
 	 * 检查该文件是否存在大小写版本
 	 * 针对windows平台做优化
 	 *
@@ -165,5 +101,41 @@ class Import {
 	        return true;
 	    }
 	    return false;
+	}
+
+	/**
+	 * 解析uri是否存在'/'后缀，不存在则添加
+	 *
+	 * @param string $uri
+	 *
+	 * @return string
+	 */
+	protected static function parse_uri_suffix($uri) {
+
+		// 解析地址后缀'/'
+		if(substr($uri, -1) != '/') {
+		    $uri .= '/';
+		}
+
+		return $uri;
+	}
+
+	/**
+	 * 解析别名映射表
+	 *
+	 * @param string $alias
+	 *
+	 * @return string
+	 */
+	protected static function parse_alias($alias) {
+
+		// 遍历查找别名映射表
+		foreach (static::$alias as $key => $value) {
+			if($key == $alias) {
+				$alias = $value;
+			}
+		}
+
+		return $alias;
 	}
 }
