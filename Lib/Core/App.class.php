@@ -105,8 +105,7 @@ class App {
 
         if(!$module) {
             if('4e5e5d7364f443e28fbf0d3ae744a59a' == MODULE_NAME) {
-                header("Content-type:image/png");
-                exit(base64_decode(App::logo()));
+                exit('exec, App.class.php in line 108');
             }
             if(function_exists('__hack_module')) {
                 // hack 方式定义扩展模块 返回Action对象
@@ -213,15 +212,5 @@ class App {
         // 保存日志记录
         if(C('LOG_RECORD')) Log::save();
         return ;
-    }
-
-    /**
-     * TODO: 废弃方法
-     * 返回logo图片的二进制
-     *
-     * @return string
-     */
-    static public function logo(){
-        return '';
     }
 }
