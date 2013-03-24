@@ -22,7 +22,7 @@ class ParseTemplateBehavior extends Behavior {
 
         // 类没有定义
         else {
-            throw_exception(L('_NOT_SUPPERT_') . ':' . $class);
+            Debug::throw_exception(L('_NOT_SUPPERT_') . ':' . $class);
         }
     }
 }

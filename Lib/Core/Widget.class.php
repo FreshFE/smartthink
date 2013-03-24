@@ -46,7 +46,7 @@ abstract class Widget {
             $filename   =  empty($templateFile)?$name:$templateFile;
             $templateFile = BASE_LIB_PATH.'Widget/'.$name.'/'.$filename.C('TMPL_TEMPLATE_SUFFIX');
             if(!Import::file_exists_case($templateFile))
-                throw_exception(L('_TEMPLATE_NOT_EXIST_').'['.$templateFile.']');
+                Debug::throw_exception(L('_TEMPLATE_NOT_EXIST_').'['.$templateFile.']');
         }
         $template   =  strtolower($this->template?$this->template:(C('TMPL_ENGINE_TYPE')?C('TMPL_ENGINE_TYPE'):'php'));
         if('php' == $template) {

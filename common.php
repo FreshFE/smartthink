@@ -73,7 +73,7 @@ function B($name, &$params=NULL) {
     $behavior->run($params);
     if(APP_DEBUG) { // 记录行为的执行日志
         G('behaviorEnd');
-        trace('Run '.$name.' Behavior [ RunTime:'.G('behaviorStart','behaviorEnd',6).'s ]','','INFO');
+        Debug::trace('Run '.$name.' Behavior [ RunTime:'.G('behaviorStart','behaviorEnd',6).'s ]','','INFO');
     }
 }
 
@@ -105,7 +105,7 @@ function C($name=null, $value=null) {
     }
     
     // 避免非法参数
-    throw_exception('C funtion error!');
+    Debug::throw_exception('C funtion error!');
 }
 
 /**
@@ -529,7 +529,7 @@ function W($name, $data=array(), $return=false) {
     $class      =   $name . 'Widget';
     Import::load(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
     if (!class_exists($class))
-        throw_exception(L('_CLASS_NOT_EXIST_') . ':' . $class);
+        Debug::throw_exception(L('_CLASS_NOT_EXIST_') . ':' . $class);
     $widget     =   Think::instance($class);
     $content    =   $widget->render($data);
     if ($return)
@@ -604,94 +604,6 @@ function parse_name($name, $type=0) {
 }
 
 /**
- * 添加和获取页面Trace记录
- * @param string $value 变量
- * @param string $label 标签
- * @param string $level 日志级别 
- * @param boolean $record 是否记录日志
- * @return void
- */
-function trace($value='[think]',$label='',$level='DEBUG',$record=false) {
-    static $_trace =  array();
-    if('[think]' === $value){ // 获取trace信息
-        return $_trace;
-    }else{
-        $info   =   ($label?$label.':':'').print_r($value,true);
-        if('ERR' == $level && C('TRACE_EXCEPTION')) {// 抛出异常
-            throw_exception($info);
-        }
-        $level  =   strtoupper($level);
-        if(!isset($_trace[$level])) {
-                $_trace[$level] =   array();
-            }
-        $_trace[$level][]   = $info;
-        if((defined('IS_AJAX') && IS_AJAX) || !C('SHOW_PAGE_TRACE')  || $record) {
-            Log::record($info,$level,$record);
-        }
-    }
-}
-
-
-/**
- * 错误输出
- * @param mixed $error 错误
- * @return void
- */
-function halt($error) {
-    $e = array();
-    if (APP_DEBUG) {
-        //调试模式下输出错误信息
-        if (!is_array($error)) {
-            $trace          = debug_backtrace();
-            $e['message']   = $error;
-            $e['file']      = $trace[0]['file'];
-            $e['class']     = isset($trace[0]['class'])?$trace[0]['class']:'';
-            $e['function']  = isset($trace[0]['function'])?$trace[0]['function']:'';
-            $e['line']      = $trace[0]['line'];
-            $traceInfo      = '';
-            $time = date('y-m-d H:i:m');
-            foreach ($trace as $t) {
-                $traceInfo .= '[' . $time . '] ' . $t['file'] . ' (' . $t['line'] . ') ';
-                $traceInfo .= $t['class'] . $t['type'] . $t['function'] . '(';
-                $traceInfo .= implode(', ', $t['args']);
-                $traceInfo .=')<br/>';
-            }
-            $e['trace']     = $traceInfo;
-        } else {
-            $e              = $error;
-        }
-    } else {
-        //否则定向到错误页面
-        $error_page         = C('ERROR_PAGE');
-        if (!empty($error_page)) {
-            redirect($error_page);
-        } else {
-            if (C('SHOW_ERROR_MSG'))
-                $e['message'] = is_array($error) ? $error['message'] : $error;
-            else
-                $e['message'] = C('ERROR_MESSAGE');
-        }
-    }
-    // 包含异常页面模板
-    include C('TMPL_EXCEPTION_FILE');
-    exit;
-}
-
-/**
- * 自定义异常处理
- * @param string $msg 异常消息
- * @param string $type 异常类型 默认为ThinkException
- * @param integer $code 异常代码 默认为0
- * @return void
- */
-function throw_exception($msg, $type='ThinkException', $code=0) {
-    if (class_exists($type, false))
-        throw new $type($msg, $code, true);
-    else
-        halt($msg);        // 异常类型不存在则输出错误信息字串
-}
-
-/**
  * 浏览器友好的变量输出
  * @param mixed $var 变量
  * @param boolean $echo 是否输出 默认为True 如果为false 则返回输出字符串
@@ -733,7 +645,7 @@ function dump($var, $echo=true, $label=null, $strict=true) {
  * @return void
  */
 function _404($msg='',$url='') {
-    APP_DEBUG && throw_exception($msg);
+    APP_DEBUG && Debug::throw_exception($msg);
     if($msg && C('LOG_EXCEPTION_RECORD')) Log::write($msg);
     if(empty($url) && C('URL_404_REDIRECT')) {
         $url    =   C('URL_404_REDIRECT');
@@ -800,7 +712,7 @@ function get_instance_of($name, $method='', $args=array()) {
                 $_instance[$identify] = $o;
         }
         else
-            halt(L('_CLASS_NOT_EXIST_') . ':' . $name);
+            Debug::halt(L('_CLASS_NOT_EXIST_') . ':' . $name);
     }
     return $_instance[$identify];
 }
@@ -870,178 +782,6 @@ function data_to_xml($data, $item='item', $id='id') {
 }
 
 /**
- * @session管理函数
- *
- * @详细配置
- * @param array $name
- * @return void
- *
- * @session管理
- * @param string $name session名称，'[start]', '[pause]', '[destory]', '[regenerate]'
- * @return void
- *
- * @获得session
- * @param string $name session名称，得到该名称的session值
- * @return mixed
- *
- * @查询session
- * @param string $name 带'?'前缀的session名称，查询是否存在该名称的session
- * @return bealoon
- *
- * @删除所有session
- * @param null
- * @return void
- *
- * @删除指定session
- * @param string $name session名称
- * @param null
- * @return void
- *
- * @设置一个session
- * @param string $name session名称
- * @param string|array 保存的内容
- * @return void
- *
- * @conf SESSION_PREFIX
- * @conf VAR_SESSION_ID sessionID的提交变量
- * @conf SESSION_TYPE
- * @conf SESSION_AUTO_START
- */
-function session($name, $value = '') {
-
-    // 获得前缀，默认空值
-    $prefix = C('SESSION_PREFIX');
-
-    // name是数组则表示使用详细配置，在session_start前先配置好session再启用
-    // id, name, path, prefix, expire, domain, use_cookies, use_trans_sid,type
-    if(is_array($name)) {
-
-        // 如果设置了前缀，则替换conf
-        if(isset($name['prefix'])) C('SESSION_PREFIX', $name['prefix']);
-
-        // 根据默认值设置获得根据定义的id设置
-        if(C('VAR_SESSION_ID') && isset($_REQUEST[C('VAR_SESSION_ID')]))
-            session_id($_REQUEST[C('VAR_SESSION_ID')]);
-
-        elseif(isset($name['id']))
-            session_id($name['id']);
-
-        // session 函数参考，http://www.php.net/manual/zh/ref.session.php
-        // session runtime 配置参考，http://www.php.net/manual/zh/session.configuration.php
-        ini_set('session.auto_start', 0);
-
-        if(isset($name['name']))            session_name($name['name']);
-        if(isset($name['path']))            session_save_path($name['path']);
-        if(isset($name['domain']))          ini_set('session.cookie_domain', $name['domain']);
-        if(isset($name['expire']))          ini_set('session.gc_maxlifetime', $name['expire']);
-        if(isset($name['use_trans_sid']))   ini_set('session.use_trans_sid', $name['use_trans_sid']?1:0);
-        if(isset($name['use_cookies']))     ini_set('session.use_cookies', $name['use_cookies']?1:0);
-        if(isset($name['cache_limiter']))   session_cache_limiter($name['cache_limiter']);
-        if(isset($name['cache_expire']))    session_cache_expire($name['cache_expire']);
-        if(isset($name['type']))            C('SESSION_TYPE',$name['type']);
-
-        // 如果存在其他session类型
-        if(C('SESSION_TYPE')) {
-
-            // 读取session驱动
-            $class = 'Session'. ucwords(strtolower(C('SESSION_TYPE')));
-
-            // 检查驱动类是否存在并加载，不存在则抛出错误
-            if(Import::load(EXTEND_PATH.'Driver/Session/'.$class.'.class.php')) {
-
-                $hander = new $class();
-                $hander->execute();
-
-            }else {
-                // 类没有定义
-                throw_exception(L('_CLASS_NOT_EXIST_').': ' . $class);
-            }
-        }
-
-        // 启动session
-        if(C('SESSION_AUTO_START'))  session_start();
-
-    // 启用session管理
-    } elseif('' === $value) {
-
-        // session 操作
-        if(0===strpos($name,'[')) {
-
-            // 暂停session
-            if('[pause]' == $name) {
-
-                session_write_close();
-
-            // 启动session
-            } elseif('[start]' == $name) {
-
-                session_start();
-
-            // 销毁session
-            } elseif('[destroy]' == $name) {
-
-                $_SESSION =  array();
-                session_unset();
-                session_destroy();
-
-            // 重新生成id
-            } elseif('[regenerate]' == $name) {
-
-                session_regenerate_id();
-            }
-
-        // 检查session是否存在，以?起头
-        } elseif(0 === strpos($name, '?')) {
-
-            $name = substr($name, 1);
-
-            if($prefix)
-                return isset($_SESSION[$prefix][$name]);
-            else
-                return isset($_SESSION[$name]);
-
-        // 清空所有的session
-        } elseif(is_null($name)) {
-
-            if($prefix)
-                unset($_SESSION[$prefix]);
-            else
-                $_SESSION = array();
-
-        // 获取session，当存在前缀和不存在前缀的情况下
-        } elseif($prefix) {
-
-            return isset($_SESSION[$prefix][$name]) ? $_SESSION[$prefix][$name] : null;
-
-        } else {
-
-            return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
-        }
-
-    // 删除session
-    } elseif(is_null($value)) {
-
-        if($prefix)
-            unset($_SESSION[$prefix][$name]);
-        else
-            unset($_SESSION[$name]);
-
-    // 设置session
-    } else {
-
-        if($prefix) {
-
-            if(!is_array($_SESSION[$prefix])) $_SESSION[$prefix] = array();
-            $_SESSION[$prefix][$name] = $value;
-
-        } else {
-
-            $_SESSION[$name] = $value;
-        }
-    }
-}
-
-/**
  * Cookie 设置、获取、删除
  * @param string $name cookie名称
  * @param mixed $value cookie值
@@ -1105,34 +845,6 @@ function cookie($name, $value='', $option=null) {
             $expire = !empty($config['expire']) ? time() + intval($config['expire']) : 0;
             setcookie($name, $value, $expire, $config['path'], $config['domain']);
             $_COOKIE[$name] = $value;
-        }
-    }
-}
-
-/**
- * 加载动态扩展文件
- * @return void
- */
-function load_ext_file() {
-
-    // 加载自定义外部文件
-    if(C('LOAD_EXT_FILE')) {
-        $files      =  explode(',',C('LOAD_EXT_FILE'));
-        foreach ($files as $file){
-            $file   = COMMON_PATH.$file.'.php';
-            if(is_file($file)) include $file;
-        }
-    }
-
-    // 加载自定义的动态配置文件
-    if(C('LOAD_EXT_CONFIG')) {
-        $configs    =  C('LOAD_EXT_CONFIG');
-        if(is_string($configs)) $configs =  explode(',',$configs);
-        foreach ($configs as $key=>$config){
-            $file   = CONF_PATH.$config.'.php';
-            if(is_file($file)) {
-                is_numeric($key)?C(include $file):C($key,include $file);
-            }
         }
     }
 }

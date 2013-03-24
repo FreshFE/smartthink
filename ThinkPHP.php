@@ -201,10 +201,12 @@ class ThinkPHP {
             CORE_PATH.'Core/Config.class.php',
             CORE_PATH.'Core/Controller.class.php',
             CORE_PATH.'Core/Db.class.php',
+            CORE_PATH.'Core/Debug.class.php',
             CORE_PATH.'Core/Dispatcher.class.php',
             CORE_PATH.'Core/Log.class.php',
             CORE_PATH.'Core/Model.class.php',
             CORE_PATH.'Core/Redirect.class.php',
+            CORE_PATH.'Core/Session.class.php',
             CORE_PATH.'Core/Tag.class.php',
             CORE_PATH.'Core/Think.class.php',
             CORE_PATH.'Core/ThinkException.class.php',
@@ -221,7 +223,7 @@ class ThinkPHP {
         if(APP_DEBUG) {
             // 创建项目目录结构
             if(!is_dir(LIB_PATH)) {
-                throw_exception('不存在项目目录结构');
+                Debug::throw_exception('不存在项目目录结构');
             }
 
             // 检查缓存目录

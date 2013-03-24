@@ -103,7 +103,7 @@ class Auth {
 	public function logined() {
 
 		// 当前仅仅检查session，不检查cookie
-		return session('?' . $this->auth_key);
+		return Session::check($this->auth_key);
 	}
 
 	/**
@@ -140,9 +140,7 @@ class Auth {
 	 */
 	public function session() {
 		
-		// $this->logout();
-		// dump('aa');
-		return session($this->auth_key);
+		return Session::get($this->auth_key);
 	}
 
 	/**

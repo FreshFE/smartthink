@@ -168,7 +168,7 @@ class Model {
     public function switchModel($type,$vars=array()) {
         $class = ucwords(strtolower($type)).'Model';
         if(!class_exists($class))
-            throw_exception($class.L('_MODEL_NOT_EXIST_'));
+            Debug::throw_exception($class.L('_MODEL_NOT_EXIST_'));
         // 实例化扩展模型
         $this->_extModel   = new $class($this->name);
         if(!empty($vars)) {
@@ -250,7 +250,7 @@ class Model {
         }elseif(isset($this->_scope[$method])){// 命名范围的单独调用支持
             return $this->scope($method,$args[0]);
         }else{
-            throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
+            Debug::throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
             return;
         }
     }
@@ -1317,7 +1317,7 @@ class Model {
         }elseif(is_string($data)){
             parse_str($data,$data);
         }elseif(!is_array($data)){
-            throw_exception(L('_DATA_TYPE_INVALID_'));
+            Debug::throw_exception(L('_DATA_TYPE_INVALID_'));
         }
         $this->data = $data;
         return $this;
@@ -1364,7 +1364,7 @@ class Model {
                 $options =  $union;
             }
         }else{
-            throw_exception(L('_DATA_TYPE_INVALID_'));
+            Debug::throw_exception(L('_DATA_TYPE_INVALID_'));
         }
         $this->options['union'][]  =   $options;
         return $this;

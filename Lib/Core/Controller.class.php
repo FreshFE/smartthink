@@ -159,7 +159,7 @@ abstract class Controller {
             // 如果静态目录不存在 则创建
             mkdir(dirname($htmlfile),0755,true);
         if(false === file_put_contents($htmlfile,$content))
-            throw_exception(L('_CACHE_WRITE_ERROR_').':'.$htmlfile);
+            Debug::throw_exception(L('_CACHE_WRITE_ERROR_').':'.$htmlfile);
         return $content;
     }
 
@@ -265,7 +265,7 @@ abstract class Controller {
                 case '_server'  :   $input =& $_SERVER;    break;
                 case '_globals' :   $input =& $GLOBALS;    break;
                 default:
-                    throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
+                    Debug::throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
             }
             if(!isset($args[0])) { // 获取全局变量
                 $data       =   $input; // 由VAR_FILTERS配置进行过滤

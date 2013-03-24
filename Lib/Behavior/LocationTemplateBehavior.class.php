@@ -48,7 +48,7 @@ class LocationTemplateBehavior extends Behavior {
             $templateFile  =  $path.$module.C('TMPL_FILE_DEPR').$action.C('TMPL_TEMPLATE_SUFFIX');
         }
         if(!Import::file_exists_case($templateFile))
-            throw_exception(L('_TEMPLATE_NOT_EXIST_').'['.$templateFile.']');
+            Debug::throw_exception(L('_TEMPLATE_NOT_EXIST_').'['.$templateFile.']');
         return $templateFile;
     }
 }

@@ -59,7 +59,7 @@ class ShowPageTraceBehavior extends Behavior {
         if(is_file($traceFile)) {
             $base   =   array_merge($base,include $traceFile);
         }
-        $debug  =   trace();
+        $debug  =   Debug::trace();
         $tabs   =   C('TRACE_PAGE_TABS');
         foreach ($tabs as $name=>$title){
             switch(strtoupper($name)) {

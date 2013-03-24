@@ -25,10 +25,14 @@ class App {
      * @return void
      */
     static public function init() {
+
         // 设置系统时区
         date_default_timezone_set(C('DEFAULT_TIMEZONE'));
+
         // 加载动态项目公共文件和配置
-        load_ext_file();
+        // Import::load_ext_file();
+        static::load_ext_file();
+
         // URL调度
         Dispatcher::dispatch();
 
@@ -162,7 +166,7 @@ class App {
                         }elseif($param->isDefaultValueAvailable()){
                             $args[] = $param->getDefaultValue();
                         }else{
-                            throw_exception(L('_PARAM_ERROR_').':'.$name);
+                            Debug::throw_exception(L('_PARAM_ERROR_').':'.$name);
                         }
                     }
                     $method->invokeArgs($module,$args);
@@ -189,6 +193,26 @@ class App {
     }
 
     /**
+     * 加载动态扩展文件
+     *
+     * @return void
+     */
+    private static function load_ext_file() {
+
+        // 加载自定义的动态配置文件
+        if(C('LOAD_EXT_CONFIG')) {
+            $configs    =  C('LOAD_EXT_CONFIG');
+            if(is_string($configs)) $configs =  explode(',',$configs);
+            foreach ($configs as $key=>$config){
+                $file   = CONF_PATH.$config.'.php';
+                if(is_file($file)) {
+                    is_numeric($key)?C(include $file):C($key,include $file);
+                }
+            }
+        }
+    }
+
+    /**
      * 运行应用实例 入口文件使用的快捷方法
      *
      * @return void
@@ -205,7 +229,8 @@ class App {
         Tag::mark('app_begin');
 
         // Session初始化
-        session(C('SESSION_OPTIONS'));
+        // session(C('SESSION_OPTIONS'));
+        Session::config(C('SESSION_OPTIONS'));
 
         // 项目session初始化
         Tag::mark('app_session_begin');

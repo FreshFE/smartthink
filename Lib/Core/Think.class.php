@@ -152,7 +152,7 @@ class Think {
                     self::$_instance[$identify] = $o;
             }
             else
-                halt(L('_CLASS_NOT_EXIST_').':'.$class);
+                Debug::halt(L('_CLASS_NOT_EXIST_').':'.$class);
         }
         return self::$_instance[$identify];
     }
@@ -163,7 +163,7 @@ class Think {
      * @param mixed $e 异常对象
      */
     static public function appException($e) {
-        halt($e->__toString());
+        Debug::halt($e->__toString());
     }
 
     /**
@@ -190,14 +190,14 @@ class Think {
             }
             $errorStr = "$errstr ".$errfile." 第 $errline 行.";
             if(C('LOG_RECORD')) Log::write("[$errno] ".$errorStr,Log::ERR);
-            function_exists('halt')?halt($errorStr):exit('ERROR:'.$errorStr);
+            function_exists('halt') ? Debug::halt($errorStr) : exit('ERROR:'.$errorStr);
             break;
           case E_STRICT:
           case E_USER_WARNING:
           case E_USER_NOTICE:
           default:
             $errorStr = "[$errno] $errstr ".$errfile." 第 $errline 行.";
-            trace($errorStr,'','NOTIC');
+            Debug::trace($errorStr,'','NOTIC');
             break;
       }
     }
