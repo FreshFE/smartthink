@@ -122,7 +122,7 @@ class App {
                 // 是否定义Empty模块
                 $module = A($group.'Empty');
                 if(!$module){
-                    _404(L('_MODULE_NOT_EXIST_').':'.MODULE_NAME);
+                    Http::_404(L('_MODULE_NOT_EXIST_').':'.MODULE_NAME);
                 }
             }
         }

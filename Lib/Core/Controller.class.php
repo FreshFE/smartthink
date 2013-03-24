@@ -228,7 +228,7 @@ abstract class Controller {
                 // hack 方式定义扩展操作
                 __hack_action();
             }else{
-                _404(L('_ERROR_ACTION_').':'.ACTION_NAME);
+                Http::_404(L('_ERROR_ACTION_').':'.ACTION_NAME);
             }
         }else{
             switch(strtolower($method)) {
@@ -314,7 +314,7 @@ abstract class Controller {
             case 'XML'  :
                 // 返回xml格式数据
                 header('Content-Type:text/xml; charset=utf-8');
-                exit(xml_encode($data));
+                exit(Http::xml_encode($data));
             case 'JSONP':
                 // 返回JSON数据格式到客户端 包含状态信息
                 header('Content-Type:application/json; charset=utf-8');

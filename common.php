@@ -509,7 +509,7 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
         $url  .= '#'.$anchor;
     }
     if($domain) {
-        $url   =  (is_ssl()?'https://':'http://').$domain.$url;
+        $url   =  (Http::is_ssl()?'https://':'http://').$domain.$url;
     }
     if($redirect) // 直接跳转URL
         redirect($url);
@@ -637,32 +637,6 @@ function dump($var, $echo=true, $label=null, $strict=true) {
 }
 
 /**
- * 404处理 
- * 调试模式会抛异常 
- * 部署模式下面传入url参数可以指定跳转页面，否则发送404信息
- * @param string $msg 提示信息
- * @param string $url 跳转URL地址
- * @return void
- */
-function _404($msg='',$url='') {
-    APP_DEBUG && Debug::throw_exception($msg);
-    if($msg && C('LOG_EXCEPTION_RECORD')) Log::write($msg);
-    if(empty($url) && C('URL_404_REDIRECT')) {
-        $url    =   C('URL_404_REDIRECT');
-    }
-    if($url) {
-        redirect($url);
-    }else{
-        send_http_status(404);
-        exit;
-    }
-}
-
-
-
-
-
-/**
  * 过滤器方法 引用传值
  * @param string $name 过滤器名称
  * @param string $content 要过滤的内容
@@ -673,19 +647,6 @@ function filter($name, &$content) {
     Import::load(BASE_LIB_PATH . 'Filter/' . $class . '.class.php');
     $filter     =   new $class();
     $content    =   $filter->run($content);
-}
-
-/**
- * 判断是否SSL协议
- * @return boolean
- */
-function is_ssl() {
-    if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
-        return true;
-    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
-        return true;
-    }
-    return false;
 }
 
 /**
@@ -731,54 +692,6 @@ function to_guid_string($mix) {
         $mix = serialize($mix);
     }
     return md5($mix);
-}
-
-/**
- * XML编码
- * @param mixed $data 数据
- * @param string $root 根节点名
- * @param string $item 数字索引的子节点名
- * @param string $attr 根节点属性
- * @param string $id   数字索引子节点key转换的属性名
- * @param string $encoding 数据编码
- * @return string
- */
-function xml_encode($data, $root='think', $item='item', $attr='', $id='id', $encoding='utf-8') {
-    if(is_array($attr)){
-        $_attr = array();
-        foreach ($attr as $key => $value) {
-            $_attr[] = "{$key}=\"{$value}\"";
-        }
-        $attr = implode(' ', $_attr);
-    }
-    $attr   = trim($attr);
-    $attr   = empty($attr) ? '' : " {$attr}";
-    $xml    = "<?xml version=\"1.0\" encoding=\"{$encoding}\"?>";
-    $xml   .= "<{$root}{$attr}>";
-    $xml   .= data_to_xml($data, $item, $id);
-    $xml   .= "</{$root}>";
-    return $xml;
-}
-
-/**
- * 数据XML编码
- * @param mixed  $data 数据
- * @param string $item 数字索引时的节点名称
- * @param string $id   数字索引key转换为的属性名
- * @return string
- */
-function data_to_xml($data, $item='item', $id='id') {
-    $xml = $attr = '';
-    foreach ($data as $key => $val) {
-        if(is_numeric($key)){
-            $id && $attr = " {$id}=\"{$key}\"";
-            $key  = $item;
-        }
-        $xml    .=  "<{$key}{$attr}>";
-        $xml    .=  (is_array($val) || is_object($val)) ? data_to_xml($val, $item, $id) : $val;
-        $xml    .=  "</{$key}>";
-    }
-    return $xml;
 }
 
 /**
@@ -846,58 +759,6 @@ function cookie($name, $value='', $option=null) {
             setcookie($name, $value, $expire, $config['path'], $config['domain']);
             $_COOKIE[$name] = $value;
         }
-    }
-}
-
-/**
- * 获取客户端IP地址
- * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
- * @return mixed
- */
-function get_client_ip($type = 0) {
-    $type       =  $type ? 1 : 0;
-    static $ip  =   NULL;
-    if ($ip !== NULL) return $ip[$type];
-    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        $pos    =   array_search('unknown',$arr);
-        if(false !== $pos) unset($arr[$pos]);
-        $ip     =   trim($arr[0]);
-    }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
-        $ip     =   $_SERVER['HTTP_CLIENT_IP'];
-    }elseif (isset($_SERVER['REMOTE_ADDR'])) {
-        $ip     =   $_SERVER['REMOTE_ADDR'];
-    }
-    // IP地址合法验证
-    $long = sprintf("%u",ip2long($ip));
-    $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
-    return $ip[$type];
-}
-
-/**
- * 发送HTTP状态
- * @param integer $code 状态码
- * @return void
- */
-function send_http_status($code) {
-    static $_status = array(
-        // Success 2xx
-        200 => 'OK',
-        // Redirection 3xx
-        301 => 'Moved Permanently',
-        302 => 'Moved Temporarily ',  // 1.1
-        // Client Error 4xx
-        400 => 'Bad Request',
-        403 => 'Forbidden',
-        404 => 'Not Found',
-        // Server Error 5xx
-        500 => 'Internal Server Error',
-        503 => 'Service Unavailable',
-    );
-    if(isset($_status[$code])) {
-        header('HTTP/1.1 '.$code.' '.$_status[$code]);
-        // 确保FastCGI模式下正常
-        header('Status:'.$code.' '.$_status[$code]);
     }
 }
 

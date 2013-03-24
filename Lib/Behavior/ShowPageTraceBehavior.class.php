@@ -91,7 +91,7 @@ class ShowPageTraceBehavior extends Behavior {
                     $array[] =   $tabs[$tab];
                 }
             }
-            $content    =   date('[ c ]').' '.get_client_ip().' '.$_SERVER['REQUEST_URI']."\r\n";
+            $content    =   date('[ c ]').' '.Http::get_client_ip().' '.$_SERVER['REQUEST_URI']."\r\n";
             foreach ($trace as $key=>$val){
                 if(!isset($array) || in_array($key,$array)) {
                     $content    .=  '[ '.$key." ]\r\n";

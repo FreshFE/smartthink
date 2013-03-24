@@ -203,6 +203,7 @@ class ThinkPHP {
             CORE_PATH.'Core/Db.class.php',
             CORE_PATH.'Core/Debug.class.php',
             CORE_PATH.'Core/Dispatcher.class.php',
+            CORE_PATH.'Core/Http.class.php',
             CORE_PATH.'Core/Log.class.php',
             CORE_PATH.'Core/Model.class.php',
             CORE_PATH.'Core/Redirect.class.php',
