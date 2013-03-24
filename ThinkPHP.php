@@ -198,6 +198,17 @@ class ThinkPHP {
         Import::load(CORE_PATH.'Core/ThinkException.class.php');
         Import::load(CORE_PATH.'Core/Behavior.class.php');
 
+        Import::load(CORE_PATH.'Core/Log.class.php');
+        Import::load(CORE_PATH.'Core/Dispatcher.class.php');
+        Import::load(CORE_PATH.'Core/App.class.php');
+        Import::load(CORE_PATH.'Core/Controller.class.php');
+        Import::load(CORE_PATH.'Core/View.class.php');
+
+        Import::load(CORE_PATH.'Core/Redirect.class.php');
+        Import::load(CORE_PATH.'View/Helper.class.php');
+
+
+
         // TODO: 分析删除该代码
         // 加载系统类库别名定义
         Import::alias_import(include THINK_PATH.'Conf/alias.php');

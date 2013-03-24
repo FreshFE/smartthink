@@ -26,133 +26,65 @@ class Think {
      * @return void
      */
     static public function start() {
+        
         // 设定错误和异常处理
         register_shutdown_function(array('Think','fatalError'));
         set_error_handler(array('Think','appError'));
         set_exception_handler(array('Think','appException'));
+
         // 注册AUTOLOAD方法
         spl_autoload_register(array('Think', 'autoload'));
-        //[RUNTIME]
-        Think::buildApp();         // 预编译项目
-        //[/RUNTIME]
+        
+        // 预编译项目
+        Think::buildApp();
+
         // 运行应用
         App::run();
-        return ;
     }
 
-    //[RUNTIME]
     /**
      * 读取配置信息 编译项目
      * @access private
      * @return string
      */
     static private function buildApp() {
-        
-        // 读取运行模式
-        if(defined('MODE_NAME')) { // 读取模式的设置
-            $mode   = include MODE_PATH.strtolower(MODE_NAME).'.php';
-        }else{
-            $mode   =  array();
-        }
 
-        // 加载核心惯例配置文件
+        // 核心配置文件
         C(include THINK_PATH.'Conf/convention.php');
 
-        // 加载模式配置文件
-        if(isset($mode['config'])) {
-            C( is_array($mode['config'])?$mode['config']:include $mode['config'] );
+        // 项目配置文件
+        if(is_file(CONF_PATH.'config.php')) {
+            C(include CONF_PATH.'config.php');
         }
 
-        // 加载项目配置文件
-        if(is_file(CONF_PATH.'config.php'))
-            C(include CONF_PATH.'config.php');
-
-        // 加载框架底层语言包
+        // 核心语言包
         L(include THINK_PATH.'Lang/'.strtolower(C('DEFAULT_LANG')).'.php');
 
-        // 加载模式系统行为定义
+        // 核心行为配置
         if(C('APP_TAGS_ON')) {
-            if(isset($mode['extends'])) {
-                C('extends',is_array($mode['extends'])?$mode['extends']:include $mode['extends']);
-            }else{ // 默认加载系统行为扩展定义
-                C('extends', include THINK_PATH.'Conf/tags.php');
-            }
+            C('extends', include THINK_PATH.'Conf/tags.php');
         }
 
-        // 加载应用行为定义
-        if(isset($mode['tags'])) {
-            C('tags', is_array($mode['tags'])?$mode['tags']:include $mode['tags']);
-        }elseif(is_file(CONF_PATH.'tags.php')){
-            // 默认加载项目配置目录的tags文件定义
+        // 项目行为配置
+        if(is_file(CONF_PATH.'tags.php')){
             C('tags', include CONF_PATH.'tags.php');
-        }
-
-        $compile   = '';
-        // 读取核心编译文件列表
-        if(isset($mode['core'])) {
-            $list  =  $mode['core'];
-        }else{
-            $list  =  array(
-                CORE_PATH.'Core/Log.class.php',    // 日志处理类
-                CORE_PATH.'Core/Dispatcher.class.php', // URL调度类
-                CORE_PATH.'Core/App.class.php',   // 应用程序类
-                CORE_PATH.'Core/Controller.class.php', // 控制器类
-                CORE_PATH.'Core/View.class.php',  // 视图类
-
-                // 自定义
-                CORE_PATH.'Core/Redirect.class.php', // 重定向类
-                CORE_PATH.'View/Helper.class.php' // 视图助手
-            );
-        }
-        // 项目追加核心编译列表文件
-        if(is_file(CONF_PATH.'core.php')) {
-            $list  =  array_merge($list,include CONF_PATH.'core.php');
-        }
-        foreach ($list as $file){
-            if(is_file($file))  {
-                Import::require_cache($file);
-                if(!APP_DEBUG)   $compile .= compile($file);
-            }
-        }
-
-        // 加载项目公共文件
-        if(is_file(COMMON_PATH.'common.php')) {
-            include COMMON_PATH.'common.php';
-            // 编译文件
-            if(!APP_DEBUG)  $compile   .= compile(COMMON_PATH.'common.php');
-        }
-
-        // 加载模式别名定义
-        if(isset($mode['alias'])) {
-            $alias = is_array($mode['alias'])?$mode['alias']:include $mode['alias'];
-            Import::alias_import($alias);
-            if(!APP_DEBUG) $compile .= 'Import::alias_import('.var_export($alias,true).');';               
         }
      
         // 加载项目别名定义
         if(is_file(CONF_PATH.'alias.php')){ 
             $alias = include CONF_PATH.'alias.php';
             alias_import($alias);
-            if(!APP_DEBUG) $compile .= 'Import::alias_import('.var_export($alias,true).');';
         }
 
         if(APP_DEBUG) {
             // 调试模式加载系统默认的配置文件
             C(include THINK_PATH.'Conf/debug.php');
-            // 读取调试模式的应用状态
-            $status  =  C('APP_STATUS');
-            // 加载对应的项目配置文件
-            if(is_file(CONF_PATH.$status.'.php'))
-                // 允许项目增加开发模式配置定义
-                C(include CONF_PATH.$status.'.php');
-        }else{
-            // 部署模式下面生成编译文件
-            throw_exception('找不到build_runtime_cache方法，该功能被抛弃');
-            build_runtime_cache($compile);
+
+            if(is_file(CONF_PATH.'debug.php')){ 
+                $alias = include CONF_PATH.'debug.php';
+            }
         }
-        return ;
     }
-    //[/RUNTIME]
 
     /**
      * 系统自动加载ThinkPHP类库
