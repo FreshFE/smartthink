@@ -31,10 +31,6 @@ function parse_name($name, $type=0) {
     }
 }
 
-
-
-
-
 /**
  * A函数用于实例化Action 格式：[项目://][分组/]模块
  * @param string $name Action资源地址

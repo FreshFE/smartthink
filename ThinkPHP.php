@@ -189,11 +189,11 @@ class ThinkPHP {
     public static function load_runtime_file() {
 
         // Import功能
-        require CORE_PATH.'Core/Import.class.php';
+        require THINK_PATH.'import.php';
 
         // 定义
         $files = array(
-            THINK_PATH.'Common/common.php',
+            THINK_PATH.'common.php',
             CORE_PATH.'Core/Tag.class.php',
             CORE_PATH.'Core/Think.class.php',
             CORE_PATH.'Core/ThinkException.class.php',
