@@ -150,7 +150,7 @@ class Dispatcher {
                 C(include $config_path.'config.php');
             // 加载分组别名定义
             if(is_file($config_path.'alias.php'))
-                Import::alias_import(include $config_path.'alias.php');
+                Import::alias(include $config_path.'alias.php');
             // 加载分组tags文件定义
             if(is_file($config_path.'tags.php'))
                 C('tags', include $config_path.'tags.php');

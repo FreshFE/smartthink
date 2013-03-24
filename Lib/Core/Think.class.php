@@ -73,7 +73,7 @@ class Think {
         // 加载项目别名定义
         if(is_file(CONF_PATH.'alias.php')){ 
             $alias = include CONF_PATH.'alias.php';
-            alias_import($alias);
+            Import::alias($alias);
         }
 
         if(APP_DEBUG) {
@@ -95,7 +95,7 @@ class Think {
     public static function autoload($class) {
         
         // 检查是否存在别名定义
-        if(Import::alias_import($class)) return ;
+        if(Import::alias($class)) return ;
 
         // 定义基本文件
         $libPath    =   LIB_PATH;

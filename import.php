@@ -120,8 +120,10 @@ class Import {
 	    }
 	}
 
-	public static function alias_import($alias, $classfile='') {
+	public static function alias($alias, $classfile='') {
+	    
 	    static $_alias = array();
+
 	    if (is_string($alias)) {
 	        if(isset($_alias[$alias])) {
 	            return static::require_cache($_alias[$alias]);

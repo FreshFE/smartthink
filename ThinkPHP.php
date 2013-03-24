@@ -212,7 +212,7 @@ class ThinkPHP {
 
         // TODO: 分析删除该代码
         // 加载系统类库别名定义
-        Import::alias_import(include THINK_PATH.'Conf/alias.php');
+        Import::alias(include THINK_PATH.'Conf/alias.php');
 
         // 调试模式下检查路径和文件
         if(APP_DEBUG) {
