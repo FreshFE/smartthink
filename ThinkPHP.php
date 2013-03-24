@@ -188,26 +188,27 @@ class ThinkPHP {
      */
     public static function load_runtime_file() {
 
-        // 加载系统基础函数库
+        // Import功能
         require CORE_PATH.'Core/Import.class.php';
 
-        // 载入核心，异常和行为
-        Import::load(THINK_PATH.'Common/common.php');
-        Import::load(CORE_PATH.'Core/Tag.class.php');
-        Import::load(CORE_PATH.'Core/Think.class.php');
-        Import::load(CORE_PATH.'Core/ThinkException.class.php');
-        Import::load(CORE_PATH.'Core/Behavior.class.php');
+        // 定义
+        $files = array(
+            THINK_PATH.'Common/common.php',
+            CORE_PATH.'Core/Tag.class.php',
+            CORE_PATH.'Core/Think.class.php',
+            CORE_PATH.'Core/ThinkException.class.php',
+            CORE_PATH.'Core/Behavior.class.php',
+            CORE_PATH.'Core/Log.class.php',
+            CORE_PATH.'Core/Dispatcher.class.php',
+            CORE_PATH.'Core/App.class.php',
+            CORE_PATH.'Core/Controller.class.php',
+            CORE_PATH.'Core/View.class.php',
+            CORE_PATH.'Core/Redirect.class.php',
+            CORE_PATH.'View/Helper.class.php'
+        );
 
-        Import::load(CORE_PATH.'Core/Log.class.php');
-        Import::load(CORE_PATH.'Core/Dispatcher.class.php');
-        Import::load(CORE_PATH.'Core/App.class.php');
-        Import::load(CORE_PATH.'Core/Controller.class.php');
-        Import::load(CORE_PATH.'Core/View.class.php');
-
-        Import::load(CORE_PATH.'Core/Redirect.class.php');
-        Import::load(CORE_PATH.'View/Helper.class.php');
-
-
+        // 载入
+        Import::require_array($files);
 
         // TODO: 分析删除该代码
         // 加载系统类库别名定义

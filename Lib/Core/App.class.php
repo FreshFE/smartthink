@@ -197,20 +197,31 @@ class App {
 
         // 项目初始化标签
         Tag::mark('app_init');
+
+        // 初始化
         App::init();
+
         // 项目开始标签
         Tag::mark('app_begin');
+
         // Session初始化
         session(C('SESSION_OPTIONS'));
+
         // 项目session初始化
         Tag::mark('app_session_begin');
+
         // 记录应用初始化时间
         G('initTime');
+
+        // 抛出异常
         App::exec();
+
         // 项目结束标签
         Tag::mark('app_end');
+
         // 保存日志记录
-        if(C('LOG_RECORD')) Log::save();
-        return ;
+        if(C('LOG_RECORD')) {
+            Log::save();
+        }
     }
 }
