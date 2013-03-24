@@ -26,7 +26,7 @@ class Think {
      * @return void
      */
     static public function start() {
-        
+
         // 设定错误和异常处理
         register_shutdown_function(array('Think','fatalError'));
         set_error_handler(array('Think','appError'));
@@ -98,33 +98,38 @@ class Think {
         if(Import::alias_import($class)) return ;
 
         // 定义基本文件
-        $libPath    =   defined('BASE_LIB_PATH') ? BASE_LIB_PATH : LIB_PATH;
-        $group      =   defined('GROUP_NAME') && C('APP_GROUP_MODE')==0 ?GROUP_NAME.'/':'';
+        $libPath    =   LIB_PATH;
+        $group      =   GROUP_NAME;
         $file       =   $class.'.class.php';
 
         // 加载行为
         if(substr($class,-8)=='Behavior') {
-            if(Import::require_array(array(
-                CORE_PATH.'Behavior/'.$file,
-                LIB_PATH.'Behavior/'.$file,
-                $libPath.'Behavior/'.$file),true)
-                || (defined('MODE_NAME') && Import::require_cache(MODE_PATH.ucwords(MODE_NAME).'/Behavior/'.$file))) {
+            if(Import::require_array(
+                array(
+                    CORE_PATH.'Behavior/'.$file,
+                    LIB_PATH.'Behavior/'.$file,
+                    $libPath.'Behavior/'.$file
+                ),true)) {
                 return ;
             }
         }
         // 加载模型
         else if(substr($class,-5)=='Model'){
-            if(Import::require_array(array(
-                LIB_PATH.'Model/'.$group.$file,
-                $libPath.'Model/'.$file),true)) {
+            if(Import::require_array(
+                array(
+                    LIB_PATH.'Model/'.$group.$file,
+                    $libPath.'Model/'.$file
+                ),true)) {
                 return ;
             }
         }
         // 加载控制器
         else if(substr($class,-10)=='Controller'){
-            if(Import::require_array(array(
-                LIB_PATH.'Controller/'.$group.$file,
-                $libPath.'Controller/'.$file),true)) {
+            if(Import::require_array(
+                array(
+                    LIB_PATH.'Controller/'.$group.$file,
+                    $libPath.'Controller/'.$file
+                ),true)) {
                 return ;
             }
         }
@@ -155,15 +160,6 @@ class Think {
                 CORE_PATH.'Driver/TagLib/'.$file),true)) {
                 return ;
             }
-        }
-
-        // 根据自动加载路径设置进行尝试搜索
-        $paths  =   explode(',',C('APP_AUTOLOAD_PATH'));
-
-        foreach ($paths as $path){
-            if(Import::uses($path.'/'.$class))
-                // 如果加载类成功则返回
-                return ;
         }
     }
 
