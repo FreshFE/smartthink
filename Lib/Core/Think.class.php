@@ -69,12 +69,6 @@ class Think {
         if(is_file(CONF_PATH.'tags.php')){
             C('tags', include CONF_PATH.'tags.php');
         }
-     
-        // 加载项目别名定义
-        if(is_file(CONF_PATH.'alias.php')){ 
-            $alias = include CONF_PATH.'alias.php';
-            Import::alias($alias);
-        }
 
         if(APP_DEBUG) {
             // 调试模式加载系统默认的配置文件
@@ -93,73 +87,51 @@ class Think {
      * @return void
      */
     public static function autoload($class) {
-        
-        // 检查是否存在别名定义
-        if(Import::alias($class)) return ;
 
         // 定义基本文件
-        $libPath    =   LIB_PATH;
-        $group      =   GROUP_NAME;
-        $file       =   $class.'.class.php';
+        $file = $class . '.class.php';
 
         // 加载行为
-        if(substr($class,-8)=='Behavior') {
-            if(Import::require_array(
-                array(
-                    CORE_PATH.'Behavior/'.$file,
-                    LIB_PATH.'Behavior/'.$file,
-                    $libPath.'Behavior/'.$file
-                ),true)) {
-                return ;
-            }
+        if(substr($class, -8) == 'Behavior') {
+            $files = array(
+                CORE_PATH . 'Behavior/' . $file,
+                LIB_PATH . 'Behavior/' . $file
+            );
         }
-        // 加载模型
-        else if(substr($class,-5)=='Model'){
-            if(Import::require_array(
-                array(
-                    LIB_PATH.'Model/'.$group.$file,
-                    $libPath.'Model/'.$file
-                ),true)) {
-                return ;
-            }
-        }
+
         // 加载控制器
-        else if(substr($class,-10)=='Controller'){
-            if(Import::require_array(
-                array(
-                    LIB_PATH.'Controller/'.$group.$file,
-                    $libPath.'Controller/'.$file
-                ),true)) {
-                return ;
-            }
+        else if(substr($class, -10) == 'Controller') {
+            $files = array(
+                LIB_PATH . 'Controller/' . GROUP_NAME . $file,
+                LIB_PATH . 'Controller/' . $file
+            );
         }
+
+        // 加载模型
+        else if(substr($class, -5) == 'Model') {
+            $files = array(
+                LIB_PATH . 'Model/' . GROUP_NAME . $file,
+                LIB_PATH . 'Model/' . $file
+            );
+        }
+
         // 加载缓存驱动
-        else if(substr($class,0,5)=='Cache'){
-            if(Import::require_array(array(
-                CORE_PATH.'Driver/Cache/'.$file),true)){
-                return ;
-            }
+        else if(substr($class, 0, 5) == 'Cache') {
+            $files = array(
+                CORE_PATH.'Driver/Cache/'.$file
+            );
         }
+
         // 加载数据库驱动
-        else if(substr($class,0,2)=='Db'){
-            if(Import::require_array(array(
-                CORE_PATH.'Driver/Db/'.$file),true)){
-                return ;
-            }
+        else if(substr($class, 0, 2) == 'Db') {
+            $files = array(
+                CORE_PATH.'Driver/Db/'.$file
+            );
         }
-        // 加载模板引擎驱动
-        else if(substr($class,0,8)=='Template'){
-            if(Import::require_array(array(
-                CORE_PATH.'Driver/Template/'.$file),true)){
-                return ;
-            }
-        }
-        // 加载标签库驱动
-        else if(substr($class,0,6)=='TagLib'){
-            if(Import::require_array(array(
-                CORE_PATH.'Driver/TagLib/'.$file),true)) {
-                return ;
-            }
+
+        // 载入
+        if($files) {
+            Import::loads($files);    
         }
     }
 

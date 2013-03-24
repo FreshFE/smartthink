@@ -100,33 +100,38 @@ class Import {
 	    return $_files[$filename];
 	}
 
-	public static function require_cache($filename) {
-		return static::load($filename);
+	/**
+	 * 批量加载文件
+	 * 内部批量调用load方法
+	 *
+	 * @param array $files 文件名数组
+	 * @param bealoon $return 是否需要返回 !!!继续研究是否有存在该参数和功能的必要
+	 *
+	 * @return bealoon
+	 */
+	public static function loads($files) {
+
+	    foreach ($files as $file) {
+	        static::load($file);
+	    }
 	}
 
 	/**
-	 * 批量导入
+	 * 导入别名
+	 * 数组表示合并别名
+	 *
+	 * @param string $alias 别名
+	 * @param string $classfile 类名，应该是和文件名不同的情况下
+	 *
+	 * @return bealoon
 	 */
-	public static function require_array($array, $return = false) {
-
-	    foreach ($array as $file) {
-	        if(static::load($file) && $return) {
-	        	return true;
-	        }
-	    }
-
-	    if($return) {
-	    	return false;
-	    }
-	}
-
 	public static function alias($alias, $classfile='') {
 	    
 	    static $_alias = array();
 
 	    if (is_string($alias)) {
 	        if(isset($_alias[$alias])) {
-	            return static::require_cache($_alias[$alias]);
+	            return static::load($_alias[$alias]);
 	        }elseif ('' !== $classfile) {
 	            // 定义别名导入
 	            $_alias[$alias] = $classfile;
@@ -139,17 +144,26 @@ class Import {
 	    return false;
 	}
 
-	// TODO: 重构
+	/**
+	 * 检查该文件是否存在大小写版本
+	 * 针对windows平台做优化
+	 *
+	 * @param string $filename 检查的文件路径
+	 * @return bealoon
+	 */
 	public static function file_exists_case($filename) {
 
+		// 该文件是否存在
 	    if (is_file($filename)) {
+
+	    	// windows平台下并开启大小写检查
 	        if (IS_WIN && C('APP_FILE_CASE')) {
-	            if (basename(realpath($filename)) != basename($filename))
-	                return false;
+	            if (basename(realpath($filename)) != basename($filename)) {
+	            	return false;
+	            }
 	        }
 	        return true;
 	    }
-
 	    return false;
 	}
 }

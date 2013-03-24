@@ -194,25 +194,27 @@ class ThinkPHP {
         // 定义
         $files = array(
             THINK_PATH.'common.php',
+
+            CORE_PATH.'Core/App.class.php',
+            CORE_PATH.'Core/Behavior.class.php',
+            CORE_PATH.'Core/Cache.class.php',
+            CORE_PATH.'Core/Controller.class.php',
+            CORE_PATH.'Core/Db.class.php',
+            CORE_PATH.'Core/Dispatcher.class.php',
+            CORE_PATH.'Core/Log.class.php',
+            CORE_PATH.'Core/Model.class.php',
+            CORE_PATH.'Core/Redirect.class.php',
             CORE_PATH.'Core/Tag.class.php',
             CORE_PATH.'Core/Think.class.php',
             CORE_PATH.'Core/ThinkException.class.php',
-            CORE_PATH.'Core/Behavior.class.php',
-            CORE_PATH.'Core/Log.class.php',
-            CORE_PATH.'Core/Dispatcher.class.php',
-            CORE_PATH.'Core/App.class.php',
-            CORE_PATH.'Core/Controller.class.php',
             CORE_PATH.'Core/View.class.php',
-            CORE_PATH.'Core/Redirect.class.php',
+            CORE_PATH.'Core/Widget.class.php',
+            
             CORE_PATH.'View/Helper.class.php'
         );
 
         // 载入
-        Import::require_array($files);
-
-        // TODO: 分析删除该代码
-        // 加载系统类库别名定义
-        Import::alias(include THINK_PATH.'Conf/alias.php');
+        Import::loads($files);
 
         // 调试模式下检查路径和文件
         if(APP_DEBUG) {
