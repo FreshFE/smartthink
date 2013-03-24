@@ -198,6 +198,7 @@ class ThinkPHP {
             CORE_PATH.'Core/App.class.php',
             CORE_PATH.'Core/Behavior.class.php',
             CORE_PATH.'Core/Cache.class.php',
+            CORE_PATH.'Core/Config.class.php',
             CORE_PATH.'Core/Controller.class.php',
             CORE_PATH.'Core/Db.class.php',
             CORE_PATH.'Core/Dispatcher.class.php',

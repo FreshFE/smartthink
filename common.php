@@ -1,35 +1,4 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
-
-/**
- * Think 基础函数库
- * @category   Think
- * @package  Common
- * @author   liu21st <liu21st@gmail.com>
- */
-
-/**
- * 字符串命名风格转换
- * type 0 将Java风格转换为C的风格 1 将C风格转换为Java的风格
- * @param string $name 字符串
- * @param integer $type 转换类型
- * @return string
- */
-function parse_name($name, $type=0) {
-    if ($type) {
-        return ucfirst(preg_replace("/_([a-zA-Z])/e", "strtoupper('\\1')", $name));
-    } else {
-        return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $name), "_"));
-    }
-}
 
 /**
  * A函数用于实例化Action 格式：[项目://][分组/]模块
@@ -109,46 +78,34 @@ function B($name, &$params=NULL) {
 }
 
 /**
- * 获取和设置配置参数 支持批量定义
- * @param string|array $name 配置变量
- * @param mixed $value 配置值
- * @return mixed
+ * 重写C方法，改为引用Config方法
+ *
+ * @param string $name
  */
 function C($name=null, $value=null) {
-    static $_config = array();
+    // dump(Config::getAll());
     // 无参数时获取所有
     if (empty($name)) {
-        if(!empty($value) && $array = S('c_'.$value)) {
-            $_config = array_merge($_config, array_change_key_case($array));
-        }
-        return $_config;
+        return Config::getAll();
     }
-    // 优先执行设置获取或赋值
-    if (is_string($name)) {
-        if (!strpos($name, '.')) {
-            $name = strtolower($name);
-            if (is_null($value))
-                return isset($_config[$name]) ? $_config[$name] : null;
-            $_config[$name] = $value;
-            return;
-        }
-        // 二维数组设置和获取支持
-        $name = explode('.', $name);
-        $name[0]   =  strtolower($name[0]);
-        if (is_null($value))
-            return isset($_config[$name[0]][$name[1]]) ? $_config[$name[0]][$name[1]] : null;
-        $_config[$name[0]][$name[1]] = $value;
-        return;
+
+    // 字符串，为空则获取
+    if(is_string($name) && is_null($value)) {
+        return Config::get($name);
     }
-    // 批量设置
-    if (is_array($name)){
-        $_config = array_merge($_config, array_change_key_case($name));
-        if(!empty($value)) {// 保存配置值
-            S('c_'.$value,$_config);
-        }
-        return;
+
+    // 字符串，不为空则单个设置
+    if(is_string($name) && !is_null($value)) {
+        return Config::set($name, $value);
     }
-    return null; // 避免非法参数
+
+    // 数组设置
+    if(is_array($name)) {
+        return Config::setAll($name);
+    }
+    
+    // 避免非法参数
+    throw_exception('C funtion error!');
 }
 
 /**
@@ -629,6 +586,21 @@ function strip_whitespace($content) {
         }
     }
     return $stripStr;
+}
+
+/**
+ * 字符串命名风格转换
+ * type 0 将Java风格转换为C的风格 1 将C风格转换为Java的风格
+ * @param string $name 字符串
+ * @param integer $type 转换类型
+ * @return string
+ */
+function parse_name($name, $type=0) {
+    if ($type) {
+        return ucfirst(preg_replace("/_([a-zA-Z])/e", "strtoupper('\\1')", $name));
+    } else {
+        return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $name), "_"));
+    }
 }
 
 /**
