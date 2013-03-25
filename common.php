@@ -119,9 +119,11 @@ function D($name = '', $layer = '') {
 
 /**
  * 快速文件数据读取和保存 针对简单类型数据 字符串、数组
+ *
  * @param string $name 缓存名称
  * @param mixed $value 缓存值
  * @param string $path 缓存路径
+ *
  * @return mixed
  */
 function F($name, $value='', $path=DATA_PATH) {
@@ -235,16 +237,26 @@ function L($name = null, $value = null) {
  * @param mixed $connection 数据库连接信息
  * @return Model
  */
-function M($name='', $tablePrefix='',$connection='') {
+function M($name = '', $tablePrefix = '',$connection = '') {
+
+    // 缓存
     static $_model  = array();
+
+    // 解析基础模型
     if(strpos($name,':')) {
-        list($class,$name)    =  explode(':',$name);
-    }else{
-        $class      =   'Model';
+        list($class,$name) = explode(':',$name);
     }
-    $guid           =   $tablePrefix . $name . '_' . $class;
-    if (!isset($_model[$guid]))
+    else {
+        $class = 'Model';
+    }
+
+    // 表名
+    $guid = $tablePrefix . $name . '_' . $class;
+
+    if (!isset($_model[$guid])) {
         $_model[$guid] = new $class($name,$tablePrefix,$connection);
+    }
+
     return $_model[$guid];
 }
 
