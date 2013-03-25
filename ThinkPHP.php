@@ -255,7 +255,7 @@ class ThinkPHP {
      *
      * @return bealoon
      */
-    public static function check_runtime() {
+    private static function check_runtime() {
 
         // 如果不存在Runtime则创建
         if(!is_dir(RUNTIME_PATH)) {
