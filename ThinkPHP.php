@@ -217,6 +217,7 @@ class ThinkPHP {
             CORE_PATH.'Core/Tag.class.php',
             CORE_PATH.'Core/Think.class.php',
             CORE_PATH.'Core/ThinkException.class.php',
+            CORE_PATH.'Core/Url.class.php',
             CORE_PATH.'Core/View.class.php',
             CORE_PATH.'Core/Widget.class.php',
             
