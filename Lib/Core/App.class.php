@@ -68,13 +68,13 @@ class App {
             $t = C('VAR_TEMPLATE');
             if (isset($_GET[$t])){
                 $templateSet = $_GET[$t];
-            }elseif(cookie('think_template')){
-                $templateSet = cookie('think_template');
+            }elseif(Cookie::get('think_template')){
+                $templateSet = Cookie::get('think_template');
             }
             if(!in_array($templateSet,explode(',',C('THEME_LIST')))){
                 $templateSet =  C('DEFAULT_THEME');
             }
-            cookie('think_template',$templateSet,864000);
+            Cookie::set('think_template',$templateSet,864000);
         }
         /* 模板相关目录常量 */
         define('THEME_NAME',   $templateSet);                  // 当前模板主题名称

@@ -34,12 +34,6 @@ return  array(
     'APP_GROUP_PATH'        =>  'Modules', // 分组目录 独立分组模式下面有效
     'ACTION_SUFFIX'         =>  '', // 操作方法后缀
 
-    /* Cookie设置 */
-    'COOKIE_EXPIRE'         => 0,    // Coodie有效期
-    'COOKIE_DOMAIN'         => '',      // Cookie有效域名
-    'COOKIE_PATH'           => '/',     // Cookie路径
-    'COOKIE_PREFIX'         => '',      // Cookie前缀 避免冲突
-
     /* 默认设定 */
     'DEFAULT_M_LAYER'       => 'Model', // 默认的模型层名称
     'DEFAULT_C_LAYER'       => 'Controller', // 默认的控制器层名称

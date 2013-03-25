@@ -58,21 +58,20 @@ class CheckLangBehavior extends Behavior {
             if(isset($_GET[C('VAR_LANGUAGE')])){
 
                 $langSet = $_GET[C('VAR_LANGUAGE')];
-                cookie('think_language',$langSet,3600);
+                Cookie::set('think_language',$langSet,3600);
 
             }
-
             // 获取上次用户的选择
-            elseif(cookie('think_language')) {
+            elseif(Cookie::get('think_language')) {
 
-                $langSet = cookie('think_language');
+                $langSet = Cookie::get('think_language');
 
             // 自动侦测浏览器语言
             }elseif(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
                 preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
                 $langSet = $matches[1];
-                cookie('think_language', $langSet, 3600);
+                Cookie::set('think_language', $langSet, 3600);
             }
 
             // 非法语言参数，请用默认设置
