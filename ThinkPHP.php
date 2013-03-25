@@ -191,12 +191,9 @@ class ThinkPHP {
      */
     public static function load_runtime_file() {
 
-        // Import功能
-        require THINK_PATH.'import.php';
-
         // 定义
         $files = array(
-            THINK_PATH.'common.php',
+            THINK_PATH.'base.php',
 
             CORE_PATH.'Core/App.class.php',
             CORE_PATH.'Core/Behavior.class.php',
@@ -209,6 +206,7 @@ class ThinkPHP {
             CORE_PATH.'Core/Dispatcher.class.php',
             CORE_PATH.'Core/File.class.php',
             CORE_PATH.'Core/Http.class.php',
+            CORE_PATH.'Core/Import.class.php',
             CORE_PATH.'Core/Lang.class.php',
             CORE_PATH.'Core/Log.class.php',
             CORE_PATH.'Core/Model.class.php',
@@ -225,7 +223,9 @@ class ThinkPHP {
         );
 
         // 载入
-        Import::loads($files);
+        foreach ($files as $key => $file) {
+            include $file;
+        }
 
         // 调试模式下检查路径和文件
         if(APP_DEBUG) {
