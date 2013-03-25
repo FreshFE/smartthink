@@ -176,33 +176,6 @@ function M($name = '', $tablePrefix = '',$connection = '') {
 }
 
 /**
- * 设置和获取统计数据
- * 使用方法:
- * <code>
- * N('db',1); // 记录数据库操作次数
- * N('read',1); // 记录读取次数
- * echo N('db'); // 获取当前页面数据库的所有操作次数
- * echo N('read'); // 获取当前页面读取次数
- * </code> 
- * @param string $key 标识位置
- * @param integer $step 步进值
- * @return mixed
- */
-function N($key, $step=0,$save=false) {
-    static $_num    = array();
-    if (!isset($_num[$key])) {
-        $_num[$key] = (false !== $save)? S('N_'.$key) :  0;
-    }
-    if (empty($step))
-        return $_num[$key];
-    else
-        $_num[$key] = $_num[$key] + (int) $step;
-    if(false !== $save){ // 保存结果
-        S('N_'.$key,$_num[$key],$save);
-    }
-}
-
-/**
  * 远程调用模块的操作方法 URL 参数格式 [项目://][分组/]模块/操作
  * @param string $url 调用地址
  * @param string|array $vars 调用参数 支持字符串和数组 
@@ -287,11 +260,7 @@ function S($name, $value = '', $options = null) {
  */
 function U($url = '', $vars = '', $suffix = true, $domain = false) {
 
-    if(APP_DEBUG) {
-        echo '建议废弃该方法';
-    }
-
-    return Url::build($url = '', $vars = '', $suffix = true, $domain = false);
+    return Url::build($url, $vars, $suffix, $domain);
 }
 
 /**

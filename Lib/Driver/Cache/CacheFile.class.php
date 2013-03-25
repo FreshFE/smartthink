@@ -88,7 +88,7 @@ class CacheFile extends Cache {
         if (!is_file($filename)) {
            return false;
         }
-        N('cache_read',1);
+        Debug::record('cache_read',1);
         $content    =   file_get_contents($filename);
         if( false !== $content) {
             $expire  =  (int)substr($content,8, 12);
@@ -127,7 +127,7 @@ class CacheFile extends Cache {
      * @return boolen
      */
     public function set($name,$value,$expire=null) {
-        N('cache_write',1);
+        Debug::record('cache_write',1);
         if(is_null($expire)) {
             $expire =  $this->options['expire'];
         }

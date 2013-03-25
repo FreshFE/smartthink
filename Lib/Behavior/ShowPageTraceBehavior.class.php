@@ -48,9 +48,9 @@ class ShowPageTraceBehavior extends Behavior {
             '请求信息'  =>  date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']).' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_METHOD'].' : '.__SELF__,
             '运行时间'  =>  $this->showTime(),
             '内存开销'  =>  MEMORY_LIMIT_ON?number_format((memory_get_usage() - $GLOBALS['_startUseMems'])/1024,2).' kb':'不支持',
-            '查询信息'  =>  N('db_query').' queries '.N('db_write').' writes ',
+            '查询信息'  =>  Debug::record('db_query').' queries '.Debug::record('db_write').' writes ',
             '文件加载'  =>  count(get_included_files()),
-            '缓存信息'  =>  N('cache_read').' gets '.N('cache_write').' writes ',
+            '缓存信息'  =>  Debug::record('cache_read').' gets '.Debug::record('cache_write').' writes ',
             '配置加载'  =>  count(c()),
             '会话信息'  =>  'SESSION_ID='.session_id(),
             );

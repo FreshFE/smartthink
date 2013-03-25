@@ -62,11 +62,11 @@ class ShowRuntimeBehavior extends Behavior {
         }
         if(C('SHOW_DB_TIMES') && class_exists('Db',false) ) {
             // 显示数据库操作次数
-            $showTime .= ' | DB :'.N('db_query').' queries '.N('db_write').' writes ';
+            $showTime .= ' | DB :'.Debug::record('db_query').' queries '.Debug::record('db_write').' writes ';
         }
         if(C('SHOW_CACHE_TIMES') && class_exists('Cache',false)) {
             // 显示缓存读写次数
-            $showTime .= ' | Cache :'.N('cache_read').' gets '.N('cache_write').' writes ';
+            $showTime .= ' | Cache :'.Debug::record('cache_read').' gets '.Debug::record('cache_write').' writes ';
         }
         if(MEMORY_LIMIT_ON && C('SHOW_USE_MEM')) {
             // 显示内存开销

@@ -96,7 +96,7 @@ class DbMysql extends Db{
         $this->queryStr = $str;
         //释放前次的查询结果
         if ( $this->queryID ) {    $this->free();    }
-        N('db_query',1);
+        Debug::record('db_query',1);
         // 记录开始执行时间
         Debug::mark('queryStartTime');
         $this->queryID = mysql_query($str, $this->_linkID);
@@ -122,7 +122,7 @@ class DbMysql extends Db{
         $this->queryStr = $str;
         //释放前次的查询结果
         if ( $this->queryID ) {    $this->free();    }
-        N('db_write',1);
+        Debug::record('db_write',1);
         // 记录开始执行时间
         Debug::mark('queryStartTime');
         $result =   mysql_query($str, $this->_linkID) ;
