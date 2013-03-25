@@ -49,21 +49,15 @@ class Config {
 	 */
 	public static function get($name) {
 			
-		$value = static::parse_multi($name);
-		return isset($value) ? $value : null;
-	}
-
-	private static function parse_multi($name) {
-		
 		if (!strpos($name, '.')) {
 			$name = strtolower($name);
-		    return static::$storage[$name];
+		    return isset(static::$storage[$name]) ? static::$storage[$name] : null;
 		}
 		// 二维数组设置和获取支持
 		else {
 			$name = explode('.', $name);
 			$name[0]   =  strtolower($name[0]);
-			return static::$storage[$name[0]][$name[1]];
+			return isset(static::$storage[$name[0]][$name[1]]) ? static::$storage[$name[0]][$name[1]] : null;
 		}
 	}
 

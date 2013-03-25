@@ -179,7 +179,7 @@ class ThinkPHP {
         /**
          * 为了方便导入第三方类库 设置Vendor目录到include_path
          */
-        set_include_path(get_include_path() . PATH_SEPARATOR . VENDOR_PATH);
+        // set_include_path(get_include_path() . PATH_SEPARATOR . VENDOR_PATH);
 
     }
 
@@ -237,11 +237,6 @@ class ThinkPHP {
             // 检查缓存目录
             if(!is_dir(CACHE_PATH)) {
                 static::check_runtime();
-            }
-
-            // 调试模式切换删除编译缓存
-            if(is_file(RUNTIME_FILE)) {
-                unlink(RUNTIME_FILE);
             }
         }
 
