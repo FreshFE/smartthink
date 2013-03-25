@@ -158,20 +158,23 @@ class ThinkPHP {
          * @const TEMP_PATH
          * @const DATA_PATH
          * @const CACHE_PATH
+         * @const EXT
          */
-        defined('CORE_PATH')    or define('CORE_PATH',      THINK_PATH.'Lib/'); // 系统核心类库目录
+        defined('CORE_PATH')    or define('CORE_PATH',      THINK_PATH.'Lib/');     // 系统核心类库目录
 
-        defined('COMMON_PATH')  or define('COMMON_PATH',    APP_PATH.'Common/'); // 项目公共目录
-        defined('LIB_PATH')     or define('LIB_PATH',       APP_PATH.'Lib/'); // 项目类库目录
-        defined('CONF_PATH')    or define('CONF_PATH',      APP_PATH.'Conf/'); // 项目配置目录
-        defined('LANG_PATH')    or define('LANG_PATH',      APP_PATH.'Lang/'); // 项目语言包目录
-        defined('TMPL_PATH')    or define('TMPL_PATH',      APP_PATH.'Tpl/'); // 项目模板目录
-        defined('HTML_PATH')    or define('HTML_PATH',      APP_PATH.'Html/'); // 项目静态目录
+        defined('COMMON_PATH')  or define('COMMON_PATH',    APP_PATH.'Common/');    // 项目公共目录
+        defined('LIB_PATH')     or define('LIB_PATH',       APP_PATH.'Lib/');       // 项目类库目录
+        defined('CONF_PATH')    or define('CONF_PATH',      APP_PATH.'Conf/');      // 项目配置目录
+        defined('LANG_PATH')    or define('LANG_PATH',      APP_PATH.'Lang/');      // 项目语言包目录
+        defined('TMPL_PATH')    or define('TMPL_PATH',      APP_PATH.'Tpl/');       // 项目模板目录
+        defined('HTML_PATH')    or define('HTML_PATH',      APP_PATH.'Html/');      // 项目静态目录
 
-        defined('LOG_PATH')     or define('LOG_PATH',       RUNTIME_PATH.'Logs/'); // 项目日志目录
-        defined('TEMP_PATH')    or define('TEMP_PATH',      RUNTIME_PATH.'Temp/'); // 项目缓存目录
-        defined('DATA_PATH')    or define('DATA_PATH',      RUNTIME_PATH.'Data/'); // 项目数据目录
+        defined('LOG_PATH')     or define('LOG_PATH',       RUNTIME_PATH.'Logs/');  // 项目日志目录
+        defined('TEMP_PATH')    or define('TEMP_PATH',      RUNTIME_PATH.'Temp/');  // 项目缓存目录
+        defined('DATA_PATH')    or define('DATA_PATH',      RUNTIME_PATH.'Data/');  // 项目数据目录
         defined('CACHE_PATH')   or define('CACHE_PATH',     RUNTIME_PATH.'Cache/'); // 项目模板缓存目录
+
+        defined('EXT')          or define('EXT',            '.class.php');          // 项目模板缓存目录
 
         /**
          * 为了方便导入第三方类库 设置Vendor目录到include_path

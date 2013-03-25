@@ -519,7 +519,7 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
         return $url;
 }
 
-// TODO: 重构
+// TODO: 直接删除该功能
 /**
  * 渲染输出Widget
  * @param string $name Widget名称
@@ -527,18 +527,18 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
  * @param boolean $return 是否返回内容 
  * @return void
  */
-function W($name, $data=array(), $return=false) {
-    $class      =   $name . 'Widget';
-    Import::load(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
-    if (!class_exists($class))
-        Debug::throw_exception(L('_CLASS_NOT_EXIST_') . ':' . $class);
-    $widget     =   Think::instance($class);
-    $content    =   $widget->render($data);
-    if ($return)
-        return $content;
-    else
-        echo $content;
-}
+// function W($name, $data=array(), $return=false) {
+//     $class      =   $name . 'Widget';
+//     Import::load(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
+//     if (!class_exists($class))
+//         Debug::throw_exception(L('_CLASS_NOT_EXIST_') . ':' . $class);
+//     $widget     =   Think::instance($class);
+//     $content    =   $widget->render($data);
+//     if ($return)
+//         return $content;
+//     else
+//         echo $content;
+// }
 
 /**
  * 去除代码中的空白和注释
