@@ -3,10 +3,12 @@
 // 最后留着的方法, A, C, D, L, M, S, U
 
 /**
- * A函数用于实例化Action 格式：[项目://][分组/]模块
+ * A函数用于实例化Action 格式：[分组/]模块
+ *
  * @param string $name Action资源地址
  * @param string $layer 控制层名称
  * @param boolean $common 是否公共目录
+ *
  * @return Action|false
  */
 function A($name, $layer='') {
@@ -14,35 +16,17 @@ function A($name, $layer='') {
     // 缓存
     static $_action = array();
 
-    // 默认控制器名称
+    // 默认控制器名称，生成文件名
     $layer = $layer?$layer:C('DEFAULT_C_LAYER');
-
-    // 指定项目
-    if(strpos($name,'://')) {
-        $name = str_replace('://','/'.$layer.'/',$name);
-    }
-    // 本地项目
-    else{
-        $name = '@/'.$layer.'/'.$name;
-    }
+    $name = $layer.'/'.$name;
 
     // 静态缓存内是否存在
     if(isset($_action[$name])) {
         return $_action[$name];
     }
 
-    // 解析
-    $path = explode('/',$name);
-    
-    // 独立分组
-    if(count($path)>3 && 1 == C('APP_GROUP_MODE')) {
-        $baseUrl = $path[0] == '@' ? dirname(BASE_LIB_PATH) : APP_PATH . '../' . $path[0] . '/' . C('APP_GROUP_PATH') . '/';
-        Import::uses($path[2] . '/' . $path[1] . '/' . $path[3] . $layer, $baseUrl);
-    }
-    // 加载LIB_PATH
-    else{
-        Import::uses(str_replace('@/','',$name).$layer, LIB_PATH);
-    }
+    // 加载
+    Import::uses($name.$layer, LIB_PATH);
 
     // 生成class名称
     $class = basename($name.$layer);
@@ -57,25 +41,6 @@ function A($name, $layer='') {
     // 不存在则返回
     else {
         return false;
-    }
-}
-
-/**
- * 执行某个行为
- * @param string $name 行为名称
- * @param Mixed $params 传人的参数
- * @return void
- */
-function B($name, &$params=NULL) {
-    $class      = $name.'Behavior';
-    if(APP_DEBUG) {
-        G('behaviorStart');
-    }
-    $behavior   = new $class();
-    $behavior->run($params);
-    if(APP_DEBUG) { // 记录行为的执行日志
-        G('behaviorEnd');
-        Debug::trace('Run '.$name.' Behavior [ RunTime:'.G('behaviorStart','behaviorEnd',6).'s ]','','INFO');
     }
 }
 

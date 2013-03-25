@@ -26,13 +26,32 @@ class Tag {
 	            if(!is_int($key)) { // 指定行为类的完整路径 用于模式扩展
 	                $name   = $key;
 	            }
-	            B($name, $params);
+	            static::run($name, $params);
 	        }
 	        if(APP_DEBUG) { // 记录行为的执行日志
 	            Debug::trace('[ '.$tag.' ] --END-- [ RunTime:'.G($tag.'Start',$tag.'End',6).'s ]','','INFO');
 	        }
 	    }else{ // 未执行任何行为 返回false
 	        return false;
+	    }
+	}
+
+	/**
+	 * 执行某个行为
+	 * @param string $name 行为名称
+	 * @param Mixed $params 传人的参数
+	 * @return void
+	 */
+	public static function run($name, &$params=NULL) {
+	    $class      = $name.'Behavior';
+	    if(APP_DEBUG) {
+	        G('behaviorStart');
+	    }
+	    $behavior   = new $class();
+	    $behavior->run($params);
+	    if(APP_DEBUG) { // 记录行为的执行日志
+	        G('behaviorEnd');
+	        Debug::trace('Run '.$name.' Behavior [ RunTime:'.G('behaviorStart','behaviorEnd',6).'s ]','','INFO');
 	    }
 	}
 }
