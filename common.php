@@ -3,15 +3,15 @@
 // 最后留着的方法, A, C, D, L, M, S, U
 
 /**
- * A函数用于实例化Action 格式：[分组/]模块
+ * A函数用于实例化Action
+ * 格式: [分组/]模块
  *
  * @param string $name Action资源地址
  * @param string $layer 控制层名称
- * @param boolean $common 是否公共目录
  *
  * @return Action|false
  */
-function A($name, $layer='') {
+function A($name, $layer = '') {
 
     // 缓存
     static $_action = array();
@@ -50,7 +50,7 @@ function A($name, $layer='') {
  * @param string $name
  */
 function C($name=null, $value=null) {
-    // dump(Config::getAll());
+
     // 无参数时获取所有
     if (empty($name)) {
         return Config::getAll();
@@ -76,37 +76,45 @@ function C($name=null, $value=null) {
 }
 
 /**
- * D函数用于实例化Model 格式 项目://分组/模块
+ * D函数用于实例化Model
+ * 格式: 分组/模块
  * @param string $name Model资源地址
- * @param string $layer 业务层名称
+ * @param string $layer 模型层名称
  * @return Model
  */
-function D($name='',$layer='') {
+function D($name = '', $layer = '') {
+
+    // 空值，返回实力化后的Model类
     if(empty($name)) return new Model;
-    static $_model  =   array();
-    $layer          =   $layer?$layer:C('DEFAULT_M_LAYER');
-    if(strpos($name,'://')) {// 指定项目
-        $name       =   str_replace('://','/'.$layer.'/',$name);
-    }else{
-        $name       =   C('DEFAULT_APP').'/'.$layer.'/'.$name;
+
+    // 缓存
+    static $_model = array();
+
+    // 默认Model Layer名称
+    $layer = $layer?$layer:C('DEFAULT_M_LAYER');
+    $name = $layer.'/'.$name;
+
+    // 缓存存在则返回
+    if(isset($_model[$name])) {
+        return $_model[$name];
     }
-    if(isset($_model[$name]))   return $_model[$name];
-    $path           =   explode('/',$name);
-    // dump(str_replace('@', '', $name).$layer);
-    if(count($path)>3 && 1 == C('APP_GROUP_MODE')) { // 独立分组
-        $baseUrl    =   $path[0]== '@' ? dirname(BASE_LIB_PATH) : APP_PATH.'../'.$path[0].'/'.C('APP_GROUP_PATH').'/';
-        Import::uses($path[2].'/'.$path[1].'/'.$path[3].$layer,$baseUrl);
-    }else{
-        Import::uses(str_replace('@', '', $name).$layer, LIB_PATH);
-    } 
-    $class          =   basename($name.$layer);
+
+    // 加载
+    Import::uses($name.$layer, LIB_PATH);
+
+    // 获得类名
+    $class = basename($name.$layer);
+
+    // 检查类是否存在，如果不存在则实例化Model类
     if(class_exists($class)) {
-        $model      =   new $class(basename($name));
-    }else {
-        $model      =   new Model(basename($name));
+        $model = new $class(basename($name));
     }
-    $_model[$name]  =  $model;
-    return $model;
+    else {
+        $model = new Model(basename($name));
+    }
+
+    // 存入缓存
+    return $_model[$name] = $model;
 }
 
 /**
