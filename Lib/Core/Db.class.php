@@ -250,8 +250,8 @@ class Db {
         $this->model  =   '_think_';
         // 记录操作结束时间
         if (C('DB_SQL_LOG')) {
-            G('queryEndTime');
-            Debug::trace($this->queryStr.' [ RunTime:'.G('queryStartTime','queryEndTime',6).'s ]','','SQL');
+            Debug::mark('queryEndTime');
+            Debug::trace($this->queryStr.' [ RunTime:'.Debug::mark('queryStartTime','queryEndTime',6).'s ]','','SQL');
         }
     }
 

@@ -98,7 +98,7 @@ class DbMysql extends Db{
         if ( $this->queryID ) {    $this->free();    }
         N('db_query',1);
         // 记录开始执行时间
-        G('queryStartTime');
+        Debug::mark('queryStartTime');
         $this->queryID = mysql_query($str, $this->_linkID);
         $this->debug();
         if ( false === $this->queryID ) {
@@ -124,7 +124,7 @@ class DbMysql extends Db{
         if ( $this->queryID ) {    $this->free();    }
         N('db_write',1);
         // 记录开始执行时间
-        G('queryStartTime');
+        Debug::mark('queryStartTime');
         $result =   mysql_query($str, $this->_linkID) ;
         $this->debug();
         if ( false === $result) {

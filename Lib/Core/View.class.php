@@ -62,7 +62,7 @@ class View {
      * @return mixed
      */
     public function display($templateFile='',$charset='',$contentType='',$content='',$prefix='') {
-        G('viewStartTime');
+        Debug::mark('viewStartTime');
         // 视图开始标签
         Tag::mark('view_begin',$templateFile);
         // 解析并获取模板内容

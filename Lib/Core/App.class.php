@@ -236,7 +236,7 @@ class App {
         Tag::mark('app_session_begin');
 
         // 记录应用初始化时间
-        G('initTime');
+        Debug::mark('initTime');
 
         // 抛出异常
         App::exec();
@@ -245,7 +245,7 @@ class App {
         Tag::mark('app_end');
 
         // 保存日志记录
-        if(C('LOG_RECORD')) {
+        if(Config::get('LOG_RECORD')) {
             Log::save();
         }
     }

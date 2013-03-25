@@ -156,78 +156,31 @@ function F($name, $value='', $path=DATA_PATH) {
 }
 
 /**
- * 记录和统计时间（微秒）和内存使用情况
- * 使用方法:
- * <code>
- * G('begin'); // 记录开始标记位
- * // ... 区间运行代码
- * G('end'); // 记录结束标签位
- * echo G('begin','end',6); // 统计区间运行时间 精确到小数后6位
- * echo G('begin','end','m'); // 统计区间内存使用情况
- * 如果end标记位没有定义，则会自动以当前作为标记位
- * 其中统计内存使用需要 MEMORY_LIMIT_ON 常量为true才有效
- * </code>
- * @param string $start 开始标签
- * @param string $end 结束标签
- * @param integer|string $dec 小数位或者m 
- * @return mixed
- */
-function G($start,$end='',$dec=4) {
-    static $_info       =   array();
-    static $_mem        =   array();
-    if(is_float($end)) { // 记录时间
-        $_info[$start]  =   $end;
-    }elseif(!empty($end)){ // 统计时间和内存使用
-        if(!isset($_info[$end])) $_info[$end]       =  microtime(TRUE);
-        if(MEMORY_LIMIT_ON && $dec=='m'){
-            if(!isset($_mem[$end])) $_mem[$end]     =  memory_get_usage();
-            return number_format(($_mem[$end]-$_mem[$start])/1024);          
-        }else{
-            return number_format(($_info[$end]-$_info[$start]),$dec);
-        }       
-            
-    }else{ // 记录时间和内存使用
-        $_info[$start]  =  microtime(TRUE);
-        if(MEMORY_LIMIT_ON) $_mem[$start]           =  memory_get_usage();
-    }
-}
-
-/**
  * 获取和设置语言定义(不区分大小写)
  * @param string|array $name 语言变量
  * @param string $value 语言值
  * @return mixed
  */
 function L($name = null, $value = null) {
-    
-    // 定义静态数组
-    static $_lang = array();
 
     // 空参数返回所有定义
     if (empty($name))
-        return $_lang;
+        return Lang::getAll();
 
-    // 判断语言获取(或设置)
-    // 若不存在,直接返回全大写$name
-    if (is_string($name)) {
+    // 获取
+    if(is_string($name) && is_null($value)) {
+        return Lang::get($name);
+    }
 
-        $name = strtoupper($name);
-
-        // 如果空的则读取
-        if (is_null($value))
-            return isset($_lang[$name]) ? $_lang[$name] : $name;
-
-        // 定义语言
-        $_lang[$name] = $value;
-
-        return $value;
+    // 设置
+    if(is_string($name) && !is_null($value)) {
+        return Lang::set($name, $value);
     }
 
     // 批量定义
-    if (is_array($name))
-        $_lang = array_merge($_lang, array_change_key_case($name, CASE_UPPER));
-
-    return $name;
+    if(is_array($name)) {
+        return Lang::setAll($name);
+    }
 }
 
 /**
@@ -503,27 +456,6 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
     else
         return $url;
 }
-
-// TODO: 直接删除该功能
-/**
- * 渲染输出Widget
- * @param string $name Widget名称
- * @param array $data 传人的参数
- * @param boolean $return 是否返回内容 
- * @return void
- */
-// function W($name, $data=array(), $return=false) {
-//     $class      =   $name . 'Widget';
-//     Import::load(BASE_LIB_PATH . 'Widget/' . $class . '.class.php');
-//     if (!class_exists($class))
-//         Debug::throw_exception(L('_CLASS_NOT_EXIST_') . ':' . $class);
-//     $widget     =   Think::instance($class);
-//     $content    =   $widget->render($data);
-//     if ($return)
-//         return $content;
-//     else
-//         echo $content;
-// }
 
 /**
  * 去除代码中的空白和注释

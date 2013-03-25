@@ -208,6 +208,7 @@ class ThinkPHP {
             CORE_PATH.'Core/Debug.class.php',
             CORE_PATH.'Core/Dispatcher.class.php',
             CORE_PATH.'Core/Http.class.php',
+            CORE_PATH.'Core/Lang.class.php',
             CORE_PATH.'Core/Log.class.php',
             CORE_PATH.'Core/Model.class.php',
             CORE_PATH.'Core/Redirect.class.php',
@@ -243,7 +244,7 @@ class ThinkPHP {
         }
 
         // 记录文件加载时间
-        G('loadTime');
+        Debug::mark('loadTime');
 
         // 启动
         Think::Start();

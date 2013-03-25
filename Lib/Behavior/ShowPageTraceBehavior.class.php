@@ -119,9 +119,9 @@ class ShowPageTraceBehavior extends Behavior {
      */
     private function showTime() {
         // 显示运行时间
-        G('beginTime',$GLOBALS['_beginTime']);
-        G('viewEndTime');
+        Debug::mark('beginTime',$GLOBALS['_beginTime']);
+        Debug::mark('viewEndTime');
         // 显示详细运行时间
-        return G('beginTime','viewEndTime').'s ( Load:'.G('beginTime','loadTime').'s Init:'.G('loadTime','initTime').'s Exec:'.G('initTime','viewStartTime').'s Template:'.G('viewStartTime','viewEndTime').'s )';
+        return Debug::mark('beginTime','viewEndTime').'s ( Load:'.Debug::mark('beginTime','loadTime').'s Init:'.Debug::mark('loadTime','initTime').'s Exec:'.G('initTime','viewStartTime').'s Template:'.G('viewStartTime','viewEndTime').'s )';
     }
 }

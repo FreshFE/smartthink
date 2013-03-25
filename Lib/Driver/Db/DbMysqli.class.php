@@ -85,7 +85,7 @@ class DbMysqli extends Db{
         if ( $this->queryID ) $this->free();
         N('db_query',1);
         // 记录开始执行时间
-        G('queryStartTime');
+        Debug::mark('queryStartTime');
         $this->queryID = $this->_linkID->query($str);
         // 对存储过程改进
         if( $this->_linkID->more_results() ){
@@ -118,7 +118,7 @@ class DbMysqli extends Db{
         if ( $this->queryID ) $this->free();
         N('db_write',1);
         // 记录开始执行时间
-        G('queryStartTime');
+        Debug::mark('queryStartTime');
         $result =   $this->_linkID->query($str);
         $this->debug();
         if ( false === $result ) {

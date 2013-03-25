@@ -18,7 +18,7 @@ class Tag {
 	    }
 	    if($tags) {
 	        if(APP_DEBUG) {
-	            G($tag.'Start');
+	            Debug::mark($tag.'Start');
 	            Debug::trace('[ '.$tag.' ] --START--','','INFO');
 	        }
 	        // 执行扩展
@@ -29,7 +29,7 @@ class Tag {
 	            static::run($name, $params);
 	        }
 	        if(APP_DEBUG) { // 记录行为的执行日志
-	            Debug::trace('[ '.$tag.' ] --END-- [ RunTime:'.G($tag.'Start',$tag.'End',6).'s ]','','INFO');
+	            Debug::trace('[ '.$tag.' ] --END-- [ RunTime:'.Debug::mark($tag.'Start',$tag.'End',6).'s ]','','INFO');
 	        }
 	    }else{ // 未执行任何行为 返回false
 	        return false;
@@ -45,13 +45,13 @@ class Tag {
 	public static function run($name, &$params=NULL) {
 	    $class      = $name.'Behavior';
 	    if(APP_DEBUG) {
-	        G('behaviorStart');
+	        Debug::mark('behaviorStart');
 	    }
 	    $behavior   = new $class();
 	    $behavior->run($params);
 	    if(APP_DEBUG) { // 记录行为的执行日志
-	        G('behaviorEnd');
-	        Debug::trace('Run '.$name.' Behavior [ RunTime:'.G('behaviorStart','behaviorEnd',6).'s ]','','INFO');
+	        Debug::mark('behaviorEnd');
+	        Debug::trace('Run '.$name.' Behavior [ RunTime:'.Debug::mark('behaviorStart','behaviorEnd',6).'s ]','','INFO');
 	    }
 	}
 }
