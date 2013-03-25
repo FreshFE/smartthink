@@ -1,20 +1,19 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+/**
+ * Core/Think.class.php
+ * Smart ThinkPHP
+ * Copyright (c) 2004-2013 Methink
+ *
+ * @copyright     Copyright (c) Methink
+ * @link          https://github.com/minowu/extend
+ * @package       Core.Think
+ * @since         Smart ThinkPHP 2.0.0
+ * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
+ */
 
 /**
- * ThinkPHP Portal类
- * @category   Think
- * @package  Think
- * @subpackage  Core
- * @author    liu21st <liu21st@gmail.com>
+ * Think Class
+ * 项目加载，配置初始化，错误处理
  */
 class Think {
 

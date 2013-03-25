@@ -224,7 +224,6 @@ class ThinkPHP {
             CORE_PATH.'Core/ThinkException.class.php',
             CORE_PATH.'Core/Url.class.php',
             CORE_PATH.'Core/View.class.php',
-            CORE_PATH.'Core/Widget.class.php',
             
             CORE_PATH.'View/Helper.class.php'
         );
