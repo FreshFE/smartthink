@@ -181,7 +181,7 @@ class Dispatcher {
     static public function routerCheck() {
         $return   =  false;
         // 路由检测标签
-        tag('route_check',$return);
+        Tag::mark('route_check',$return);
         return $return;
     }
 
