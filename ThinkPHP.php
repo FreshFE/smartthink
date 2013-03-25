@@ -25,8 +25,15 @@ class ThinkPHP {
      * @return void
      */
     public static function check_version() {
+
+        // php版本
         if(version_compare(PHP_VERSION,'5.3.0','<')) {
             die('require PHP > 5.3.0');
+        }
+
+        // php错误输出
+        if (APP_DEBUG && !ini_get('display_errors')) {
+            ini_set('display_errors', 1);
         }
     }
 
