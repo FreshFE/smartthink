@@ -118,8 +118,8 @@ class Auth {
 		if(!$expire) $expire = 60 * 60 * 60 * 24 * 30;
 
 		// 设置session并保存
-		session(array('name' => $this->auth_key, 'expire' => $expire));
-		session($this->auth_key, $id);
+		Session::config(array('name' => $this->auth_key, 'expire' => $expire));
+		Session::set($this->auth_key, $id);
 	}
 
 	/**
@@ -130,7 +130,7 @@ class Auth {
 	 */
 	public function logout() {
 
-		session($this->auth_key, null);
+		Session::set($this->auth_key, null);
 	}
 
 	/**
