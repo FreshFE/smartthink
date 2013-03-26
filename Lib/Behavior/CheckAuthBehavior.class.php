@@ -3,6 +3,8 @@
 // 依赖关系
 Import::uses('Library/Auth/RbacAuth', 'Core');
 
+use Think\Library;
+
 // 检查登录状态的行为类
 class CheckAuthBehavior extends Behavior {
 
@@ -34,7 +36,7 @@ class CheckAuthBehavior extends Behavior {
 
 	private function rbac() {
 
-		$auth = new RbacAuth(C('AUTH_KEY'), C('AUTH_RULES'), C('AUTH_ROLES'));
+		$auth = new Think\Library\RbacAuth(C('AUTH_KEY'), C('AUTH_RULES'), C('AUTH_ROLES'));
 		
 		// dump(['check()', $auth->check(), $auth->session()]);
 

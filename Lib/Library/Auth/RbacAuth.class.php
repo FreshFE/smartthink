@@ -1,4 +1,4 @@
-<?php
+<?php namespace Think\Library;
 /**
  * Library/RbacAuth.class.php
  * Smart ThinkPHP
@@ -11,7 +11,7 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-Import::uses('Auth', dirname(__FILE__));
+\Import::uses('Auth', dirname(__FILE__));
 
 /**
  * 配置方法
