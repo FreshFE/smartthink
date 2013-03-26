@@ -1,4 +1,4 @@
-<?php
+<?php namespace Think\Library;
 /**
  * Library/Pager.class.php
  * Smart ThinkPHP

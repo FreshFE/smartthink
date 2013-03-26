@@ -1,4 +1,4 @@
-<?php
+<?php namespace Think\Library;
 
 /**
  * 分类管理

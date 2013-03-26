@@ -1,4 +1,4 @@
-<?php
+<?php namespace Think\Library;
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
@@ -18,7 +18,7 @@
  * @author      minowu
  */
 
-Import::uses('Image', dirname(__FILE__));
+\Import::uses('Image', dirname(__FILE__));
 
 /*
 array(11) {
