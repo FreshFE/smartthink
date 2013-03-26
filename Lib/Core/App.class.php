@@ -229,7 +229,6 @@ class App {
         Tag::mark('app_begin');
 
         // Session初始化
-        // session(C('SESSION_OPTIONS'));
         Session::config(C('SESSION_OPTIONS'));
 
         // 项目session初始化
