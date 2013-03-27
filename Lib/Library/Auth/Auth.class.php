@@ -20,9 +20,6 @@
  * 清除用户的session信息
  *
  * 实例化Auth类，在构造函数执行时，优先传入$auth_key和$rules参数
- *
- * 依赖外部函数
- * @Function session()
  */
 class Auth {
 
@@ -152,6 +149,16 @@ class Auth {
 	public function pass() {
 
 		return $this->auth_pass;
+	}
+
+	/**
+	 * 如果用户没有通行权，则进行什么操作
+	 *
+	 * @return viod
+	 */
+	public function error($msg, $url) {
+
+		\Redirect::error($msg, $url);
 	}
 
 	/**
