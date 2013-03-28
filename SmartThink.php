@@ -1,5 +1,22 @@
 <?php namespace SmartThink;
+/**
+ * SmartThink.class.php
+ * Smart ThinkPHP
+ * Copyright (c) 2004-2013 Methink
+ *
+ * @copyright     Copyright (c) Methink
+ * @link          https://github.com/minowu/extend
+ * @package       Library.Auth
+ * @since         Smart ThinkPHP 2.0.0
+ * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
+ */
 
+/**
+ * SmartThink Class
+ * 检查PHP版本，启用PHP错误输出级别
+ * 定义常量
+ * 创建runtime启动程序
+ */
 class SmartThink {
 
     /**
