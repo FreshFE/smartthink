@@ -47,24 +47,26 @@ abstract class Controller {
     protected $config   =   array();
 
    /**
-     * 架构函数 取得模板对象实例
-     * @access public
+     * 架构函数
+     * 标记Controller开始的行为
+     *
+     * @return void
      */
     public function __construct() {
-        Tag::mark('action_begin',$this->config);
-        //控制器初始化
-        if(method_exists($this,'_initialize'))
-            $this->_initialize();
+        Tag::mark('action_begin', $this->config);
     }
 
    /**
      * 获取当前Action名称
-     * @access protected
+     * $this->name
+     *
+     * @return string
      */
-    protected function getActionName() {
+    protected function getControllerName() {
+        
+        // 初始化Controller类名称
         if(empty($this->name)) {
-            // 获取Action名称
-            $this->name     =   substr(get_class($this),0,-6);
+            $this->name = substr(get_class($this),0,-6);
         }
         return $this->name;
     }
