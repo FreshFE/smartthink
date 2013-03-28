@@ -78,8 +78,10 @@ function C($name=null, $value=null) {
 /**
  * D函数用于实例化Model
  * 格式: 分组/模块
+ *
  * @param string $name Model资源地址
  * @param string $layer 模型层名称
+ *
  * @return Model
  */
 function D($name = '', $layer = '') {
@@ -119,8 +121,10 @@ function D($name = '', $layer = '') {
 
 /**
  * 获取和设置语言定义(不区分大小写)
+ *
  * @param string|array $name 语言变量
  * @param string $value 语言值
+ *
  * @return mixed
  */
 function L($name = null, $value = null) {
@@ -147,9 +151,11 @@ function L($name = null, $value = null) {
 
 /**
  * M函数用于实例化一个没有模型文件的Model
+ *
  * @param string $name Model名称 支持指定基础模型 例如 MongoModel:User
  * @param string $tablePrefix 表前缀
  * @param mixed $connection 数据库连接信息
+ *
  * @return Model
  */
 function M($name = '', $tablePrefix = '',$connection = '') {
@@ -177,9 +183,11 @@ function M($name = '', $tablePrefix = '',$connection = '') {
 
 /**
  * 远程调用模块的操作方法 URL 参数格式 [项目://][分组/]模块/操作
+ *
  * @param string $url 调用地址
  * @param string|array $vars 调用参数 支持字符串和数组 
  * @param string $layer 要调用的控制层名称
+ *
  * @return mixed
  */
 function R($url,$vars=array(),$layer='') {
@@ -199,9 +207,11 @@ function R($url,$vars=array(),$layer='') {
 
 /**
  * 缓存管理
+ *
  * @param mixed $name 缓存名称，如果为数组表示进行缓存设置
  * @param mixed $value 缓存值
  * @param mixed $options 缓存参数
+ *
  * @return mixed
  */
 function S($name, $value = '', $options = null) {
@@ -251,11 +261,13 @@ function S($name, $value = '', $options = null) {
 
 /**
  * URL组装 支持不同URL模式
+ *
  * @param string $url URL表达式，格式：'[分组/模块/操作#锚点@域名]?参数1=值1&参数2=值2...'
  * @param string|array $vars 传入的参数，支持数组和字符串
  * @param string $suffix 伪静态后缀，默认为true表示获取配置值
  * @param boolean $redirect 是否跳转，如果设置为true则表示跳转到该URL地址
  * @param boolean $domain 是否显示域名
+ *
  * @return string
  */
 function U($url = '', $vars = '', $suffix = true, $domain = false) {
@@ -265,7 +277,9 @@ function U($url = '', $vars = '', $suffix = true, $domain = false) {
 
 /**
  * 去除代码中的空白和注释
+ *
  * @param string $content 代码内容
+ *
  * @return string
  */
 function strip_whitespace($content) {
@@ -316,8 +330,10 @@ function strip_whitespace($content) {
 /**
  * 字符串命名风格转换
  * type 0 将Java风格转换为C的风格 1 将C风格转换为Java的风格
+ *
  * @param string $name 字符串
  * @param integer $type 转换类型
+ *
  * @return string
  */
 function parse_name($name, $type=0) {
@@ -330,10 +346,12 @@ function parse_name($name, $type=0) {
 
 /**
  * 浏览器友好的变量输出
+ *
  * @param mixed $var 变量
  * @param boolean $echo 是否输出 默认为True 如果为false 则返回输出字符串
  * @param string $label 标签 默认为空
  * @param boolean $strict 是否严谨 默认为true
+ *
  * @return void|string
  */
 function dump($var, $echo=true, $label=null, $strict=true) {
@@ -342,8 +360,10 @@ function dump($var, $echo=true, $label=null, $strict=true) {
 
 /**
  * 过滤器方法 引用传值
+ *
  * @param string $name 过滤器名称
  * @param string $content 要过滤的内容
+ *
  * @return void
  */
 function filter($name, &$content) {
@@ -355,9 +375,11 @@ function filter($name, &$content) {
 
 /**
  * 取得对象实例 支持调用类的静态方法
+ *
  * @param string $name 类名
  * @param string $method 方法名，如果为空则返回实例化对象
  * @param array $args 调用参数
+ *
  * @return object
  */
 function get_instance_of($name, $method='', $args=array()) {
@@ -384,7 +406,9 @@ function get_instance_of($name, $method='', $args=array()) {
 
 /**
  * 根据PHP各种类型变量生成唯一标识号
+ *
  * @param mixed $mix 变量
+ *
  * @return string
  */
 function to_guid_string($mix) {
@@ -398,7 +422,13 @@ function to_guid_string($mix) {
     return md5($mix);
 }
 
-// 过滤表单中的表达式
+/**
+ * 过滤表单中的表达式
+ *
+ * @param string &$value
+ *
+ * @return void
+ */
 function filter_exp(&$value){
     if (in_array(strtolower($value),array('exp','or'))){
         $value .= ' ';

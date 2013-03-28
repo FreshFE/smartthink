@@ -1,6 +1,6 @@
-<?php
+<?php namespace SmartThink;
 
-class ThinkPHP {
+class SmartThink {
 
     /**
      * 初始化Runtime开始执行程序
@@ -83,13 +83,7 @@ class ThinkPHP {
          *
          * @const MAGIC_QUOTES_GPC
          */
-        if(version_compare(PHP_VERSION, '5.4.0', '<')) {
-            ini_set('magic_quotes_runtime', 0);
-            define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc() ? true : false);
-        }
-        else {
-            define('MAGIC_QUOTES_GPC', false);
-        }
+        define('MAGIC_QUOTES_GPC', false);
 
         /**
          * 当前系统和操作方式
@@ -183,11 +177,6 @@ class ThinkPHP {
 
         defined('EXT')          or define('EXT',            '.class.php');          // 项目模板缓存目录
 
-        /**
-         * 为了方便导入第三方类库 设置Vendor目录到include_path
-         */
-        // set_include_path(get_include_path() . PATH_SEPARATOR . VENDOR_PATH);
-
     }
 
     /**
@@ -200,31 +189,32 @@ class ThinkPHP {
 
         // 定义
         $files = array(
-            THINK_PATH.'base.php',
+            THINK_PATH.'functions.php',
 
-            CORE_PATH.'Core/App.class.php',
-            CORE_PATH.'Core/Behavior.class.php',
-            CORE_PATH.'Core/Cache.class.php',
-            CORE_PATH.'Core/Config.class.php',
-            CORE_PATH.'Core/Controller.class.php',
-            CORE_PATH.'Core/Cookie.class.php',
-            CORE_PATH.'Core/Db.class.php',
-            CORE_PATH.'Core/Debug.class.php',
-            CORE_PATH.'Core/Dispatcher.class.php',
-            CORE_PATH.'Core/File.class.php',
-            CORE_PATH.'Core/Http.class.php',
-            CORE_PATH.'Core/Import.class.php',
-            CORE_PATH.'Core/Lang.class.php',
-            CORE_PATH.'Core/Log.class.php',
-            CORE_PATH.'Core/Model.class.php',
-            CORE_PATH.'Core/Redirect.class.php',
-            CORE_PATH.'Core/Session.class.php',
-            CORE_PATH.'Core/Tag.class.php',
-            CORE_PATH.'Core/Think.class.php',
-            CORE_PATH.'Core/ThinkException.class.php',
-            CORE_PATH.'Core/Url.class.php',
-            CORE_PATH.'Core/View.class.php',
+            CORE_PATH.'App.class.php',
+            CORE_PATH.'Behavior.class.php',
+            CORE_PATH.'Cache.class.php',
+            CORE_PATH.'Config.class.php',
+            CORE_PATH.'Controller.class.php',
+            CORE_PATH.'Cookie.class.php',
+            CORE_PATH.'Db.class.php',
+            CORE_PATH.'Debug.class.php',
+            CORE_PATH.'Dispatcher.class.php',
+            CORE_PATH.'File.class.php',
+            CORE_PATH.'Http.class.php',
+            CORE_PATH.'Import.class.php',
+            CORE_PATH.'Lang.class.php',
+            CORE_PATH.'Log.class.php',
+            CORE_PATH.'Model.class.php',
+            CORE_PATH.'Redirect.class.php',
+            CORE_PATH.'Session.class.php',
+            CORE_PATH.'Tag.class.php',
+            CORE_PATH.'Think.class.php',
+            CORE_PATH.'ThinkException.class.php',
+            CORE_PATH.'Url.class.php',
+            CORE_PATH.'View.class.php',
             
+            // TODO: 重构
             CORE_PATH.'View/Helper.class.php'
         );
 
@@ -235,9 +225,10 @@ class ThinkPHP {
 
         // 调试模式下检查路径和文件
         if(APP_DEBUG) {
+            
             // 创建项目目录结构
             if(!is_dir(LIB_PATH)) {
-                Debug::throw_exception('不存在项目目录结构');
+                \Debug::throw_exception('不存在项目目录结构');
             }
 
             // 检查缓存目录
@@ -247,10 +238,10 @@ class ThinkPHP {
         }
 
         // 记录文件加载时间
-        Debug::mark('loadTime');
+        \Debug::mark('loadTime');
 
         // 启动
-        Think::Start();
+        \Think::Start();
     }
 
     /**
@@ -279,3 +270,6 @@ class ThinkPHP {
     }
 
 }
+
+// 启动
+SmartThink::run();
