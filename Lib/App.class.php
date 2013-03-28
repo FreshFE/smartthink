@@ -108,46 +108,56 @@ class App {
      * @return void
      */
     static public function exec() {
-        if(!preg_match('/^[A-Za-z](\w)*$/',MODULE_NAME)){ // 安全检测
-            $module  =  false;
-        }else{
-            //创建Action控制器实例
-            $group   =  defined('GROUP_NAME') && C('APP_GROUP_MODE')==0 ? GROUP_NAME.'/' : '';
-            $module  =  A($group.MODULE_NAME);
-        }
 
+        // 针对MODULE_NAME进行安全检测
+        if(!preg_match('/^[A-Za-z](\w)*$/', MODULE_NAME)) {
+            $module = false;
+        }
+        //创建Action控制器实例
+        else {
+            $group = defined('GROUP_NAME') && C('APP_GROUP_MODE') == 0 ? GROUP_NAME . '/' : '';
+            $module = A($group . MODULE_NAME);
+        }
+        // dump($module);
+        // 不存在当前Module
         if(!$module) {
             if('4e5e5d7364f443e28fbf0d3ae744a59a' == MODULE_NAME) {
                 exit('exec, App.class.php in line 108');
             }
+
+            // hack 方式定义扩展模块 返回Action对象
             if(function_exists('__hack_module')) {
-                // hack 方式定义扩展模块 返回Action对象
                 $module = __hack_module();
                 if(!is_object($module)) {
                     // 不再继续执行 直接返回
                     return ;
                 }
-            }else{
-                // 是否定义Empty模块
+            }
+            // 是否定义Empty模块
+            else {
                 $module = A($group.'Empty');
                 if(!$module){
                     Http::_404(L('_MODULE_NOT_EXIST_').':'.MODULE_NAME);
                 }
             }
         }
+
         // 获取当前操作名 支持动态路由
-        $action = C('ACTION_NAME')?C('ACTION_NAME'):ACTION_NAME;
-        C('TEMPLATE_NAME',THEME_PATH.MODULE_NAME.C('TMPL_FILE_DEPR').$action.C('TMPL_TEMPLATE_SUFFIX'));
-        $action .=  C('ACTION_SUFFIX');
-        try{
-            if(!preg_match('/^[A-Za-z](\w)*$/',$action)){
-                // 非法操作
+        
+        $action = C('ACTION_NAME') ? C('ACTION_NAME') : ACTION_NAME;
+        C('TEMPLATE_NAME', THEME_PATH . MODULE_NAME . C('TMPL_FILE_DEPR') . $action . C('TMPL_TEMPLATE_SUFFIX'));
+        $action .= C('ACTION_SUFFIX');
+
+        try {
+            // 非法操作
+            if(!preg_match('/^[A-Za-z](\w)*$/', $action)) {
                 throw new ReflectionException();
             }
             //执行当前操作
-            $method =   new ReflectionMethod($module, $action);
+            $method = new ReflectionMethod($module, $action);
+            
             if($method->isPublic()) {
-                $class  =   new ReflectionClass($module);
+                $class = new ReflectionClass($module);
                 // 前置操作
                 if($class->hasMethod('_before_'.$action)) {
                     $before =   $class->getMethod('_before_'.$action);
