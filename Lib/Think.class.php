@@ -89,11 +89,16 @@ class Think {
         static::load_ext_file();
 
         // URL调度
-        Dispatcher::dispatch();
+        Router::dispatch();
 
-        // 设置不同分组的配置
-        if(is_file(LIB_PATH . GROUP_NAME . '/Conf/tag.php')) {
-            // dump('is_file');
+        // 加载分组配置文件
+        if(is_file(GROUP_PATH . 'Conf/config.php')) {
+            C(include GROUP_PATH . 'Conf/config.php');
+        }
+
+        // 加载分组tags文件定义
+        if(is_file(GROUP_PATH . 'Conf/tags.php')) {
+            C('tags', include GROUP_PATH . 'Conf/tags.php');
         }
     }
 
