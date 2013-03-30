@@ -77,10 +77,10 @@ class MeSmart {
 
     	/**
     	 * 入口文件必须定义
-    	 * FRAME_PATH, EXTEND_PATH, APP_PATH and APP_DEBUG
+    	 * FRAME_PATH, KIT_PATH, APP_PATH and APP_DEBUG
     	 */
-    	if(!defined('FRAME_PATH') || !defined('EXTEND_PATH') || !defined('APP_PATH') || !defined('APP_DEBUG')) {
-    		die('No defined FRAME_PATH, EXTEND_PATH, APP_PATH and APP_DEBUG');
+    	if(!defined('FRAME_PATH') || !defined('KIT_PATH') || !defined('APP_PATH') || !defined('APP_DEBUG')) {
+    		die('No defined FRAME_PATH, KIT_PATH, APP_PATH and APP_DEBUG');
     	}
 
     	/**
