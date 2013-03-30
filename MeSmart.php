@@ -17,7 +17,7 @@
  * 定义常量
  * 创建runtime启动程序
  */
-class MeSmart {
+class meSmart {
 
     /**
      * 初始化Runtime开始执行程序
@@ -290,4 +290,4 @@ class MeSmart {
 }
 
 // 启动
-MeSmart::run();
+meSmart::run();
