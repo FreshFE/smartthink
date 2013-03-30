@@ -1,4 +1,4 @@
-<?php namespace MeSmart;
+<?php namespace meSmart;
 /**
  * SmartThink.class.php
  * Smart ThinkPHP
