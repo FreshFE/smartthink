@@ -377,7 +377,7 @@ function dump($var, $echo=true, $label=null, $strict=true) {
  */
 function filter($name, &$content) {
     $class      =   $name . 'Filter';
-    Import::load(BASE_LIB_PATH . 'Filter/' . $class . '.class.php');
+    Import::load(GROUP_PATH . 'Filter/' . $class . EXT);
     $filter     =   new $class();
     $content    =   $filter->run($content);
 }
