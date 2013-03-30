@@ -23,7 +23,7 @@ class Import {
 	 *
 	 * @return bealoon
 	 */
-	public static function uses(string $class, $alias = '', $ext = '.class.php') {
+	public static function uses(string $class, $alias = '', $ext = EXT) {
 
 		// 解析路径
 		if($alias != '') {
