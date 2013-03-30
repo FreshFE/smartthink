@@ -44,6 +44,10 @@ class Lang {
 	 */
 	public static function set($name, $value) {
 
+		if(is_array($name)) {
+			static::setAll($name);
+		}
+
 		// 大写
 		$name = strtoupper($name);
 
