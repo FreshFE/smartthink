@@ -20,7 +20,7 @@ class Config {
 	public static function set($name, $value) {
 
 		if(is_array($name)) {
-			return static::lots($name);
+			return static::setAll($name);
 		}
 
 		// 字符串
