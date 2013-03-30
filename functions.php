@@ -17,16 +17,21 @@ function A($name, $layer = '') {
     static $_action = array();
 
     // 默认控制器名称，生成文件名
-    $layer = $layer?$layer:C('DEFAULT_C_LAYER');
-    $name = $layer.'/'.$name;
+    $layer = $layer ? $layer : Config::get('DEFAULT_C_LAYER');
+    $name = $layer . '/' . $name;
+
 
     // 静态缓存内是否存在
     if(isset($_action[$name])) {
         return $_action[$name];
     }
 
+    // 重新生成加载路径
+    $name = explode('/', $name);
+    $name = $name[1] . '/' . $name[0] . '/' . $name[2];
+
     // 加载
-    Import::uses($name.$layer, LIB_PATH);
+    Import::load(LIB_PATH . $name . $layer . EXT);
 
     // 生成class名称
     $class = basename($name.$layer);
@@ -93,19 +98,23 @@ function D($name = '', $layer = '') {
     static $_model = array();
 
     // 默认Model Layer名称
-    $layer = $layer?$layer:C('DEFAULT_M_LAYER');
-    $name = $layer.'/'.$name;
+    $layer = $layer ? $layer : Config::get('DEFAULT_M_LAYER');
+    $name = $layer . '/' . GROUP_NAME . '/' . $name;
 
     // 缓存存在则返回
     if(isset($_model[$name])) {
         return $_model[$name];
     }
 
+    // 重新生成加载路径
+    $name = explode('/', $name);
+    $name = $name[1] . '/' . $name[0] . '/' . $name[2];
+
     // 加载
-    Import::uses($name.$layer, LIB_PATH);
+    Import::load(LIB_PATH . $name . $layer . EXT);
 
     // 获得类名
-    $class = basename($name.$layer);
+    $class = basename($name . $layer);
 
     // 检查类是否存在，如果不存在则实例化Model类
     if(class_exists($class)) {
@@ -158,14 +167,14 @@ function L($name = null, $value = null) {
  *
  * @return Model
  */
-function M($name = '', $tablePrefix = '',$connection = '') {
+function M($name = '', $tablePrefix = '', $connection = '') {
 
     // 缓存
     static $_model  = array();
 
     // 解析基础模型
-    if(strpos($name,':')) {
-        list($class,$name) = explode(':',$name);
+    if(strpos($name, ':')) {
+        list($class, $name) = explode(':', $name);
     }
     else {
         $class = 'Model';
@@ -175,7 +184,7 @@ function M($name = '', $tablePrefix = '',$connection = '') {
     $guid = $tablePrefix . $name . '_' . $class;
 
     if (!isset($_model[$guid])) {
-        $_model[$guid] = new $class($name,$tablePrefix,$connection);
+        $_model[$guid] = new $class($name, $tablePrefix, $connection);
     }
 
     return $_model[$guid];
