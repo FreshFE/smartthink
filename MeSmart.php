@@ -77,10 +77,10 @@ class MeSmart {
 
     	/**
     	 * 入口文件必须定义
-    	 * THINK_PATH, EXTEND_PATH, APP_PATH and APP_DEBUG
+    	 * FRAME_PATH, EXTEND_PATH, APP_PATH and APP_DEBUG
     	 */
-    	if(!defined('THINK_PATH') || !defined('EXTEND_PATH') || !defined('APP_PATH') || !defined('APP_DEBUG')) {
-    		die('No defined THINK_PATH, EXTEND_PATH, APP_PATH and APP_DEBUG');
+    	if(!defined('FRAME_PATH') || !defined('EXTEND_PATH') || !defined('APP_PATH') || !defined('APP_DEBUG')) {
+    		die('No defined FRAME_PATH, EXTEND_PATH, APP_PATH and APP_DEBUG');
     	}
 
     	/**
@@ -179,7 +179,7 @@ class MeSmart {
          * @const CACHE_PATH
          * @const EXT
          */
-        defined('CORE_PATH')    or define('CORE_PATH',      THINK_PATH.'Lib/');     // 系统核心类库目录
+        defined('CORE_PATH')    or define('CORE_PATH',      FRAME_PATH.'Lib/');     // 系统核心类库目录
 
         defined('COMMON_PATH')  or define('COMMON_PATH',    APP_PATH.'Common/');    // 项目公共目录
         defined('LIB_PATH')     or define('LIB_PATH',       APP_PATH.'Lib/');       // 项目类库目录
@@ -207,7 +207,7 @@ class MeSmart {
 
         // 定义
         $files = array(
-            THINK_PATH.'functions.php',
+            FRAME_PATH.'functions.php',
 
             CORE_PATH.'App'.EXT,
             CORE_PATH.'Behavior'.EXT,

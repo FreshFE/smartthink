@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-defined('THINK_PATH') or exit();
+defined('FRAME_PATH') or exit();
 /**
  * 系统行为扩展：运行时间信息显示
  * @category   Think

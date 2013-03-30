@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-defined('THINK_PATH') or exit();
+defined('FRAME_PATH') or exit();
 /**
  * 语言检测 并自动加载语言包
  * @category   Extend

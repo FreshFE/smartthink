@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-defined('THINK_PATH') or exit();
+defined('FRAME_PATH') or exit();
 
 /**
  * Mysql数据库驱动类

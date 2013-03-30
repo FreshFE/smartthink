@@ -54,7 +54,7 @@ class Think {
     private static function buildApp() {
 
         // 核心配置文件
-        Config::set(include THINK_PATH . 'Conf/convention.php');
+        Config::set(include FRAME_PATH . 'Conf/convention.php');
 
         // 项目配置文件
         if(is_file(CONF_PATH . 'config.php')) {
@@ -63,7 +63,7 @@ class Think {
 
         // 核心行为配置
         if(Config::get('APP_TAGS_ON')) {
-            Config::set('extends', include THINK_PATH . 'Conf/tags.php');
+            Config::set('extends', include FRAME_PATH . 'Conf/tags.php');
         }
 
         // 项目行为配置
@@ -75,7 +75,7 @@ class Think {
         if(APP_DEBUG) {
 
             // 调试模式加载系统默认的配置文件
-            C(include THINK_PATH . 'Conf/debug.php');
+            C(include FRAME_PATH . 'Conf/debug.php');
 
             if(is_file(CONF_PATH . 'debug.php')) {
                 Config::set(include CONF_PATH . 'debug.php');
@@ -83,7 +83,7 @@ class Think {
         }
 
         // 核心语言包
-        Lang::set(include THINK_PATH . 'Lang/' . strtolower(C('DEFAULT_LANG')) . '.php');
+        Lang::set(include FRAME_PATH . 'Lang/' . strtolower(C('DEFAULT_LANG')) . '.php');
 
         // 加载动态项目公共文件和配置
         static::load_ext_file();

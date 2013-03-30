@@ -17,7 +17,7 @@
  * @author   liu21st <liu21st@gmail.com>
  * @version  $Id: debug.php 3071 2012-07-15 07:59:23Z liu21st@gmail.com $
  */
-defined('THINK_PATH') or exit();
+
 // 调试模式下面默认设置 可以在项目配置目录下重新定义 debug.php 覆盖
 return  array(
     'LOG_RECORD'			=>	true,  // 进行日志记录
