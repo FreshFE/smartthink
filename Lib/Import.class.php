@@ -3,44 +3,6 @@
 class Import {
 
 	/**
-	 * 别名映射表
-	 *
-	 * var array
-	 */
-	public static $alias = array(
-
-		'Core' => CORE_PATH,
-		'App' => APP_PATH,
-		'Extend' => EXTEND_PATH
-	);
-
-	/**
-	 * 缓存加载类
-	 *
-	 * @param string $class 类名
-	 * @param string $base 别名或路径
-	 * @param string $ext 后缀
-	 *
-	 * @return bealoon
-	 */
-	public static function uses($class, $alias = '', $ext = EXT) {
-
-		throw new Exception("Close uses", 1);
-		exit();
-
-		// 解析路径
-		if($alias != '') {
-			$alias = static::parse_alias($alias);
-			$alias = static::parse_uri_suffix($alias);
-		}
-
-		// 载入
-		$filename = $alias . $class . $ext;
-		return static::load($filename);
-	}
-
-	// TODO: 重构
-	/**
 	 * 带缓存导入
 	 */
 	public static function load($filename) {
@@ -104,41 +66,5 @@ class Import {
 	        return true;
 	    }
 	    return false;
-	}
-
-	/**
-	 * 解析uri是否存在'/'后缀，不存在则添加
-	 *
-	 * @param string $uri
-	 *
-	 * @return string
-	 */
-	protected static function parse_uri_suffix($uri) {
-
-		// 解析地址后缀'/'
-		if(substr($uri, -1) != '/') {
-		    $uri .= '/';
-		}
-
-		return $uri;
-	}
-
-	/**
-	 * 解析别名映射表
-	 *
-	 * @param string $alias
-	 *
-	 * @return string
-	 */
-	protected static function parse_alias($alias) {
-
-		// 遍历查找别名映射表
-		foreach (static::$alias as $key => $value) {
-			if($key == $alias) {
-				$alias = $value;
-			}
-		}
-
-		return $alias;
 	}
 }
