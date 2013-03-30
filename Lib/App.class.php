@@ -29,12 +29,6 @@ class App {
         // 设置系统时区
         date_default_timezone_set(C('DEFAULT_TIMEZONE'));
 
-        // 加载动态项目公共文件和配置
-        static::load_ext_file();
-
-        // URL调度
-        Dispatcher::dispatch();
-
         // 定义当前请求的系统常量
         define('NOW_TIME',      $_SERVER['REQUEST_TIME']);
         define('REQUEST_METHOD',$_SERVER['REQUEST_METHOD']);
@@ -48,14 +42,16 @@ class App {
         Tag::mark('url_dispatch');
 
         // 页面压缩输出支持
-        if(C('OUTPUT_ENCODE')){
+        if(Config::get('OUTPUT_ENCODE')) {
             $zlib = ini_get('zlib.output_compression');
-            if(empty($zlib)) ob_start('ob_gzhandler');
+            if(empty($zlib)) {
+                ob_start('ob_gzhandler');
+            }
         }
 
         // 系统变量安全过滤
-        if(C('VAR_FILTERS')) {
-            $filters    =   explode(',',C('VAR_FILTERS'));
+        if(Config::get('VAR_FILTERS')) {
+            $filters = explode(',',Config::get('VAR_FILTERS'));
             foreach($filters as $filter){
                 // 全局参数过滤
                 array_walk_recursive($_POST,$filter);
@@ -63,43 +59,15 @@ class App {
             }
         }
 
-        // 获取模板主题名称
-        $templateSet = C('DEFAULT_THEME');
+        // 配置主题目录
+        define('THEME_PATH', TMPL_PATH . GROUP_NAME . '/');
+        define('APP_TMPL_PATH' , __ROOT__ . '/' . APP_NAME . (APP_NAME ? '/' : '') . basename(TMPL_PATH) . '/' . GROUP_NAME . '/');
 
-        // 自动侦测模板主题
-        if(C('TMPL_DETECT_THEME')) {
-            $t = C('VAR_TEMPLATE');
-            if (isset($_GET[$t])){
-                $templateSet = $_GET[$t];
-            }
-            elseif(Cookie::get('think_template')){
-                $templateSet = Cookie::get('think_template');
-            }
-            if(!in_array($templateSet, explode(',', C('THEME_LIST')))){
-                $templateSet = C('DEFAULT_THEME');
-            }
-            Cookie::set('think_template', $templateSet, 864000);
-        }
+        // 缓存路径
+        Config::set('CACHE_PATH', CACHE_PATH . GROUP_NAME . '/');
 
-        // 模板相关目录常量
-        // 当前模板主题名称
-        define('THEME_NAME', $templateSet);
-        $group = defined('GROUP_NAME') ? GROUP_NAME . '/' : '';
-
-        // 独立分组模式
-        if(C('APP_GROUP_MODE') == 1) {
-            define('THEME_PATH', BASE_LIB_PATH . basename(TMPL_PATH) . '/' . (THEME_NAME ? THEME_NAME . '/' : ''));
-            define('APP_TMPL_PATH', __ROOT__ . '/' . APP_NAME . (APP_NAME ? '/' : '') . C('APP_GROUP_PATH') . '/' . $group . basename(TMPL_PATH) . '/' . (THEME_NAME?THEME_NAME . '/' : ''));
-        }
-        else {
-            define('THEME_PATH', TMPL_PATH . $group . (THEME_NAME ? THEME_NAME . '/' : ''));
-            define('APP_TMPL_PATH' , __ROOT__ . '/' . APP_NAME . (APP_NAME ? '/' : '') . basename(TMPL_PATH) . '/' . $group . (THEME_NAME ? THEME_NAME . '/' : ''));
-        }        
-
-        C('CACHE_PATH', CACHE_PATH . $group);
-
-        //动态配置 TMPL_EXCEPTION_FILE,改为绝对地址
-        C('TMPL_EXCEPTION_FILE', realpath(C('TMPL_EXCEPTION_FILE')));
+        // 动态配置 TMPL_EXCEPTION_FILE，改为绝对地址
+        Config::set('TMPL_EXCEPTION_FILE', realpath(Config::get('TMPL_EXCEPTION_FILE')));
     }
 
     /**
@@ -209,26 +177,6 @@ class App {
             $method->invokeArgs($module,array($action,''));
         }
         return ;
-    }
-
-    /**
-     * 加载动态扩展文件
-     *
-     * @return void
-     */
-    private static function load_ext_file() {
-
-        // 加载自定义的动态配置文件
-        if(C('LOAD_EXT_CONFIG')) {
-            $configs    =  C('LOAD_EXT_CONFIG');
-            if(is_string($configs)) $configs =  explode(',',$configs);
-            foreach ($configs as $key=>$config){
-                $file   = CONF_PATH.$config.'.php';
-                if(is_file($file)) {
-                    is_numeric($key)?C(include $file):C($key,include $file);
-                }
-            }
-        }
     }
 
     /**

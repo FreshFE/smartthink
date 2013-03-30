@@ -54,33 +54,72 @@ class Think {
     private static function buildApp() {
 
         // 核心配置文件
-        C(include THINK_PATH . 'Conf/convention.php');
+        Config::set(include THINK_PATH . 'Conf/convention.php');
 
         // 项目配置文件
         if(is_file(CONF_PATH . 'config.php')) {
-            C(include CONF_PATH . 'config.php');
+            Config::set(include CONF_PATH . 'config.php');
         }
 
-        // 核心语言包
-        L(include THINK_PATH . 'Lang/' . strtolower(C('DEFAULT_LANG')) . '.php');
-
         // 核心行为配置
-        if(C('APP_TAGS_ON')) {
-            C('extends', include THINK_PATH . 'Conf/tags.php');
+        if(Config::get('APP_TAGS_ON')) {
+            Config::set('extends', include THINK_PATH . 'Conf/tags.php');
         }
 
         // 项目行为配置
-        if(is_file(CONF_PATH.'tags.php')){
-            C('tags', include CONF_PATH . 'tags.php');
+        if(is_file(CONF_PATH . 'tags.php')) {
+            Config::set('tags', include CONF_PATH . 'tags.php');
         }
 
+        // 调试模式下加载调试文件
         if(APP_DEBUG) {
 
             // 调试模式加载系统默认的配置文件
             C(include THINK_PATH . 'Conf/debug.php');
 
-            if(is_file(CONF_PATH . 'debug.php')) { 
-                $alias = include CONF_PATH . 'debug.php';
+            if(is_file(CONF_PATH . 'debug.php')) {
+                Config::set(include CONF_PATH . 'debug.php');
+            }
+        }
+
+        // 核心语言包
+        Lang::set(include THINK_PATH . 'Lang/' . strtolower(C('DEFAULT_LANG')) . '.php');
+
+        // 加载动态项目公共文件和配置
+        static::load_ext_file();
+
+        // URL调度
+        Dispatcher::dispatch();
+
+        // 设置不同分组的配置
+        if(is_file(LIB_PATH . GROUP_NAME . '/Conf/tag.php')) {
+            // dump('is_file');
+        }
+    }
+
+    /**
+     * 加载扩展配置文件
+     *
+     * @return void
+     */
+    private static function load_ext_file() {
+
+        // 加载自定义的动态配置文件
+        if(C('LOAD_EXT_CONFIG')) {
+
+            $configs = C('LOAD_EXT_CONFIG');
+
+            if(is_string($configs)) {
+                $configs =  explode(',',$configs);
+            }
+
+            foreach ($configs as $key => $config) {
+
+                $file = CONF_PATH . $config . '.php';
+
+                if(is_file($file)) {
+                    is_numeric($key) ? C(include $file) : C($key,include $file);
+                }
             }
         }
     }
