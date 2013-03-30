@@ -119,7 +119,8 @@ class SmartThink {
          *
          * @const string
          */
-        defined('APP_NAME') or define('APP_NAME', basename(dirname($_SERVER['SCRIPT_FILENAME'])));
+        // defined('APP_NAME') or define('APP_NAME', basename(dirname($_SERVER['SCRIPT_FILENAME'])));
+        defined('APP_NAME') or define('APP_NAME', '');
 
         /**
          * 在非命令行执行中定义常量
@@ -216,7 +217,6 @@ class SmartThink {
             CORE_PATH.'Cookie.class.php',
             CORE_PATH.'Db.class.php',
             CORE_PATH.'Debug.class.php',
-            CORE_PATH.'Dispatcher.class.php',
             CORE_PATH.'File.class.php',
             CORE_PATH.'Http.class.php',
             CORE_PATH.'Import.class.php',
@@ -224,6 +224,7 @@ class SmartThink {
             CORE_PATH.'Log.class.php',
             CORE_PATH.'Model.class.php',
             CORE_PATH.'Redirect.class.php',
+            CORE_PATH.'Router.class.php',
             CORE_PATH.'Session.class.php',
             CORE_PATH.'Tag.class.php',
             CORE_PATH.'Think.class.php',
