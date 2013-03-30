@@ -41,7 +41,7 @@ class Helper {
 		switch (count($arr)) {
 			case 1:
 				list($action) = $arr;
-				$module = MODULE_NAME;
+				$module = CONTROLLER_NAME;
 				break;
 			
 			case 2:
@@ -49,7 +49,7 @@ class Helper {
 				break;
 		}
 
-		if (strtolower($module) == strtolower(MODULE_NAME)) {
+		if (strtolower($module) == strtolower(CONTROLLER_NAME)) {
 			if (strtolower($action) == strtolower(ACTION_NAME) || $action == '*') {
 				$active = true;
 			}
@@ -87,7 +87,7 @@ class Helper {
 		
 		// 如果action前带有'@.'，则表示本模块内的调用
 		if($base) {
-			return R(MODULE_NAME . '/' . $action, array($data));
+			return R(CONTROLLER_NAME . '/' . $action, array($data));
 		}
 
 		// 指定widget小插件数据，$action => 指定操作名，$data传递数组数据

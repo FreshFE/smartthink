@@ -48,17 +48,17 @@ class Router {
 		$controller = static::getControllerName($pathinfo);
 		
 		// 常量定义
-		define('GROUP_NAME', 	$controller['group']);
-		define('GROUP_PATH', 	LIB_PATH . GROUP_NAME . '/');
-		define('MODULE_NAME', 	$controller['module']);
-        define('ACTION_NAME', 	$controller['action']);
+		define('GROUP_NAME', 		$controller['group']);
+		define('GROUP_PATH', 		LIB_PATH . GROUP_NAME . '/');
+		define('CONTROLLER_NAME', 	$controller['module']);
+        define('ACTION_NAME', 		$controller['action']);
 
-        define('__EXT__', 		$extension);
-        define('__SELF__', 		strip_tags($_SERVER['REQUEST_URI']));
-		define('__APP__', 		APP_NAME);
-        define('__GROUP__', 	strtolower(__APP__ . '/' . GROUP_NAME));
-        define('__URL__', 		__GROUP__ . '/' . strtolower(MODULE_NAME));
-        define('__ACTION__', 	__URL__ . '/' . strtolower(ACTION_NAME));
+        define('__EXT__', 			$extension);
+        define('__SELF__', 			strip_tags($_SERVER['REQUEST_URI']));
+		define('__APP__', 			APP_NAME);
+        define('__GROUP__', 		strtolower(__APP__ . '/' . GROUP_NAME));
+        define('__URL__', 			__GROUP__ . '/' . strtolower(CONTROLLER_NAME));
+        define('__ACTION__', 		__URL__ . '/' . strtolower(ACTION_NAME));
 
         // 解析get值
 		static::parsePathinfoQuery($pathinfo);

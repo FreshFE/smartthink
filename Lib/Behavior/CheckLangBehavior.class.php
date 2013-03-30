@@ -103,7 +103,7 @@ class CheckLangBehavior extends Behavior {
         }
 
         // 读取当前模块语言包
-        if (is_file($lang_path . $group . strtolower(MODULE_NAME) . '.php'))
-            L(include $lang_path . $group . strtolower(MODULE_NAME) . '.php');
+        if (is_file($lang_path . $group . strtolower(CONTROLLER_NAME) . '.php'))
+            L(include $lang_path . $group . strtolower(CONTROLLER_NAME) . '.php');
     }
 }

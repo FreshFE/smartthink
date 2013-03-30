@@ -77,19 +77,19 @@ class App {
      */
     static public function exec() {
 
-        // 针对MODULE_NAME进行安全检测
-        if(!preg_match('/^[A-Za-z](\w)*$/', MODULE_NAME)) {
+        // 针对CONTROLLER_NAME进行安全检测
+        if(!preg_match('/^[A-Za-z](\w)*$/', CONTROLLER_NAME)) {
             $module = false;
         }
         //创建Action控制器实例
         else {
             $group = defined('GROUP_NAME') && C('APP_GROUP_MODE') == 0 ? GROUP_NAME . '/' : '';
-            $module = A($group . MODULE_NAME);
+            $module = A($group . CONTROLLER_NAME);
         }
         // dump($module);
         // 不存在当前Module
         if(!$module) {
-            if('4e5e5d7364f443e28fbf0d3ae744a59a' == MODULE_NAME) {
+            if('4e5e5d7364f443e28fbf0d3ae744a59a' == CONTROLLER_NAME) {
                 exit('exec, App.class.php in line 108');
             }
 
@@ -105,7 +105,7 @@ class App {
             else {
                 $module = A($group.'Empty');
                 if(!$module){
-                    Http::_404(L('_MODULE_NOT_EXIST_').':'.MODULE_NAME);
+                    Http::_404(L('_MODULE_NOT_EXIST_').':'.CONTROLLER_NAME);
                 }
             }
         }
@@ -113,7 +113,7 @@ class App {
         // 获取当前操作名 支持动态路由
         
         $action = C('ACTION_NAME') ? C('ACTION_NAME') : ACTION_NAME;
-        C('TEMPLATE_NAME', THEME_PATH . MODULE_NAME . C('TMPL_FILE_DEPR') . $action . C('TMPL_TEMPLATE_SUFFIX'));
+        C('TEMPLATE_NAME', THEME_PATH . CONTROLLER_NAME . C('TMPL_FILE_DEPR') . $action . C('TMPL_TEMPLATE_SUFFIX'));
         $action .= C('ACTION_SUFFIX');
 
         try {

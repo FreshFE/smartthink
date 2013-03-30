@@ -176,8 +176,8 @@ class Auth {
 		if(empty($adapter)) $this->setAdapter();
 
 		$routers = array(
-			GROUP_NAME . '/' . MODULE_NAME . '/' . ACTION_NAME,
-			GROUP_NAME . '/' . MODULE_NAME,
+			GROUP_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME,
+			GROUP_NAME . '/' . CONTROLLER_NAME,
 			GROUP_NAME
 		);
 

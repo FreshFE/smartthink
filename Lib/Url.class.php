@@ -73,7 +73,7 @@ class Url {
 	            $path       =   explode($depr,$url);
 	            $var        =   array();
 	            $var[C('VAR_ACTION')]       =   !empty($path)?array_pop($path):ACTION_NAME;
-	            $var[C('VAR_MODULE')]       =   !empty($path)?array_pop($path):MODULE_NAME;
+	            $var[C('VAR_MODULE')]       =   !empty($path)?array_pop($path):CONTROLLER_NAME;
 	            if($maps = C('URL_ACTION_MAP')) {
 	                if(isset($maps[strtolower($var[C('VAR_MODULE')])])) {
 	                    $maps    =   $maps[strtolower($var[C('VAR_MODULE')])];
