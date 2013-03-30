@@ -87,7 +87,7 @@ class Helper {
 		
 		// 如果action前带有'@.'，则表示本模块内的调用
 		if($base) {
-			return R(CONTROLLER_NAME . '/' . $action, array($data));
+			return R(GROUP_NAME . '/' . CONTROLLER_NAME . '/' . $action, array($data));
 		}
 
 		// 指定widget小插件数据，$action => 指定操作名，$data传递数组数据
