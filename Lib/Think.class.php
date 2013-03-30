@@ -32,9 +32,9 @@ class Think {
     public static function start() {
 
         // 设定错误和异常处理
-        // register_shutdown_function(array('Think','fatalError'));
-        // set_error_handler(array('Think','appError'));
-        // set_exception_handler(array('Think','appException'));
+        register_shutdown_function(array('Think','fatalError'));
+        set_error_handler(array('Think','appError'));
+        set_exception_handler(array('Think','appException'));
 
         // 注册AUTOLOAD方法
         spl_autoload_register(array('Think', 'autoload'));

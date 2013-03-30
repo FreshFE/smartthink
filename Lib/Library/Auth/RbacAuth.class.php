@@ -11,7 +11,7 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-\Import::uses('Auth', dirname(__FILE__));
+\Import::load(dirname(__FILE__) . '/Auth' . EXT);
 
 /**
  * 配置方法
@@ -107,7 +107,7 @@ class RbacAuth extends Auth {
 	 *
 	 * @return void
 	 */
-	public function __construct(string $auth_key, array $rules, array $roles) {
+	public function __construct($auth_key, $rules, $roles) {
 
 		// 执行父类构造函数
 		parent::__construct($auth_key, $rules);
@@ -146,7 +146,7 @@ class RbacAuth extends Auth {
 	 *
 	 * @return array 用户组适配器列表
 	 */
-	protected function getRoleAdapter(int $role_id) {
+	protected function getRoleAdapter($role_id) {
 
 		// 是否设置了$role_id
 		if(!$role_id) {

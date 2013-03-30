@@ -18,7 +18,7 @@
  * @author      minowu
  */
 
-\Import::uses('Image', dirname(__FILE__));
+\Import::load(dirname(__FILE__) . 'Image' . EXT);
 
 /*
 array(11) {

@@ -11,7 +11,7 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-Import::uses('Library/Smarty/Smarty', 'Core');
+Import::load(CORE_PATH . 'Library/Smarty/Smarty' . EXT);
 
 /**
  * TemplateSmarty Class

@@ -1,6 +1,6 @@
 <?php
 
-Import::uses('Driver/Template/TemplateSmarty', 'Core');
+Import::load(CORE_PATH . 'Driver/Template/TemplateSmarty' . EXT);
 
 class ParseTemplateBehavior extends Behavior {
 

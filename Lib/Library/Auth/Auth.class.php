@@ -71,7 +71,7 @@ class Auth {
 	 * @param string $auth_key session名称
 	 * @param array $rules 访问规则，参考$this->rules的规则
 	 */
-	public function __construct(string $auth_key, array $rules) {
+	public function __construct($auth_key, $rules) {
 
 		if($auth_key) {
 			$this->auth_key = $auth_key;

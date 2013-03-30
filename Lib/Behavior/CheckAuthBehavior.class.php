@@ -126,7 +126,7 @@ class CheckAuthBehavior extends Behavior {
 	private function check() {
 
 		// 依赖载入
-		Import::uses(C('AUTH_PACKAGE_NAME'), C('AUTH_PACKAGE_PATH'));
+		Import::load(CORE_PATH . 'Library/Auth/RbacAuth' . EXT);
 
 		// 类实例化
 		$class = C('AUTH_CLASS');

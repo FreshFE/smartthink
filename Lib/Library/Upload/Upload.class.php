@@ -1,6 +1,6 @@
 <?php namespace Think\Library;
 
-\Import::uses('UploadFile', dirname(__FILE__));
+\Import::load(dirname(__FILE__) . 'UploadFile' . EXT);
 
 class Upload {
 

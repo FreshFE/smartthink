@@ -1,6 +1,6 @@
 <?php namespace Think\Library;
 
-\Import::uses('RbacAuth', dirname(__FILE__));
+\Import::load(dirname(__FILE__) . 'RbacAuth' . EXT);
 
 class ApiAuth extends RbacAuth {
 

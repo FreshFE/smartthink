@@ -23,7 +23,10 @@ class Import {
 	 *
 	 * @return bealoon
 	 */
-	public static function uses(string $class, $alias = '', $ext = EXT) {
+	public static function uses($class, $alias = '', $ext = EXT) {
+
+		throw new Exception("Close uses", 1);
+		exit();
 
 		// 解析路径
 		if($alias != '') {

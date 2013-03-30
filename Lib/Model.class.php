@@ -1503,7 +1503,7 @@ class Model {
 
     public function pager(int $page, int $listRows) {
 
-        Import::uses('Library/Pager', 'Core');
+        Import::load(CORE_PATH . 'Library/Pager' . EXT);
         $Pager = new Think\Library\Pager();
         
         return $Pager->output($this->count(), $listRows);

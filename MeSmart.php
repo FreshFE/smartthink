@@ -1,4 +1,4 @@
-<?php namespace SmartThink;
+<?php namespace MeSmart;
 /**
  * SmartThink.class.php
  * Smart ThinkPHP
@@ -17,7 +17,7 @@
  * 定义常量
  * 创建runtime启动程序
  */
-class SmartThink {
+class MeSmart {
 
     /**
      * 初始化Runtime开始执行程序
@@ -290,4 +290,4 @@ class SmartThink {
 }
 
 // 启动
-SmartThink::run();
+MeSmart::run();
