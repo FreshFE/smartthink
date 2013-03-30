@@ -32,9 +32,9 @@ class Think {
     public static function start() {
 
         // 设定错误和异常处理
-        register_shutdown_function(array('Think','fatalError'));
-        set_error_handler(array('Think','appError'));
-        set_exception_handler(array('Think','appException'));
+        // register_shutdown_function(array('Think','fatalError'));
+        // set_error_handler(array('Think','appError'));
+        // set_exception_handler(array('Think','appException'));
 
         // 注册AUTOLOAD方法
         spl_autoload_register(array('Think', 'autoload'));
@@ -140,31 +140,34 @@ class Think {
     public static function autoload($class) {
 
         // 定义基本文件
-        $file = $class . '.class.php';
+        $file = $class . EXT;
 
         // 加载行为
         if(substr($class, -8) == 'Behavior') {
             $files = array(
                 CORE_PATH . 'Behavior/' . $file,
-                LIB_PATH . 'Behavior/' . $file
+                LIB_PATH . 'Behavior/' . $file,
+                GROUP_PATH . 'Behavior/' . $file
             );
         }
 
-        // 加载控制器
-        else if(substr($class, -10) == 'Controller') {
-            $files = array(
-                LIB_PATH . 'Controller/' . GROUP_NAME . $file,
-                LIB_PATH . 'Controller/' . $file
-            );
-        }
+        // // 加载控制器
+        // else if(substr($class, -10) == 'Controller') {
+        //     $files = array(
+        //         LIB_PATH . 'Controller/' . GROUP_NAME . $file,
+        //         LIB_PATH . 'Controller/' . $file,
+        //         GROUP_PATH . 'Controller/' . $file
+        //     );
+        // }
 
-        // 加载模型
-        else if(substr($class, -5) == 'Model') {
-            $files = array(
-                LIB_PATH . 'Model/' . GROUP_NAME . $file,
-                LIB_PATH . 'Model/' . $file
-            );
-        }
+        // // 加载模型
+        // else if(substr($class, -5) == 'Model') {
+        //     $files = array(
+        //         LIB_PATH . 'Model/' . GROUP_NAME . $file,
+        //         LIB_PATH . 'Model/' . $file,
+        //         GROUP_PATH . 'Model/' . $file
+        //     );
+        // }
 
         // 加载缓存驱动
         else if(substr($class, 0, 5) == 'Cache') {
