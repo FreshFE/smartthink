@@ -199,7 +199,7 @@ class App {
         Session::config(C('SESSION_OPTIONS'));
 
         // 项目session初始化
-        Tag::mark('app_session_begin');
+        Tag::mark('app_auth');
 
         // 记录应用初始化时间
         Debug::mark('initTime');
