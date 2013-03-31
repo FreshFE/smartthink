@@ -1,4 +1,4 @@
-﻿#Smart ThinkPHP
+﻿#meSmart php
 
 ##Thanks ThinkPHP and Smarty
 
@@ -22,8 +22,8 @@
 		|		|-----View
 		|
 		|-----Tpl
-		|-----base.php
-		|-----ThinkPHP.php
+		|-----functions.php
+		|-----meSmart.php
 
 ---
 ###删除ThinkPHP原模板引擎，彻底改用Smarty
