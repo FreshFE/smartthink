@@ -54,7 +54,7 @@ class Think {
     private static function buildApp() {
 
         // 核心配置文件
-        Config::set(include FRAME_PATH . 'Conf/convention.php');
+        Config::set(include FRAME_PATH . 'Conf/config.php');
 
         // 项目配置文件
         if(is_file(CONF_PATH . 'config.php')) {
