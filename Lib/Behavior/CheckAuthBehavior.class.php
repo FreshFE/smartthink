@@ -111,8 +111,8 @@ class CheckAuthBehavior extends Behavior {
 			// 开始check
 			$auth = $this->check();
 
-			// 将对象放入配置全局
-			C('AUTH', $auth);
+			// 将对象输出到全局
+			Config::set('auth', $auth);
 		}
 	}
 

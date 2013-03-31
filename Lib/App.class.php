@@ -204,7 +204,7 @@ class App {
         // 记录应用初始化时间
         Debug::mark('initTime');
 
-        // 抛出异常
+        // 执行程序
         App::exec();
 
         // 项目结束标签
