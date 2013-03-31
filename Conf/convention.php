@@ -1,74 +1,185 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-/**
- * ThinkPHP惯例配置文件
- * 该文件请不要修改，如果要覆盖惯例配置的值，可在项目配置文件中设定和惯例不符的配置项
- * 配置名称大小写任意，系统会统一转换成小写
- * 所有配置参数都可以在生效前动态改变
- * @category Think
- * @package  Common
- * @author   liu21st <liu21st@gmail.com>
- * @version  $Id: convention.php 3088 2012-07-29 09:12:19Z luofei614@gmail.com $
- */
 return  array(
-    /* 项目设定 */
-    'APP_STATUS'            => 'debug',  // 应用调试模式状态 调试模式开启后有效 默认为debug 可扩展 并自动加载对应的配置文件
-    'APP_FILE_CASE'         => true,   // 是否检查文件的大小写 对Windows平台有效
-    'APP_AUTOLOAD_PATH'     => '',// 自动加载机制的自动搜索路径,注意搜索顺序
-    'APP_TAGS_ON'           => true, // 系统标签扩展开关
-    'APP_SUB_DOMAIN_DEPLOY' => false,   // 是否开启子域名部署
-    'APP_SUB_DOMAIN_RULES'  => array(), // 子域名部署规则
-    'APP_SUB_DOMAIN_DENY'   => array(), //  子域名禁用列表
-    'APP_GROUP_LIST'        => 'Home,Admin,Api',      // 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
-    'APP_GROUP_MODE'        =>  0,  // 分组模式 0 普通分组 1 独立分组
-    'APP_GROUP_PATH'        =>  'Modules', // 分组目录 独立分组模式下面有效
-    'ACTION_SUFFIX'         =>  '', // 操作方法后缀
 
-    /* 默认设定 */
-    'DEFAULT_M_LAYER'       => 'Model', // 默认的模型层名称
-    'DEFAULT_C_LAYER'       => 'Controller', // 默认的控制器层名称
-    'DEFAULT_APP'           => '@',     // 默认项目名称，@表示当前项目
-    'DEFAULT_LANG'          => 'zh-cn', // 默认语言
-    'DEFAULT_THEME'         => '',	// 默认模板主题名称
-    'DEFAULT_GROUP'         => 'Home',  // 默认分组
-    'DEFAULT_MODULE'        => 'Index', // 默认模块名称
-    'DEFAULT_ACTION'        => 'index', // 默认操作名称
-    'DEFAULT_CHARSET'       => 'utf-8', // 默认输出编码
-    'DEFAULT_TIMEZONE'      => 'PRC',	// 默认时区
-    'DEFAULT_AJAX_RETURN'   => 'JSON',  // 默认AJAX 数据返回格式,可选JSON XML ...
-    'DEFAULT_JSONP_HANDLER' => 'jsonpReturn', // 默认JSONP格式返回的处理方法
-    'DEFAULT_FILTER'        => 'htmlspecialchars', // 默认参数过滤方法 用于 $this->_get('变量名');$this->_post('变量名')...
+    // -------------------------------------------
+    // 项目配置
+    // -------------------------------------------
+    /**
+     * TODO: 可以废弃
+     * 应用调试模式状态
+     * 调试模式开启后有效
+     * 默认为debug，可扩展，并自动加载对应的配置文件
+     */
+    'APP_STATUS'            => 'debug',
 
-    /* 数据库设置 */
-    'DB_TYPE'               => 'mysql',     // 数据库类型
-    'DB_HOST'               => 'localhost', // 服务器地址
-    'DB_NAME'               => '',          // 数据库名
-    'DB_USER'               => 'root',      // 用户名
-    'DB_PWD'                => '',          // 密码
-    'DB_PORT'               => '',        // 端口
-    'DB_PREFIX'             => 'think_',    // 数据库表前缀
-    'DB_FIELDTYPE_CHECK'    => false,       // 是否进行字段类型检查
-    'DB_FIELDS_CACHE'       => true,        // 启用字段缓存
-    'DB_CHARSET'            => 'utf8',      // 数据库编码默认采用utf8
-    'DB_DEPLOY_TYPE'        => 0, // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
-    'DB_RW_SEPARATE'        => false,       // 数据库读写是否分离 主从式有效
-    'DB_MASTER_NUM'         => 1, // 读写分离后 主服务器数量
-    'DB_SLAVE_NO'           => '', // 指定从服务器序号
-    'DB_SQL_BUILD_CACHE'    => false, // 数据库查询的SQL创建缓存
-    'DB_SQL_BUILD_QUEUE'    => 'file',   // SQL缓存队列的缓存方式 支持 file xcache和apc
-    'DB_SQL_BUILD_LENGTH'   => 20, // SQL缓存的队列长度
-    'DB_SQL_LOG'            => false, // SQL执行日志记录
+    /**
+     * 是否检查文件的大小写，对Windows平台有效
+     */
+    'APP_FILE_CASE'         => true,
 
-    /* 数据缓存设置 */
+
+    /**
+     * 自动加载机制的自动搜索路径,注意搜索顺序
+     */
+    /*'APP_AUTOLOAD_PATH'     => '',*/
+
+    /**
+     * TODO: 合并源代码后删除
+     * 系统标签扩展开关
+     */
+    'APP_TAGS_ON'           => true,
+
+    /**
+     * 1. 是否开启子域名部署
+     * 2. 子域名部署规则
+     * 3. 子域名禁用列表
+     */
+    'APP_SUB_DOMAIN_DEPLOY' => false,
+    'APP_SUB_DOMAIN_RULES'  => array(),
+    'APP_SUB_DOMAIN_DENY'   => array(),
+
+    /**
+     * 1. 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
+     * 2. 分组模式 0 普通分组 1 独立分组
+     * 3. 分组目录 独立分组模式下面有效
+     *
+     * TODO: 2、3项分析代码后删除
+     */
+    'APP_GROUP_LIST'        => 'Home,Admin,Api',
+    'APP_GROUP_MODE'        =>  0,
+    'APP_GROUP_PATH'        =>  'Modules',
+
+    /**
+     * 操作方法后缀
+     * create => create_action
+     */
+    'ACTION_SUFFIX'         =>  '',
+
+    // -------------------------------------------
+    // 默认配置
+    // -------------------------------------------
+    /**
+     * 1. 默认的模型层名称
+     * 2. 默认的控制器层名称
+     */
+    'DEFAULT_M_LAYER'       => 'Model',
+    'DEFAULT_C_LAYER'       => 'Controller',
+
+    /**
+     * 默认项目名称，@表示当前项目
+     */
+    /*'DEFAULT_APP'           => '@',*/
+
+    /**
+     * 默认语言
+     */
+    'DEFAULT_LANG'          => 'zh-cn',
+
+    /**
+     * 默认模板主题名称
+     */
+    /*'DEFAULT_THEME'         => '',*/
+
+    /**
+     * 1. 默认分组，当有Admin,Home,Api等分组时，默认为什么分组
+     * 2. 默认模块名称
+     * 3. 默认操作名称
+     */
+    'DEFAULT_GROUP'         => 'Home',
+    'DEFAULT_MODULE'        => 'Index',
+    'DEFAULT_ACTION'        => 'index',
+
+    /**
+     * 默认输出编码
+     */
+    'DEFAULT_CHARSET'       => 'utf-8',
+
+    /**
+     * 默认时区
+     */
+    'DEFAULT_TIMEZONE'      => 'PRC',
+
+    /**
+     * 1. 默认AJAX 数据返回格式,可选JSON XML ...
+     * 2. 默认JSONP格式返回的处理方法
+     */
+    'DEFAULT_AJAX_RETURN'   => 'JSON',
+    'DEFAULT_JSONP_HANDLER' => 'jsonpReturn',
+
+    /**
+     * 默认参数过滤方法
+     * 用于 $this->_get('变量名');$this->_post('变量名')...
+     */
+    'DEFAULT_FILTER'        => 'htmlspecialchars',
+
+    // -------------------------------------------
+    // 数据库配置
+    // -------------------------------------------
+    /**
+     * 1. 数据库类型，可以使用其他数据库类型，并配合驱动扩展使用
+     * 2. 服务器地址
+     */
+    'DB_TYPE'               => 'mysql',
+    'DB_HOST'               => 'localhost',
+
+    /**
+     * 1. 数据库名
+     * 2. 用户名
+     * 3. 密码
+     */
+    'DB_NAME'               => '',
+    'DB_USER'               => 'root',
+    'DB_PWD'                => '',
+
+    /**
+     * 1. 端口
+     * 2. 数据库表前缀
+     * 3. 数据库编码默认采用utf8
+     */
+    'DB_PORT'               => '',
+    'DB_PREFIX'             => 'think_',
+    'DB_CHARSET'            => 'utf8',
+
+    /**
+     * 是否进行字段类型检查
+     * TODO: 当前没有地方用到
+     */
+    'DB_FIELDTYPE_CHECK'    => false,
+
+    /**
+     * 启用字段缓存
+     */
+    'DB_FIELDS_CACHE'       => true,
+
+    /**
+     * 1. 数据库部署方式:0 集中式(单一服务器), 1 分布式(主从服务器)
+     * 2. 数据库读写是否分离 主从式有效
+     * 3. 读写分离后 主服务器数量
+     * 4. 指定从服务器序号
+     */
+    'DB_DEPLOY_TYPE'        => 0,
+    'DB_RW_SEPARATE'        => false,
+    'DB_MASTER_NUM'         => 1,
+    'DB_SLAVE_NO'           => '',
+
+    /**
+     * 1. 数据库查询的SQL创建缓存
+     * 2. SQL缓存队列的缓存方式 支持 file xcache和apc
+     * 3. SQL缓存的队列长度
+     */
+    'DB_SQL_BUILD_CACHE'    => false,
+    'DB_SQL_BUILD_QUEUE'    => 'file',
+    'DB_SQL_BUILD_LENGTH'   => 20,
+
+    /**
+     * SQL执行日志记录
+     */
+    'DB_SQL_LOG'            => false,
+
+    // -------------------------------------------
+    // 数据缓存设置
+    // -------------------------------------------
     'DATA_CACHE_TIME'       => 0,      // 数据缓存有效期 0表示永久缓存
     'DATA_CACHE_COMPRESS'   => false,   // 数据缓存是否压缩缓存
     'DATA_CACHE_CHECK'      => false,   // 数据缓存是否校验缓存
