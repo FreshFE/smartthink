@@ -2,7 +2,7 @@
 
 class Tag {
 
-	public static function mark($tag, &$params=NULL) {
+	public static function listen($tag, &$params = NULL) {
 	    // 系统标签扩展
 	    $extends    = C('extends.' . $tag);
 	    // 应用标签扩展

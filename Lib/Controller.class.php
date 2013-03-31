@@ -53,7 +53,7 @@ abstract class Controller {
      * @return void
      */
     public function __construct() {
-        Tag::mark('action_begin', $this->config);
+        Tag::listen('action_begin', $this->config);
     }
 
    /**
@@ -328,7 +328,7 @@ abstract class Controller {
                 exit($data);            
             default     :
                 // 用于扩展其他返回格式数据
-                Tag::mark('ajax_return',$data);
+                Tag::listen('ajax_return',$data);
         }
     }
 
@@ -340,6 +340,6 @@ abstract class Controller {
         // 保存日志
         if(C('LOG_RECORD')) Log::save();
         // 执行后续操作
-        Tag::mark('action_end');
+        Tag::listen('action_end');
     }
 }
