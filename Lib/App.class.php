@@ -198,11 +198,11 @@ class App {
         // Session初始化
         Session::config(C('SESSION_OPTIONS'));
 
-        // 项目session初始化
-        Tag::listen('app_auth');
-
         // 记录应用初始化时间
         Debug::mark('initTime');
+
+        // 项目执行前检查访问者权限
+        Tag::listen('app_auth');
 
         // 执行程序
         App::exec();
