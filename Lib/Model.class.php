@@ -1,30 +1,15 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-/**
- * ThinkPHP Model模型类
- * 实现了ORM和ActiveRecords模式
- * @category   Think
- * @package  Think
- * @subpackage  Core
- * @author    liu21st <liu21st@gmail.com>
- */
 class Model {
+
     // 操作状态
     const MODEL_INSERT          =   1;      //  插入模型数据
     const MODEL_UPDATE          =   2;      //  更新模型数据
     const MODEL_BOTH            =   3;      //  包含上面两种方式
-    const MUST_VALIDATE         =   1;// 必须验证
-    const EXISTS_VALIDATE       =   0;// 表单存在字段则验证
-    const VALUE_VALIDATE        =   2;// 表单值不为空则验证
+    const MUST_VALIDATE         =   1;      // 必须验证
+    const EXISTS_VALIDATE       =   0;      // 表单存在字段则验证
+    const VALUE_VALIDATE        =   2;      // 表单值不为空则验证
+
     // 当前使用的扩展模型
     private   $_extModel        =   null;
     // 当前数据库操作对象
@@ -63,62 +48,83 @@ class Model {
     protected $methods          =   array('table','order','alias','having','group','lock','distinct','auto','filter','validate');
 
     /**
-     * 架构函数
+     * 构造函数
      * 取得DB类的实例对象 字段检查
-     * @access public
+     *
      * @param string $name 模型名称
      * @param string $tablePrefix 表前缀
      * @param mixed $connection 数据库连接信息
+     *
+     * @return void
      */
-    public function __construct($name='',$tablePrefix='',$connection='') {
-        // 模型初始化
-        $this->_initialize();
+    public function __construct($name = '', $tablePrefix = '', $connection = '') {
+
+        // TODO: 废弃功能
+        /*// 模型初始化
+        $this->_initialize();*/
+
         // 获取模型名称
         if(!empty($name)) {
-            if(strpos($name,'.')) { // 支持 数据库名.模型名的 定义
-                list($this->dbName,$this->name) = explode('.',$name);
-            }else{
-                $this->name   =  $name;
+
+            // 支持 数据库名.模型名的 定义
+            if(strpos($name, '.')) {
+                list($this->dbName, $this->name) = explode('.', $name);
             }
-        }elseif(empty($this->name)){
-            $this->name =   $this->getModelName();
+            else {
+                $this->name = $name;
+            }
         }
+        // 为空查找类定义
+        elseif(empty($this->name)){
+            $this->name = $this->getModelName();
+        }
+
         // 设置表前缀
-        if(is_null($tablePrefix)) {// 前缀为Null表示没有前缀
+        // 前缀为null表示没有前缀，通常为强制设定为没有前缀
+        if(is_null($tablePrefix)) {
             $this->tablePrefix = '';
-        }elseif('' != $tablePrefix) {
+        }
+        // 不为空将前缀赋值类属性
+        else if('' != $tablePrefix) {
             $this->tablePrefix = $tablePrefix;
-        }else{
-            $this->tablePrefix = $this->tablePrefix?$this->tablePrefix:C('DB_PREFIX');
+        }
+        // 最后如果不为null不为''则获得类属性或配置
+        else {
+            $this->tablePrefix = $this->tablePrefix ? $this->tablePrefix : Config::get('DB_PREFIX');
         }
 
         // 数据库初始化操作
         // 获取数据库操作对象
         // 当前模型有独立的数据库连接信息
-        $this->db(0,empty($this->connection)?$connection:$this->connection);
+        $this->db(0, empty($this->connection) ? $connection : $this->connection);
     }
 
     /**
      * 自动检测数据表信息
-     * @access protected
+     *
      * @return void
      */
     protected function _checkTableInfo() {
+
         // 如果不是Model类 自动记录数据表信息
         // 只在第一次执行记录
         if(empty($this->fields)) {
+
             // 如果数据表字段没有定义则自动获取
-            if(C('DB_FIELDS_CACHE')) {
-                $db   =  $this->dbName?$this->dbName:C('DB_NAME');
-                $fields = File::get('_fields/'.strtolower($db.'.'.$this->name));
+            if(Config::get('DB_FIELDS_CACHE')) {
+
+                $db = $this->dbName ? $this->dbName : Config::get('DB_NAME');
+                $fields = File::get('_fields/' . strtolower($db . '.' . $this->name));
+
                 if($fields) {
-                    $version    =   C('DB_FIELD_VERISON');
-                    if(empty($version) || $fields['_version']== $version) {
-                        $this->fields   =   $fields;
+                    $version = Config::get('DB_FIELD_VERISON');
+                    if(empty($version) || $fields['_version'] == $version) {
+                        $this->fields = $fields;
                         return ;
                     }
                 }
             }
+
             // 每次都会读取数据表信息
             $this->flush();
         }
@@ -126,85 +132,105 @@ class Model {
 
     /**
      * 获取字段信息并缓存
-     * @access public
+     *
      * @return void
      */
     public function flush() {
+
         // 缓存不存在则查询数据表信息
         $this->db->setModel($this->name);
-        $fields =   $this->db->getFields($this->getTableName());
-        if(!$fields) { // 无法获取字段信息
+        $fields = $this->db->getFields($this->getTableName());
+
+        // 无法获取字段信息
+        if(!$fields) {
             return false;
         }
-        $this->fields   =   array_keys($fields);
+        $this->fields = array_keys($fields);
         $this->fields['_autoinc'] = false;
+
         foreach ($fields as $key=>$val){
             // 记录字段类型
-            $type[$key]    =   $val['type'];
+            $type[$key] = $val['type'];
             if($val['primary']) {
                 $this->fields['_pk'] = $key;
-                if($val['autoinc']) $this->fields['_autoinc']   =   true;
+                if($val['autoinc']) {
+                    $this->fields['_autoinc'] = true;
+                }
             }
         }
+
         // 记录字段类型信息
-        $this->fields['_type'] =  $type;
-        if(C('DB_FIELD_VERISON')) $this->fields['_version'] =   C('DB_FIELD_VERISON');
+        $this->fields['_type'] = $type;
+        if(C('DB_FIELD_VERISON')) {
+            $this->fields['_version'] = Config::get('DB_FIELD_VERISON');
+        }
 
         // 2008-3-7 增加缓存开关控制
         if(C('DB_FIELDS_CACHE')){
             // 永久缓存数据表信息
-            $db   =  $this->dbName?$this->dbName:C('DB_NAME');
+            $db = $this->dbName?$this->dbName:C('DB_NAME');
             File::set('_fields/'.strtolower($db.'.'.$this->name),$this->fields);
         }
     }
 
     /**
      * 动态切换扩展模型
-     * @access public
+     *
      * @param string $type 模型类型名称
      * @param mixed $vars 要传入扩展模型的属性变量
+     *
      * @return Model
      */
-    public function switchModel($type,$vars=array()) {
-        $class = ucwords(strtolower($type)).'Model';
-        if(!class_exists($class))
+    public function switchModel($type, $vars = array()) {
+
+        $class = ucwords(strtolower($type)) . 'Model';
+
+        if(!class_exists($class)) {
             Debug::throw_exception($class.L('_MODEL_NOT_EXIST_'));
-        // 实例化扩展模型
-        $this->_extModel   = new $class($this->name);
-        if(!empty($vars)) {
-            // 传入当前模型的属性到扩展模型
-            foreach ($vars as $var)
-                $this->_extModel->setProperty($var,$this->$var);
         }
+
+        // 实例化扩展模型
+        $this->_extModel = new $class($this->name);
+
+        // 传入当前模型的属性到扩展模型
+        if(!empty($vars)) {
+            foreach ($vars as $var) {
+                $this->_extModel->setProperty($var,$this->$var);
+            }
+        }
+
         return $this->_extModel;
     }
 
     /**
      * 设置数据对象的值
-     * @access public
+     *
      * @param string $name 名称
      * @param mixed $value 值
+     *
      * @return void
      */
-    public function __set($name,$value) {
+    public function __set($name, $value) {
         // 设置数据对象属性
-        $this->data[$name]  =   $value;
+        $this->data[$name] = $value;
     }
 
     /**
      * 获取数据对象的值
-     * @access public
+     *
      * @param string $name 名称
+     *
      * @return mixed
      */
     public function __get($name) {
-        return isset($this->data[$name])?$this->data[$name]:null;
+        return isset($this->data[$name]) ? $this->data[$name] : null;
     }
 
     /**
      * 检测数据对象的值
-     * @access public
+     *
      * @param string $name 名称
+     *
      * @return boolean
      */
     public function __isset($name) {
@@ -213,8 +239,9 @@ class Model {
 
     /**
      * 销毁数据对象的值
-     * @access public
+     *
      * @param string $name 名称
+     *
      * @return void
      */
     public function __unset($name) {
@@ -223,61 +250,77 @@ class Model {
 
     /**
      * 利用__call方法实现一些特殊的Model方法
-     * @access public
+     *
      * @param string $method 方法名称
      * @param array $args 调用参数
+     *
      * @return mixed
      */
-    public function __call($method,$args) {
-        if(in_array(strtolower($method),$this->methods,true)) {
-            // 连贯操作的实现
-            $this->options[strtolower($method)] =   $args[0];
+    public function __call($method, $args) {
+
+        // 连贯操作的实现
+        if(in_array(strtolower($method), $this->methods, true)) {
+            $this->options[strtolower($method)] = $args[0];
             return $this;
-        }elseif(in_array(strtolower($method),array('count','sum','min','max','avg'),true)){
-            // 统计查询的实现
-            $field =  isset($args[0])?$args[0]:'*';
-            return $this->getField(strtoupper($method).'('.$field.') AS tp_'.$method);
-        }elseif(strtolower(substr($method,0,5))=='getby') {
-            // 根据某个字段获取记录
-            $field   =   parse_name(substr($method,5));
-            $where[$field] =  $args[0];
+        }
+        // 统计查询的实现
+        else if(in_array(strtolower($method), array('count', 'sum', 'min', 'max', 'avg'), true)) {
+            $field = isset($args[0]) ? $args[0] : '*';
+            return $this->getField(strtoupper($method) . '(' . $field . ') AS tp_' . $method);
+        }
+        // 根据某个字段获取记录
+        else if(strtolower(substr($method, 0, 5)) == 'getby') {
+            $field = parse_name(substr($method, 5));
+            $where[$field] = $args[0];
             return $this->where($where)->find();
-        }elseif(strtolower(substr($method,0,10))=='getfieldby') {
-            // 根据某个字段获取记录的某个值
-            $name   =   parse_name(substr($method,10));
-            $where[$name] =$args[0];
+        }
+        // 根据某个字段获取记录的某个值
+        else if(strtolower(substr($method, 0, 10)) == 'getfieldby') {
+            $name = parse_name(substr($method, 10));
+            $where[$name] = $args[0];
             return $this->where($where)->getField($args[1]);
-        }elseif(isset($this->_scope[$method])){// 命名范围的单独调用支持
-            return $this->scope($method,$args[0]);
-        }else{
+        }
+        // 命名范围的单独调用支持
+        else if(isset($this->_scope[$method])) {
+            return $this->scope($method, $args[0]);
+        }
+        // 错误输出
+        else{
             Debug::throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
             return;
         }
     }
-    // 回调方法 初始化模型
-    protected function _initialize() {}
+
+    //TODO: 删除
+    /*// 回调方法 初始化模型
+    protected function _initialize() {}*/
 
     /**
      * 对保存到数据库的数据进行处理
-     * @access protected
+     *
      * @param mixed $data 要操作的数据
+     *
      * @return boolean
      */
      protected function _facade($data) {
+
         // 检查非数据字段
         if(!empty($this->fields)) {
-            foreach ($data as $key=>$val){
-                if(!in_array($key,$this->fields,true)){
+            foreach ($data as $key => $val) {
+
+                if(!in_array($key, $this->fields, true)) {
                     unset($data[$key]);
-                }elseif(is_scalar($val)) {
-                    // 字段类型检查
-                    $this->_parseType($data,$key);
+                }
+                // 字段类型检查
+                elseif(is_scalar($val)) {
+                    $this->_parseType($data, $key);
                 }
             }
         }
+
         // 安全过滤
         if(!empty($this->options['filter'])) {
-            $data = array_map($this->options['filter'],$data);
+            $data = array_map($this->options['filter'], $data);
             unset($this->options['filter']);
         }
         $this->_before_write($data);
@@ -289,35 +332,44 @@ class Model {
 
     /**
      * 新增数据
-     * @access public
+     *
      * @param mixed $data 数据
      * @param array $options 表达式
      * @param boolean $replace 是否replace
+     *
      * @return mixed
      */
-    public function add($data='',$options=array(),$replace=false) {
+    public function add($data = '', $options = array(), $replace = false) {
+
         if(empty($data)) {
             // 没有传递数据，获取当前数据对象的值
             if(!empty($this->data)) {
-                $data           =   $this->data;
-                // 重置数据
-                $this->data     = array();
-            }else{
-                $this->error    = L('_DATA_TYPE_INVALID_');
+
+                // 赋值，并重置数据
+                $data = $this->data;
+                $this->data = array();
+            }
+            else{
+                $this->error = L('_DATA_TYPE_INVALID_');
                 return false;
             }
         }
+
         // 分析表达式
-        $options    =   $this->_parseOptions($options);
+        $options = $this->_parseOptions($options);
         // 数据处理
-        $data       =   $this->_facade($data);
-        if(false === $this->_before_insert($data,$options)) {
+        $data = $this->_facade($data);
+
+        if($this->_before_insert($data,$options) === false) {
             return false;
         }
+
         // 写入数据到数据库
-        $result = $this->db->insert($data,$options,$replace);
-        if(false !== $result ) {
-            $insertId   =   $this->getLastInsID();
+        $result = $this->db->insert($data, $options, $replace);
+        if($result !== false) {
+
+            $insertId = $this->getLastInsID();
+            
             if($insertId) {
                 // 自增主键返回插入ID
                 $data[$this->getPk()]  = $insertId;
