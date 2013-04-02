@@ -227,7 +227,6 @@ class meSmart {
             CORE_PATH.'Router'.EXT,
             CORE_PATH.'Session'.EXT,
             CORE_PATH.'Tag'.EXT,
-            CORE_PATH.'Think'.EXT,
             CORE_PATH.'ThinkException'.EXT,
             CORE_PATH.'Url'.EXT,
             CORE_PATH.'View'.EXT,
@@ -259,7 +258,7 @@ class meSmart {
         \Debug::mark('loadTime');
 
         // 启动
-        \Think::Start();
+        \App::Start();
     }
 
     /**

@@ -139,9 +139,9 @@ abstract class Controller {
      */
     private function initView(){
         //实例化视图类
-        if(!$this->view)    $this->view     = Think::instance('View');
+        if(!$this->view)    $this->view     = App::instance('View');
         // 模板变量传值
-        if($this->tVar)     $this->view->assign($this->tVar);           
+        if($this->tVar)     $this->view->assign($this->tVar);
     }
     
     /**
