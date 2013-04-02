@@ -378,9 +378,9 @@ class App {
 
         $filename = str_replace('\\', '/', $classname);
         $filename = str_replace('meSmart/', CORE_PATH, $filename);
+        $filename = str_replace('App/', APP_PATH, $filename);
 
         Import::load($filename.EXT);
-
 
         // echo $filename . '<br>';
         // echo '.......-----........<br>';

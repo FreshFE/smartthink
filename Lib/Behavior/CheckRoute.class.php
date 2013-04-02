@@ -1,23 +1,10 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-defined('FRAME_PATH') or exit();
-/**
- * 系统行为扩展：路由检测
- * @category   Think
- * @package  Think
- * @subpackage  Behavior
- * @author   liu21st <liu21st@gmail.com>
- */
-class CheckRouteBehavior extends Behavior {
+namespace meSmart\Behavior;
+
+use meSmart;
+
+class CheckRoute extends meSmart\Behavior {
     // 行为参数定义（默认值） 可在项目配置中覆盖
     protected $options   =  array(
         'URL_ROUTER_ON'         => false,   // 是否开启URL路由

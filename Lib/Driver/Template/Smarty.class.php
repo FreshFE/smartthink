@@ -11,13 +11,15 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-Import::load(CORE_PATH . 'Library/Smarty/Smarty' . EXT);
+namespace meSmart\Driver\Template;
+
+\Import::load(CORE_PATH . 'Library/Smarty/Smarty' . EXT);
 
 /**
  * TemplateSmarty Class
  * Smarty模板引擎的驱动
  */
-class TemplateSmarty {
+class Smarty {
 
     /**
      * 渲染模板输出
@@ -29,7 +31,7 @@ class TemplateSmarty {
     public function fetch($templateFile, $var) {
 
         // 实例化
-        $tpl = new Smarty();
+        $tpl = new \Smarty();
 
         // 是否开启缓存, 模板目录, 编译目录, 缓存目录
         $tpl->caching           = C('TMPL_CACHE_ON');

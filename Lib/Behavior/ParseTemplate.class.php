@@ -4,8 +4,6 @@ namespace meSmart\Behavior;
 
 use meSmart;
 
-\Import::load(CORE_PATH . 'Driver/Template/TemplateSmarty' . EXT);
-
 class ParseTemplate extends meSmart\Behavior {
 
     protected $options = array(
@@ -16,7 +14,7 @@ class ParseTemplate extends meSmart\Behavior {
     public function run(&$_data){
 
         // 调用第三方模板引擎解析和输出
-        $class = 'Template' . C('TMPL_ENGINE_TYPE');
+        $class = 'meSmart\\Driver\\Template\\' . C('TMPL_ENGINE_TYPE');
 
         // 加载类
         if(class_exists($class)) {
@@ -26,7 +24,7 @@ class ParseTemplate extends meSmart\Behavior {
 
         // 类没有定义
         else {
-            Debug::throw_exception(L('_NOT_SUPPERT_') . ':' . $class);
+            \Debug::throw_exception(L('_NOT_SUPPERT_') . ':' . $class);
         }
     }
 }
