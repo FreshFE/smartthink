@@ -24,83 +24,37 @@ class App {
 	 */
     private static $_instance = array();
 
-    /**
-     * 应用程序初始化
-     *
-     * @return void
-     */
-    public static function start() {
+    // /**
+    //  * 应用程序初始化
+    //  *
+    //  * @return void
+    //  */
+    // public static function start() {
 
-        // 设定错误和异常处理
-        register_shutdown_function(array('App','fatalError'));
-        set_error_handler(array('App','appError'));
-        set_exception_handler(array('App','appException'));
+    //     // 设定错误和异常处理
+    //     register_shutdown_function(array('App','fatalError'));
+    //     set_error_handler(array('App','appError'));
+    //     set_exception_handler(array('App','appException'));
 
-        // 注册AUTOLOAD方法
-        spl_autoload_register(array('App', 'autoload'));
+    //     // 注册AUTOLOAD方法
+    //     spl_autoload_register(array('App', 'autoload'));
         
-        // 预编译项目
-        App::buildApp();
+    //     // 预编译项目
+    //     App::buildApp();
 
-        // 运行应用
-        App::run();
-    }
+    //     // 运行应用
+    //     App::run();
+    // }
 
     /**
      * 读取配置信息 编译项目
      *
      * @return string
      */
-    private static function buildApp() {
+    // private static function buildApp() {
 
-        // 核心配置文件
-        Config::set(include FRAME_PATH . 'Conf/config.php');
-
-        // 项目配置文件
-        if(is_file(CONF_PATH . 'config.php')) {
-            Config::set(include CONF_PATH . 'config.php');
-        }
-
-        // 核心行为配置
-        if(Config::get('APP_TAGS_ON')) {
-            Config::set('extends', include FRAME_PATH . 'Conf/tags.php');
-        }
-
-        // 项目行为配置
-        if(is_file(CONF_PATH . 'tags.php')) {
-            Config::set('tags', include CONF_PATH . 'tags.php');
-        }
-
-        // 调试模式下加载调试文件
-        if(APP_DEBUG) {
-
-            // 调试模式加载系统默认的配置文件
-            C(include FRAME_PATH . 'Conf/debug.php');
-
-            if(is_file(CONF_PATH . 'debug.php')) {
-                Config::set(include CONF_PATH . 'debug.php');
-            }
-        }
-
-        // 核心语言包
-        Lang::set(include FRAME_PATH . 'Lang/' . strtolower(C('DEFAULT_LANG')) . '.php');
-
-        // 加载动态项目公共文件和配置
-        static::load_ext_file();
-
-        // URL调度
-        Router::dispatch();
-
-        // 加载分组配置文件
-        if(is_file(GROUP_PATH . 'Conf/config.php')) {
-            C(include GROUP_PATH . 'Conf/config.php');
-        }
-
-        // 加载分组tags文件定义
-        if(is_file(GROUP_PATH . 'Conf/tags.php')) {
-            C('tags', include GROUP_PATH . 'Conf/tags.php');
-        }
-    }
+        
+    // }
 
     /**
      * 加载扩展配置文件
@@ -457,38 +411,201 @@ class App {
         return ;
     }
 
+    // ----------------------
+    // ----------------------
+    
+
     /**
-     * 运行应用实例 入口文件使用的快捷方法
+     * 注册自动加载
+     *
+     * @return void
+     */
+    private static function registerAutoload()
+    {
+        spl_autoload_register(array('App', 'autoload'));
+    }
+
+    /**
+     * 注册错误和异常
+     *
+     * @return void
+     */
+    private static function registerError()
+    {
+        register_shutdown_function(array('App','fatalError'));
+        set_error_handler(array('App','appError'));
+        set_exception_handler(array('App','appException'));
+    }
+
+    /**
+     * 解析分组
+     */
+    private static function parseGroupPath()
+    {
+
+    }
+
+    /**
+     * 解析路由
+     *
+     * TODO: 分离路由，查找前缀目录
+     */
+    private static function loadRoutes()
+    {
+        Router::dispatch();
+    }
+
+    /**
+     * 载入配置
+     *
+     * @return void
+     */
+    private static function loadConfig()
+    {
+        foreach (array(FRAME_PATH, APP_PATH, GROUP_PATH) as $key => $path) {
+            static::parseConfig($path);
+        }
+    }
+
+    /**
+     * 解析配置
+     *
+     * @return void
+     */
+    private static function parseConfig($path)
+    {
+        // 通用
+        if(is_file($path . 'Conf/config.php')) {
+            Config::set(include $path . 'Conf/config.php');
+        }
+
+        // 调试
+        if(APP_DEBUG) {
+            if(is_file($path . 'Conf/debug.php')) {
+                Config::set(include $path . 'Conf/debug.php');
+            }
+        }
+    }
+
+    /**
+     * 加载行为
+     *
+     * @return void
+     */
+    private static function loadTag()
+    {
+        // 核心行为
+        Config::set('extends', include FRAME_PATH . 'Conf/tags.php');
+
+        // 项目行为
+        if(is_file(CONF_PATH . 'tags.php')) {
+            Config::set('tags', include CONF_PATH . 'tags.php');
+        }
+
+        // 分组行为
+        if(is_file(GROUP_PATH . 'Conf/tags.php')) {
+            Config::set('tags', include GROUP_PATH . 'Conf/tags.php');
+        }
+    }
+
+    /**
+     * 加载语言包
+     *
+     * @return void
+     */
+    private static function loadLang()
+    {
+        Lang::set(include FRAME_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php');
+    }
+
+    /**
+     * 注册异常、autoload
+     * 解析路由、加载配置
+     * 启动session
+     * 运行控制器
      *
      * @return void
      */
     static public function run() {
 
+        // -------------------------------------------
+        // 注册错误和异常
+        // -------------------------------------------
+        static::registerError();
+
+        // -------------------------------------------
+        // 注册autoload方法
+        // -------------------------------------------
+        static::registerAutoload();
+
+        // -------------------------------------------
+        // 解析分组
+        // -------------------------------------------
+        static::parseGroupPath();
+
+        // -------------------------------------------
+        // 解析路由
+        // -------------------------------------------
+        static::loadRoutes();
+
+        // -------------------------------------------
+        // 加载配置
+        // -------------------------------------------
+        static::loadConfig();
+
+        // -------------------------------------------
+        // 加载行为
+        // -------------------------------------------
+        static::loadTag();
+
+        // -------------------------------------------
+        // 加载语言包
+        // -------------------------------------------
+        static::loadLang();
+
+        // -------------------------------------------
         // 项目初始化标签
+        // -------------------------------------------
         Tag::listen('app_init');
 
+        // -------------------------------------------
         // 初始化
-        App::init();
+        // -------------------------------------------
+        static::init();
 
+        // -------------------------------------------
         // 项目开始标签
+        // -------------------------------------------
         Tag::listen('app_begin');
 
+        // -------------------------------------------
         // Session初始化
+        // -------------------------------------------
         Session::config(C('SESSION_OPTIONS'));
 
+        // -------------------------------------------
         // 记录应用初始化时间
+        // -------------------------------------------
         Debug::mark('initTime');
 
+        // -------------------------------------------
         // 项目执行前检查访问者权限
+        // -------------------------------------------
         Tag::listen('app_auth');
 
+        // -------------------------------------------
         // 执行程序
-        App::exec();
+        // -------------------------------------------
+        static::exec();
 
+        // -------------------------------------------
         // 项目结束标签
+        // -------------------------------------------
         Tag::listen('app_end');
 
+        // -------------------------------------------
         // 保存日志记录
+        // -------------------------------------------
         if(Config::get('LOG_RECORD')) {
             Log::save();
         }

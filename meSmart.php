@@ -258,7 +258,7 @@ class meSmart {
         \Debug::mark('loadTime');
 
         // 启动
-        \App::Start();
+        \App::run();
     }
 
     /**

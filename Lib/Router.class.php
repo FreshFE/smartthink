@@ -111,7 +111,7 @@ class Router {
 
 		// 转化
 		$group_name = ucfirst($pathinfo[0]);
-		$group_list = explode(',', Config::get('APP_GROUP_LIST'));
+		$group_list = explode(',', APP_GROUP);
 
 		// 如果不存在
 		if(!in_array($group_name, $group_list)) {
