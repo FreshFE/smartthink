@@ -2,19 +2,196 @@
 
 class Url {
 
+	public static function make($url, $vars, $suffix)
+	{
+		// 解析
+		$urls = parse_url($url);
+
+		// 解析path
+		$_path = static::parse_path($urls);
+
+		// 解析query
+		$_query = static::parse_query($urls, $vars);
+
+		// 解析锚点
+		$_flag = static::parse_flag($urls);
+
+		// 解析前缀
+		$_prefix = static::parse_prefix($prefix);
+
+		// 解析后缀
+		$_suffix = static::parse_suffix($suffix);
+
+		$_url = $_prefix . $_path . $_query . $_suffix . $_flag;
+
+		return static::beauty($_url);
+	}
+
+	private static function parse_path($urls)
+	{
+		// 不存在scheme，则分析补全
+		if(!$urls['scheme'])
+		{
+			$path = static::parse_pathinfo($urls['path']);
+		}
+		// 存在scheme，则返回完整的
+		else {
+			$path = $urls['path'];
+		}
+
+		return $path;
+	}
+
+	private static function parse_flag() {
+		return '';
+	}
+
+	/**
+	 * 解析pathinfo部分
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	private static function parse_pathinfo(string $url)
+	{
+		// 根目录
+		if($url == '/') {
+			$urls = array(GROUP_NAME, CONTROLLER_NAME, ACTION_NAME);
+		}
+		else {
+			// 解析
+			$urls = explode('/', $url);
+
+			if(count($urls) == 1) {
+				array_unshift($urls, GROUP_NAME, CONTROLLER_NAME);
+			}
+			else if(count($urls) == 2) {
+				array_unshift($urls, GROUP_NAME);
+			}
+		}
+
+		return join($urls, '/');
+	}
+
+	/**
+	 * 解析query请求部分
+	 *
+	 * @param string $url
+	 * @param mixed $vars
+	 *
+	 * @return string
+	 */
+	private static function parse_query(array $urls, mixed $vars)
+	{
+		$temp = '';
+
+		// if(is_string($vars)) {
+		// 	$query =  '/' . trim($vars, '/');
+		// }
+
+		// if(is_array($vars))
+		// {
+		// 	$query = '';
+
+		// 	foreach ($vars as $key => $value) {
+		// 		$query .= '/' . $key . '/' . $value;
+		// 	}
+		// }
+
+		if($urls['query'])
+		{
+			$querys = explode('&', $urls['query']);
+
+			foreach ($querys as $key => $value) {
+				$temp .= '/' . str_replace('=', '/', $value);
+			}
+		}
+
+		return $temp;
+	}
+
+	/**
+	 * 解析后缀
+	 *
+	 * @param string $url
+	 * @param mixed $suffix
+	 *
+	 * @return string
+	 */
+	private static function parse_suffix($suffix)
+	{
+		// 等于true则获取配置选项
+		if($suffix === true)
+		{
+			return Config::get('URL_HTML_SUFFIX');
+		}
+		// 不等于true，但又存在不为false则赋值
+		else if($suffix)
+		{
+			return $suffix;
+		}
+		// 默认为空
+		else {
+			return '';
+		}
+	}
+
+	/**
+	 * 解析前缀
+	 * 根据是否设置了rewrite来区分前缀为'index.php/'还是'/'
+	 *
+	 * @param string $url
+	 * @param mixed $prefix
+	 *
+	 * @return string
+	 */
+	private static function parse_prefix(string $url, string $prefix)
+	{
+		return Config::get('URL_REWRITE') ? '/' : (_PHP_FILE_ . '/');
+	}
+
+	/**
+	 * 美化url
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	private static function beauty(string $url)
+	{
+
+		$url = strtolower($url);
+
+		while (!$stop) {
+			// 删除最后位的index
+			if(substr(rtrim($url, '/'), -6) === '/index'){
+				$url = substr(rtrim($url, '/'), 0, -6);
+			}
+			else {
+				$stop = true;
+			}
+		}
+
+		return $url . '/';
+	}
+
+
 	/**
 	 * URL组装 支持不同URL模式
 	 * @param string $url URL表达式，格式：'[分组/模块/操作#锚点@域名]?参数1=值1&参数2=值2...'
 	 * @param string|array $vars 传入的参数，支持数组和字符串
 	 * @param string $suffix 伪静态后缀，默认为true表示获取配置值
-	 * @param boolean $redirect 是否跳转，如果设置为true则表示跳转到该URL地址
 	 * @param boolean $domain 是否显示域名
 	 * @return string
 	 */
-	public static function build($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
+	public static function build2($url = '', $vars = '', $suffix = true, $domain = false) {
+
 	    // 解析URL
-	    $info   =  parse_url($url);
-	    $url    =  !empty($info['path'])?$info['path']:ACTION_NAME;
+	    $info = parse_url($url);
+
+	    $url = !empty($info['path'])?$info['path']:ACTION_NAME;
+
 	    if(isset($info['fragment'])) { // 解析锚点
 	        $anchor =   $info['fragment'];
 	        if(false !== strpos($anchor,'?')) { // 解析参数
@@ -138,6 +315,11 @@ class Url {
 	    }
 	    if($domain) {
 	        $url   =  (Http::is_ssl()?'https://':'http://').$domain.$url;
+	    }
+
+	    // 删除最后位的index
+	    if(substr(rtrim($url, '/'), -6) === '/index') {
+	    	return substr(rtrim($url, '/'), 0, -6);
 	    }
 
 		return $url;

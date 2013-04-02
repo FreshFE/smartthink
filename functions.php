@@ -253,7 +253,7 @@ function S($name, $value = '', $options = null) {
  */
 function U($url = '', $vars = '', $suffix = true, $domain = false) {
 
-    return Url::build($url, $vars, $suffix, $domain);
+    return Url::make($url, $vars, $suffix, $domain);
 }
 
 /**
