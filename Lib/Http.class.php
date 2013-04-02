@@ -7,10 +7,16 @@ class Http {
 	 * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
 	 * @return mixed
 	 */
-	public static function get_client_ip($type = 0) {
-	    $type       =  $type ? 1 : 0;
-	    static $ip  =   NULL;
-	    if ($ip !== NULL) return $ip[$type];
+	public static function get_client_ip($type = 0)
+	{
+	    static $ip;
+
+	    $type = $type ? 1 : 0;
+
+	    if(!is_null($ip)) {
+	    	return $ip[$type];
+	    }
+
 	    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 	        $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
 	        $pos    =   array_search('unknown',$arr);
