@@ -55,4 +55,27 @@ class File {
 	private static function parse_name($name) {
 		return static::$path . $name . '.php';
 	}
+
+	/**
+	 * 检查该文件是否存在大小写版本
+	 * 针对windows平台做优化
+	 *
+	 * @param string $filename 检查的文件路径
+	 * @return bealoon
+	 */
+	public static function exists_case($filename) {
+
+		// 该文件是否存在
+	    if (is_file($filename)) {
+
+	    	// windows平台下并开启大小写检查
+	        if (IS_WIN && C('APP_FILE_CASE')) {
+	            if (basename(realpath($filename)) != basename($filename)) {
+	            	return false;
+	            }
+	        }
+	        return true;
+	    }
+	    return false;
+	}
 }

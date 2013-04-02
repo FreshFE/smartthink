@@ -77,7 +77,11 @@ class Db {
             Debug::throw_exception(L('_NO_DB_CONFIG_'));
         // 数据库类型
         $this->dbType = ucwords(strtolower($db_config['dbms']));
+
+        // 载入数据库
         $class = 'Db'. $this->dbType;
+        Import::load(CORE_PATH . 'Driver/Db/' . $class . EXT);
+
         // 检查驱动类
         if(class_exists($class)) {
             $db = new $class($db_config);

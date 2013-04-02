@@ -223,7 +223,7 @@ abstract class Controller {
             if(method_exists($this,'_empty')) {
                 // 如果定义了_empty操作 则调用
                 $this->_empty($method,$args);
-            }elseif(Import::file_exists_case(C('TEMPLATE_NAME'))){
+            }elseif(File::exists_case(C('TEMPLATE_NAME'))){
                 // 检查是否存在默认模版 如果有直接输出模版
                 $this->display();
             }elseif(function_exists('__hack_action')) {

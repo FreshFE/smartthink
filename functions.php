@@ -11,42 +11,8 @@
  *
  * @return Action|false
  */
-function A($name, $layer = '') {
-
-    // 缓存
-    static $_action = array();
-
-    // 默认控制器名称，生成文件名
-    $layer = $layer ? $layer : Config::get('DEFAULT_C_LAYER');
-    $name = $layer . '/' . $name;
-
-
-    // 静态缓存内是否存在
-    if(isset($_action[$name])) {
-        return $_action[$name];
-    }
-
-    // 重新生成加载路径
-    $name = explode('/', $name);
-    $name = $name[1] . '/' . $name[0] . '/' . $name[2];
-
-    // 加载
-    Import::load(LIB_PATH . $name . $layer . EXT);
-
-    // 生成class名称
-    $class = basename($name.$layer);
-
-    // 检测导入的文件是否存在该类
-    // 存在则写入缓存
-    if(class_exists($class,false)) {
-        $action = new $class();
-        $_action[$name] = $action;
-        return $action;
-    }
-    // 不存在则返回
-    else {
-        return false;
-    }
+function A($name, $layer) {
+    Debug::throw_exception('废弃了A方法');
 }
 
 /**
@@ -199,11 +165,17 @@ function M($name = '', $tablePrefix = '', $connection = '') {
  *
  * @return mixed
  */
-function R($url,$vars=array(),$layer='') {
+function R($url, $vars=array(), $layer = '') {
+
+    // 分析路径
     $info   =   pathinfo($url);
     $action =   $info['basename'];
     $module =   $info['dirname'];
-    $class  =   A($module,$layer);
+
+    // 载入Controller
+    $class  = Import::controller($module);
+
+    // 判断是否存在并执行
     if($class){
         if(is_string($vars)) {
             parse_str($vars,$vars);

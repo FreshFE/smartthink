@@ -43,6 +43,7 @@ class Cache {
         if(empty($type))  $type = C('DATA_CACHE_TYPE');
         $type  = strtolower(trim($type));
         $class = 'Cache'.ucwords($type);
+        Import::load(CORE_PATH . 'Driver/Cache/' . $class . EXT);
         if(class_exists($class))
             $cache = new $class($options);
         else

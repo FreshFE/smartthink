@@ -21,7 +21,7 @@ class LocationTemplateBehavior extends Behavior {
     // 行为扩展的执行入口必须是run
     public function run(&$templateFile){
         // 自动定位模板文件
-        if(!Import::file_exists_case($templateFile))
+        if(!File::exists_case($templateFile))
             $templateFile   = $this->parseTemplateFile($templateFile);
     }
 
@@ -47,7 +47,7 @@ class LocationTemplateBehavior extends Behavior {
             }
             $templateFile  =  $path.$module.C('TMPL_FILE_DEPR').$action.C('TMPL_TEMPLATE_SUFFIX');
         }
-        if(!Import::file_exists_case($templateFile))
+        if(!File::exists_case($templateFile))
             Debug::throw_exception(L('_TEMPLATE_NOT_EXIST_').'['.$templateFile.']');
         return $templateFile;
     }
