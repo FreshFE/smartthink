@@ -375,6 +375,17 @@ class App {
      * @return void
      */
     public static function autoload($classname) {
+
+        $filename = str_replace('\\', '/', $classname);
+        $filename = str_replace('meSmart/', CORE_PATH, $filename);
+
+        Import::load($filename.EXT);
+
+
+        // echo $filename . '<br>';
+        // echo '.......-----........<br>';
+        // Debug::throw_exception('ss');
+        // exit();
     }
 
     /**

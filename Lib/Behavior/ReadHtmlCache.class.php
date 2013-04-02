@@ -1,23 +1,8 @@
-<?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+<?php namespace meSmart\Behavior;
 
-defined('FRAME_PATH') or exit();
-/**
- * 系统行为扩展：静态缓存读取
- * @category   Think
- * @package  Think
- * @subpackage  Behavior
- * @author   liu21st <liu21st@gmail.com>
- */
-class ReadHtmlCacheBehavior extends Behavior {
+use meSmart;
+
+class ReadHtmlCache extends meSmart\Behavior {
     protected $options   =  array(
             'HTML_CACHE_ON'     =>  false,
             'HTML_CACHE_TIME'   =>  60,

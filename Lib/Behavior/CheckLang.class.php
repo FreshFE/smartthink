@@ -1,23 +1,8 @@
-<?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+<?php namespace meSmart\Behavior;
 
-defined('FRAME_PATH') or exit();
-/**
- * 语言检测 并自动加载语言包
- * @category   Extend
- * @package  Extend
- * @subpackage  Behavior
- * @author   liu21st <liu21st@gmail.com>
- */
-class CheckLangBehavior extends Behavior {
+use meSmart;
+
+class CheckLang extends meSmart\Behavior {
 
     // 行为参数定义（默认值） 可在项目配置中覆盖
     protected $options   =  array(
@@ -58,20 +43,20 @@ class CheckLangBehavior extends Behavior {
             if(isset($_GET[C('VAR_LANGUAGE')])){
 
                 $langSet = $_GET[C('VAR_LANGUAGE')];
-                Cookie::set('think_language',$langSet,3600);
+                meSmart\Cookie::set('think_language',$langSet,3600);
 
             }
             // 获取上次用户的选择
-            elseif(Cookie::get('think_language')) {
+            elseif(meSmart\Cookie::get('think_language')) {
 
-                $langSet = Cookie::get('think_language');
+                $langSet = meSmart\Cookie::get('think_language');
 
             // 自动侦测浏览器语言
             }elseif(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
                 preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
                 $langSet = $matches[1];
-                Cookie::set('think_language', $langSet, 3600);
+                meSmart\Cookie::set('think_language', $langSet, 3600);
             }
 
             // 非法语言参数，请用默认设置

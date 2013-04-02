@@ -1,23 +1,10 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-defined('FRAME_PATH') or exit();
-/**
- * 系统行为扩展：页面Trace显示输出
- * @category   Think
- * @package  Think
- * @subpackage  Behavior
- * @author   liu21st <liu21st@gmail.com>
- */
-class ShowPageTraceBehavior extends Behavior {
+namespace meSmart\Behavior;
+
+use meSmart;
+
+class ShowPageTrace extends meSmart\Behavior {
     // 行为参数定义
     protected $options   =  array(
         'SHOW_PAGE_TRACE'   => false,   // 显示页面Trace信息

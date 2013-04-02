@@ -1,23 +1,10 @@
 <?php
-// +----------------------------------------------------------------------
-// | TOPThink [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2010 http://topthink.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-defined('FRAME_PATH') or exit();
-/**
- * 系统行为扩展：表单令牌生成
- * @category   Think
- * @package  Think
- * @subpackage  Behavior
- * @author   liu21st <liu21st@gmail.com>
- */
-class TokenBuildBehavior extends Behavior {
+namespace meSmart\Behavior;
+
+use meSmart;
+
+class TokenBuild extends meSmart\Behavior {
     // 行为参数定义
     protected $options   =  array(
         'TOKEN_ON'       => true,     // 开启令牌验证

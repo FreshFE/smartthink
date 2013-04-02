@@ -61,14 +61,14 @@ class Tag {
 	 */
 	public static function run($name, &$params = null) {
 
-	    $class = $name . 'Behavior';
+	    $class = 'meSmart\\Behavior\\' . $name;
 
 	    // 载入
-	    Import::loads(array(
-            CORE_PATH . 'Behavior/' . $class . EXT,
-            LIB_PATH . 'Behavior/' . $class . EXT,
-            GROUP_PATH . 'Behavior/' . $class . EXT
-        ));
+	    // Import::loads(array(
+     //        CORE_PATH . 'Behavior/' . $class . EXT,
+     //        LIB_PATH . 'Behavior/' . $class . EXT,
+     //        GROUP_PATH . 'Behavior/' . $class . EXT
+     //    ));
 
 	    if(APP_DEBUG) {
 	        Debug::mark('behaviorStart');

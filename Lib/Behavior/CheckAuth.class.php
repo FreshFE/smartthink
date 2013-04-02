@@ -11,12 +11,16 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
+namespace meSmart\Behavior;
+
+use meSmart;
+
 /**
  * CheckAuthBehavior Class
  * 根据载入不同的类包来实例化Auth类并执行访问权检查
  * 执行后将Auth类返回至Config内
  */
-class CheckAuthBehavior extends Behavior {
+class CheckAuth extends meSmart\Behavior {
 
 	/**
 	 * 基础配置
@@ -112,7 +116,7 @@ class CheckAuthBehavior extends Behavior {
 			$auth = $this->check();
 
 			// 将对象输出到全局
-			Config::set('auth', $auth);
+			\Config::set('auth', $auth);
 		}
 	}
 
@@ -126,7 +130,7 @@ class CheckAuthBehavior extends Behavior {
 	private function check() {
 
 		// 依赖载入
-		Import::load(CORE_PATH . 'Library/Auth/RbacAuth' . EXT);
+		\Import::load(CORE_PATH . 'Library/Auth/RbacAuth' . EXT);
 
 		// 类实例化
 		$class = C('AUTH_CLASS');

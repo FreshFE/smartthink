@@ -1,21 +1,5 @@
-<?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+<?php namespace meSmart;
 
-/**
- * ThinkPHP Behavior基础类
- * @category   Think
- * @package  Think
- * @subpackage  Core
- * @author liu21st <liu21st@gmail.com>
- */
 abstract class Behavior {
 
     // 行为参数 和配置参数设置相同

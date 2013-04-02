@@ -1,8 +1,12 @@
 <?php
 
-Import::load(CORE_PATH . 'Driver/Template/TemplateSmarty' . EXT);
+namespace meSmart\Behavior;
 
-class ParseTemplateBehavior extends Behavior {
+use meSmart;
+
+\Import::load(CORE_PATH . 'Driver/Template/TemplateSmarty' . EXT);
+
+class ParseTemplate extends meSmart\Behavior {
 
     protected $options = array(
         // 模板引擎的类型
