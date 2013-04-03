@@ -12,12 +12,13 @@ class Debug {
 	 *
 	 * @return void
 	 */
-	public static function trace($value = '[think]', $label = '', $level = 'DEBUG', $record = false) {
+	public static function trace($value = '[meSmart]', $label = '', $level = 'DEBUG', $record = false)
+	{
 
 	    static $_trace =  array();
 
 	    // 获取trace信息
-	    if('[think]' === $value) {
+	    if('[meSmart]' === $value) {
 	        return $_trace;
 	    }
 	    else {
@@ -50,8 +51,8 @@ class Debug {
 	 *
 	 * @return void
 	 */
-	public static function halt($error) {
-
+	public static function halt($error)
+	{
 	    $e = array();
 
 	    if(APP_DEBUG) {
@@ -111,7 +112,8 @@ class Debug {
 	 *
 	 * @return void
 	 */
-	public static function throw_exception($msg, $type = 'ThinkException', $code = 0) {
+	public static function throw_exception($msg, $type = 'meSmart\\Exception', $code = 0)
+	{
 	    if(class_exists($type, false)) {
 	    	throw new $type($msg, $code, true);
 	    }
@@ -131,8 +133,8 @@ class Debug {
 	 *
 	 * @return void|string
 	 */
-	public static function dump($var, $echo = true, $label = null, $strict = true) {
-
+	public static function dump($var, $echo = true, $label = null, $strict = true)
+	{
 	    $label = ($label === null) ? '' : rtrim($label) . ' ';
 
 	    if (!$strict) {
@@ -181,8 +183,8 @@ class Debug {
 	 *
 	 * @return mixed
 	 */
-	public static function mark($start, $end = '', $dec = 4) {
-
+	public static function mark($start, $end = '', $dec = 4)
+	{
 	    static $_info       =   array();
 	    static $_mem        =   array();
 
@@ -229,8 +231,8 @@ class Debug {
 	 *
 	 * @return mixed
 	 */
-	public static function record($key, $step = 0, $save = false) {
-
+	public static function record($key, $step = 0, $save = false)
+	{
 	    static $_num = array();
 
 	    if(!isset($_num[$key])) {
