@@ -11,6 +11,9 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
+use \App;
+use \Debug;
+
 /**
  * SmartThink Class
  * 检查PHP版本，启用PHP错误输出级别
@@ -255,10 +258,10 @@ class meSmart {
         }
 
         // 记录文件加载时间
-        \Debug::mark('loadTime');
+        Debug::mark('loadTime');
 
         // 启动
-        \App::run();
+        App::run();
     }
 
     /**

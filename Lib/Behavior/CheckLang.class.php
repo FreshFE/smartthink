@@ -1,6 +1,7 @@
 <?php namespace meSmart\Behavior;
 
 use meSmart;
+use meSmart\Cookie as Cookie;
 
 class CheckLang extends meSmart\Behavior {
 
@@ -43,20 +44,20 @@ class CheckLang extends meSmart\Behavior {
             if(isset($_GET[C('VAR_LANGUAGE')])){
 
                 $langSet = $_GET[C('VAR_LANGUAGE')];
-                meSmart\Cookie::set('think_language',$langSet,3600);
+                Cookie::set('think_language',$langSet,3600);
 
             }
             // 获取上次用户的选择
-            elseif(meSmart\Cookie::get('think_language')) {
+            elseif(Cookie::get('think_language')) {
 
-                $langSet = meSmart\Cookie::get('think_language');
+                $langSet = Cookie::get('think_language');
 
             // 自动侦测浏览器语言
             }elseif(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
                 preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
                 $langSet = $matches[1];
-                meSmart\Cookie::set('think_language', $langSet, 3600);
+                Cookie::set('think_language', $langSet, 3600);
             }
 
             // 非法语言参数，请用默认设置

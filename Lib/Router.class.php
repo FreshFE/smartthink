@@ -56,7 +56,7 @@ class Router {
         define('__EXT__', 			$extension);
         define('__SELF__', 			strip_tags($_SERVER['REQUEST_URI']));
 		define('__APP__', 			APP_NAME);
-        define('__GROUP__', 		strtolower(__APP__ . '/' . (GROUP_NAME == Config::get('DEFAULT_GROUP')) ? '' : GROUP_NAME));
+        define('__GROUP__', 		strtolower(__APP__ . '/' . GROUP_NAME));
         define('__URL__', 			__GROUP__ . '/' . strtolower(CONTROLLER_NAME));
         define('__ACTION__', 		__URL__ . '/' . strtolower(ACTION_NAME));
 

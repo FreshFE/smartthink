@@ -14,6 +14,8 @@
 namespace meSmart\Behavior;
 
 use meSmart;
+use \Config;
+use \Import;
 
 /**
  * CheckAuthBehavior Class
@@ -116,7 +118,7 @@ class CheckAuth extends meSmart\Behavior {
 			$auth = $this->check();
 
 			// 将对象输出到全局
-			\Config::set('auth', $auth);
+			Config::set('auth', $auth);
 		}
 	}
 
@@ -130,7 +132,7 @@ class CheckAuth extends meSmart\Behavior {
 	private function check() {
 
 		// 依赖载入
-		\Import::load(CORE_PATH . 'Library/Auth/RbacAuth' . EXT);
+		Import::load(CORE_PATH . 'Library/Auth/RbacAuth' . EXT);
 
 		// 类实例化
 		$class = C('AUTH_CLASS');

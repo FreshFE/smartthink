@@ -3,6 +3,7 @@
 namespace meSmart\Behavior;
 
 use meSmart;
+use meSmart\Debug as Debug;
 
 class ParseTemplate extends meSmart\Behavior {
 
@@ -24,7 +25,7 @@ class ParseTemplate extends meSmart\Behavior {
 
         // 类没有定义
         else {
-            \Debug::throw_exception(L('_NOT_SUPPERT_') . ':' . $class);
+            Debug::throw_exception(L('_NOT_SUPPERT_') . ':' . $class);
         }
     }
 }

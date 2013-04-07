@@ -48,8 +48,9 @@ class Config {
 	 * @return mix
 	 */
 	public static function get($name) {
-			
+		
 		if (!strpos($name, '.')) {
+
 			$name = strtolower($name);
 		    return isset(static::$storage[$name]) ? static::$storage[$name] : null;
 		}

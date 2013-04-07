@@ -62,7 +62,7 @@ class Import {
 		static $_storage = array();
 
 		// 生成控制器名称
-		$controller = GROUP_NAME . '/Controller/' . $name . 'Controller';
+		$controller = GROUP_PATH . 'Controller/' . $name . 'Controller';
 
 		// 静态缓存内是否存在
 		if (isset($_storage[$controller]))
@@ -71,7 +71,7 @@ class Import {
 		}
 
 		// 加载
-		static::load(LIB_PATH . $controller . EXT);
+		static::load($controller . EXT);
 
 		// 生成class名称
 		$class = basename($controller);
