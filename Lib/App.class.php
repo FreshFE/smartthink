@@ -539,7 +539,7 @@ class App {
         }
 
         // 配置主题目录
-        define('THEME_PATH', TMPL_PATH . GROUP_NAME . '/');
+        define('THEME_PATH', GROUP_PATH . 'Tpl/');
         define('APP_TMPL_PATH' , __ROOT__ . '/' . APP_NAME . (APP_NAME ? '/' : '') . basename(TMPL_PATH) . '/' . GROUP_NAME . '/');
 
         // 缓存路径
