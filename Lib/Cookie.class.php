@@ -1,4 +1,5 @@
-<?php namespace meSmart;
+<?php
+namespace Think;
 
 class Cookie {
 

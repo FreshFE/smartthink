@@ -1,10 +1,9 @@
 <?php
+namespace Think\Behaviors;
 
-namespace meSmart\Behavior;
+use Think\Behavior as Behavior;
 
-use meSmart;
-
-class TokenBuild extends meSmart\Behavior {
+class TokenBuild extends Behavior {
     // 行为参数定义
     protected $options   =  array(
         'TOKEN_ON'       => true,     // 开启令牌验证

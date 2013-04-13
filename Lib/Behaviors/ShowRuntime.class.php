@@ -1,10 +1,9 @@
 <?php
+namespace Think\Behaviors;
 
-namespace meSmart\Behavior;
+use Think\Behavior as Behavior;
 
-use meSmart;
-
-class ShowRuntime extends meSmart\Behavior {
+class ShowRuntime extends Behavior {
     // 行为参数定义
     protected $options   =  array(
         'SHOW_RUN_TIME'		=> false,   // 运行时间显示

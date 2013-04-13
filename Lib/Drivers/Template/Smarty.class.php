@@ -1,4 +1,5 @@
 <?php
+namespace Think\Drivers\Template;
 /**
  * Driver/Template/TemplateSmarty.class.php
  * Smart ThinkPHP
@@ -11,9 +12,11 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-namespace meSmart\Driver\Template;
+use \Smarty;
+use Think\Import as Import;
+use Think\Config as Config;
 
-\Import::load(CORE_PATH . 'Library/Smarty/Smarty' . EXT);
+Import::load(CORE_PATH . 'Library/Smarty/Smarty' . EXT);
 
 /**
  * TemplateSmarty Class
@@ -31,10 +34,10 @@ class Smarty {
     public function fetch($templateFile, $var) {
 
         // 实例化
-        $tpl = new \Smarty();
+        $tpl = new Smarty();
 
         // 是否开启缓存, 模板目录, 编译目录, 缓存目录
-        $tpl->caching           = C('TMPL_CACHE_ON');
+        $tpl->caching           = Config::get('TMPL_CACHE_ON');
         $tpl->template_dir      = THEME_PATH;
         $tpl->compile_dir       = CACHE_PATH;
         $tpl->cache_dir         = TEMP_PATH;

@@ -1,10 +1,10 @@
 <?php
+namespace Think\Behaviors;
 
-namespace meSmart\Behavior;
+use Think\Behavior as Behavior;
+use Think\Debug as Debug;
 
-use meSmart;
-
-class WriteHtmlCache extends meSmart\Behavior {
+class WriteHtmlCache extends Behavior {
 
     // 行为扩展的执行入口必须是run
     public function run(&$content){

@@ -1,12 +1,11 @@
 <?php
+namespace Think\Behaviors;
 
-namespace meSmart\Behavior;
+use Think\Behavior as Behavior;
+use Think\File as File;
+use Think\Debug as Debug;
 
-use meSmart;
-use \File;
-use \Debug;
-
-class LocationTemplate extends meSmart\Behavior {
+class LocationTemplate extends Behavior {
     // 行为扩展的执行入口必须是run
     public function run(&$templateFile){
         // 自动定位模板文件

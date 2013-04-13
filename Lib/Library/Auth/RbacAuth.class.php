@@ -11,7 +11,9 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-\Import::load(dirname(__FILE__) . '/Auth' . EXT);
+use Think\Import as Import;
+
+Import::load(dirname(__FILE__) . '/Auth' . EXT);
 
 /**
  * 配置方法

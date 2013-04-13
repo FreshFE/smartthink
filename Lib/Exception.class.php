@@ -1,5 +1,4 @@
 <?php
-
 namespace meSmart;
 
 class Exception extends \Exception {

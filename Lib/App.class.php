@@ -1,4 +1,5 @@
 <?php
+namespace Think;
 /**
  * Core/App.class.php
  * Smart ThinkPHP
@@ -10,6 +11,11 @@
  * @since         Smart ThinkPHP 2.0.0
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
+
+use Think\Session as Session;
+use \ReflectionException;
+use \ReflectionMethod;
+use \ReflectionClass;
 
 /**
  * App Class
@@ -26,16 +32,6 @@ class App {
      * @return void
      */
     static public function run() {
-
-        // -------------------------------------------
-        // 注册错误和异常
-        // -------------------------------------------
-        static::registerError();
-
-        // -------------------------------------------
-        // 注册autoload方法
-        // -------------------------------------------
-        static::registerAutoload();
 
         // -------------------------------------------
         // 解析分组
@@ -108,28 +104,6 @@ class App {
         if(Config::get('LOG_RECORD')) {
             Log::save();
         }
-    }
-
-    /**
-     * 注册自动加载
-     *
-     * @return void
-     */
-    private static function registerAutoload()
-    {
-        spl_autoload_register(array('App', 'autoload'));
-    }
-
-    /**
-     * 注册错误和异常
-     *
-     * @return void
-     */
-    private static function registerError()
-    {
-        register_shutdown_function(array('App','fatalError'));
-        set_error_handler(array('App','appError'));
-        set_exception_handler(array('App','appException'));
     }
 
     /**
@@ -374,19 +348,10 @@ class App {
      *
      * @return void
      */
-    public static function autoload($classname) {
+    // public static function autoload($classname) {
 
-        $filename = str_replace('\\', '/', $classname);
-        $filename = str_replace('meSmart/', CORE_PATH, $filename);
-        $filename = str_replace('App/', APP_PATH, $filename);
-
-        Import::load($filename.EXT);
-
-        // echo $filename . '<br>';
-        // echo '.......-----........<br>';
-        // Debug::throw_exception('ss');
-        // exit();
-    }
+        
+    // }
 
     /**
      * 取得对象实例 支持调用类的静态方法

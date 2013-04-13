@@ -1,4 +1,5 @@
 <?php
+namespace Think\Behaviors;
 /**
  * Behavior/CheckAuthBehavior.class.php
  * Smart ThinkPHP
@@ -11,18 +12,16 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-namespace meSmart\Behavior;
-
-use meSmart;
-use \Config;
-use \Import;
+use Think\Behavior as Behavior;
+use Think\Config as Config;
+use Think\Import as Import;
 
 /**
  * CheckAuthBehavior Class
  * 根据载入不同的类包来实例化Auth类并执行访问权检查
  * 执行后将Auth类返回至Config内
  */
-class CheckAuth extends meSmart\Behavior {
+class CheckAuth extends Behavior {
 
 	/**
 	 * 基础配置

@@ -1,9 +1,9 @@
 <?php
-namespace meSmart\Behavior;
+namespace Think\Behaviors;
 
-use meSmart;
+use Think\Behavior as Behavior;
 
-class ContentReplace extends meSmart\Behavior {
+class ContentReplace extends Behavior {
     // 行为参数定义
     protected $options   =  array(
         'TMPL_PARSE_STRING' =>  array(),

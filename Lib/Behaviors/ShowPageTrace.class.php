@@ -1,10 +1,9 @@
 <?php
+namespace Think\Behaviors;
 
-namespace meSmart\Behavior;
+use Think\Behavior as Behavior;
 
-use meSmart;
-
-class ShowPageTrace extends meSmart\Behavior {
+class ShowPageTrace extends Behavior {
     // 行为参数定义
     protected $options   =  array(
         'SHOW_PAGE_TRACE'   => false,   // 显示页面Trace信息

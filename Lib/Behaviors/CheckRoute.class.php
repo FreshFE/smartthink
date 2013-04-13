@@ -1,10 +1,10 @@
 <?php
 
-namespace meSmart\Behavior;
+namespace Think\Behaviors;
 
-use meSmart;
+use Think\Behavior as Behavior;
 
-class CheckRoute extends meSmart\Behavior {
+class CheckRoute extends Behavior {
     // 行为参数定义（默认值） 可在项目配置中覆盖
     protected $options   =  array(
         'URL_ROUTER_ON'         => false,   // 是否开启URL路由

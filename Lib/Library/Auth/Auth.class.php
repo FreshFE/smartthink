@@ -11,6 +11,8 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
+use Think\Session as Session;
+
 /**
  * Auth Class
  * 判断当前模块是否允许当前用户访问，仅分unlogined和logined组
@@ -100,7 +102,7 @@ class Auth {
 	public function logined() {
 
 		// 当前仅仅检查session，不检查cookie
-		return \Session::check($this->auth_key);
+		return Session::check($this->auth_key);
 	}
 
 	/**
@@ -115,8 +117,8 @@ class Auth {
 		if(!$expire) $expire = 60 * 60 * 60 * 24 * 30;
 
 		// 设置session并保存
-		\Session::config(array('name' => $this->auth_key, 'expire' => $expire));
-		\Session::set($this->auth_key, $id);
+		Session::config(array('name' => $this->auth_key, 'expire' => $expire));
+		Session::set($this->auth_key, $id);
 	}
 
 	/**
@@ -127,7 +129,7 @@ class Auth {
 	 */
 	public function logout() {
 
-		\Session::set($this->auth_key, null);
+		Session::set($this->auth_key, null);
 	}
 
 	/**
@@ -137,7 +139,7 @@ class Auth {
 	 */
 	public function session() {
 		
-		return \Session::get($this->auth_key);
+		return Session::get($this->auth_key);
 	}
 
 	/**

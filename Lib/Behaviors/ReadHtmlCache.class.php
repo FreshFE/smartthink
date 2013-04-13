@@ -1,8 +1,9 @@
-<?php namespace meSmart\Behavior;
+<?php
+namespace Think\Behaviors;
 
-use meSmart;
+use Think\Behavior as Behavior;
 
-class ReadHtmlCache extends meSmart\Behavior {
+class ReadHtmlCache extends Behavior {
     protected $options   =  array(
             'HTML_CACHE_ON'     =>  false,
             'HTML_CACHE_TIME'   =>  60,

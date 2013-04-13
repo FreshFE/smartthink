@@ -1,4 +1,5 @@
 <?php
+namespace Think;
 
 class Debug {
 

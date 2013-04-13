@@ -1,22 +1,9 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+namespace Think\Drivers\Cache;
 
-defined('FRAME_PATH') or exit();
-/**
- * 文件类型缓存类
- * @category   Think
- * @package  Think
- * @subpackage  Driver.Cache
- * @author    liu21st <liu21st@gmail.com>
- */
+use Think\Cache as Cache;
+use Think\Debug as Debug;
+
 class CacheFile extends Cache {
 
     /**

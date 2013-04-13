@@ -1,4 +1,5 @@
 <?php
+namespace Think;
 /**
  * Core/Lang.class.php
  * Smart ThinkPHP

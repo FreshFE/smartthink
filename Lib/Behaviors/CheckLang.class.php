@@ -1,9 +1,9 @@
-<?php namespace meSmart\Behavior;
+<?php namespace Think\Behaviors;
 
-use meSmart;
-use meSmart\Cookie as Cookie;
+use Think\Behavior as Behavior;
+use Think\Cookie as Cookie;
 
-class CheckLang extends meSmart\Behavior {
+class CheckLang extends Behavior {
 
     // 行为参数定义（默认值） 可在项目配置中覆盖
     protected $options   =  array(

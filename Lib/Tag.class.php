@@ -1,4 +1,5 @@
 <?php
+namespace Think;
 
 class Tag {
 
@@ -61,7 +62,7 @@ class Tag {
 	 */
 	public static function run($name, &$params = null) {
 
-	    $class = 'meSmart\\Behavior\\' . $name;
+	    $class = __NAMESPACE__ . '\\Behaviors\\' . $name;
 
 	    // 载入
 	    // Import::loads(array(

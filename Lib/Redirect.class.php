@@ -1,4 +1,5 @@
 <?php
+namespace Think;
 /**
  * Core/Redirect.class.php
  * Smart ThinkPHP

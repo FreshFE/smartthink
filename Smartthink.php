@@ -1,4 +1,4 @@
-<?php namespace Smartthink;
+<?php namespace Think;
 /**
  * SmartThink.class.php
  * Smart ThinkPHP
@@ -11,15 +11,22 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-use \App;
-use \Debug;
+use Think\App as App;
+use Think\Debug as Debug;
 
-/**
- * SmartThink Class
- * 检查PHP版本，启用PHP错误输出级别
- * 定义常量
- * 创建runtime启动程序
- */
+// -------------------------------------------
+// 类自动加载
+// -------------------------------------------
+require_once 'autoload.php';
+
+// -------------------------------------------
+// 函数载入
+// -------------------------------------------
+require_once 'functions.php';
+
+// -------------------------------------------
+// 启动框架
+// -------------------------------------------
 class Smartthink {
 
     /**
@@ -29,32 +36,20 @@ class Smartthink {
      */
     public static function run() {
 
-        // 检查版本，定义常量，执行runtime
-        static::check_version();
-
+        // -------------------------------------------
         // 定义常量
+        // -------------------------------------------
         static::define_const();
 
+        // -------------------------------------------
+        // 注册错误和异常
+        // -------------------------------------------
+        static::register_error();
+
+        // -------------------------------------------
         // 执行runtime
+        // -------------------------------------------
         static::load_runtime_file();
-    }
-
-    /**
-     * 检查php版本，需要5.3.0以上
-     *
-     * @return void
-     */
-    public static function check_version() {
-
-        // php版本
-        if(version_compare(PHP_VERSION,'5.3.0','<')) {
-            die('require PHP > 5.3.0');
-        }
-
-        // php错误输出
-        if (APP_DEBUG && !ini_get('display_errors')) {
-            ini_set('display_errors', 1);
-        }
     }
 
     /**
@@ -86,24 +81,12 @@ class Smartthink {
     		die('No defined FRAME_PATH & APP_PATH!!');
     	}
 
-    	/**
-    	 * Runtime目录
-    	 */
-    	defined('RUNTIME_PATH') or define('RUNTIME_PATH', APP_PATH . 'Runtime/');
-
         /**
          * 框架版本
          *
          * @const VERSION
          */
         define('VERSION', '2.0.0 Beta');
-
-        /**
-         * 设置PHP的MAGIC_QUOTES_GPC
-         *
-         * @const MAGIC_QUOTES_GPC
-         */
-        // define('MAGIC_QUOTES_GPC', false);
 
         /**
          * 当前系统和操作方式
@@ -156,13 +139,6 @@ class Smartthink {
                 }
                 define('__ROOT__',   (($_root=='/' || $_root=='\\')?'':$_root));
             }
-
-            // TODO：删除原有URL模式，统一改为pathinfo模式
-            // 支持的URL模式
-            // define('URL_COMMON',      0);   //普通模式
-            // define('URL_PATHINFO',    1);   //PATHINFO模式
-            // define('URL_REWRITE',     2);   //REWRITE模式
-            // define('URL_COMPAT',      3);   // 兼容模式
         }
 
         /**
@@ -197,6 +173,10 @@ class Smartthink {
         defined('TMPL_PATH')    or define('TMPL_PATH',      APP_PATH.'Tpl/');       // 项目模板目录
         defined('HTML_PATH')    or define('HTML_PATH',      APP_PATH.'Html/');      // 项目静态目录
 
+        /**
+         * Runtime目录
+         */
+        defined('RUNTIME_PATH') or define('RUNTIME_PATH',   APP_PATH . 'Runtime/');
         defined('LOG_PATH')     or define('LOG_PATH',       RUNTIME_PATH.'Logs/');  // 项目日志目录
         defined('TEMP_PATH')    or define('TEMP_PATH',      RUNTIME_PATH.'Temp/');  // 项目缓存目录
         defined('DATA_PATH')    or define('DATA_PATH',      RUNTIME_PATH.'Data/');  // 项目数据目录
@@ -214,31 +194,7 @@ class Smartthink {
     public static function load_runtime_file() {
 
         // 定义
-        $files = array(
-            FRAME_PATH.'functions.php',
-
-            CORE_PATH.'App'.EXT,
-            CORE_PATH.'Behavior'.EXT,
-            CORE_PATH.'Cache'.EXT,
-            CORE_PATH.'Config'.EXT,
-            CORE_PATH.'Controller'.EXT,
-            CORE_PATH.'Cookie'.EXT,
-            CORE_PATH.'Db'.EXT,
-            CORE_PATH.'Debug'.EXT,
-            CORE_PATH.'File'.EXT,
-            CORE_PATH.'Http'.EXT,
-            CORE_PATH.'Import'.EXT,
-            CORE_PATH.'Lang'.EXT,
-            CORE_PATH.'Log'.EXT,
-            CORE_PATH.'Model'.EXT,
-            CORE_PATH.'Redirect'.EXT,
-            CORE_PATH.'Router'.EXT,
-            CORE_PATH.'Session'.EXT,
-            CORE_PATH.'Tag'.EXT,
-            CORE_PATH.'Exception'.EXT,
-            CORE_PATH.'Url'.EXT,
-            CORE_PATH.'View'.EXT,
-            
+        $files = array(            
             // TODO: 重构
             CORE_PATH.'View/Helper'.EXT
         );
@@ -292,6 +248,18 @@ class Smartthink {
         }
 
         return true;
+    }
+
+    /**
+     * 注册错误和异常
+     *
+     * @return void
+     */
+    private static function register_error()
+    {
+        // register_shutdown_function(array('App','fatalError'));
+        // set_error_handler(array('App','appError'));
+        // set_exception_handler(array('App','appException'));
     }
 
 }

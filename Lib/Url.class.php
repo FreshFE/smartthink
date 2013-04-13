@@ -1,4 +1,5 @@
 <?php
+namespace Think;
 /**
  * Core/Url.class.php
  * MeSmart php

@@ -1,11 +1,10 @@
 <?php
+namespace Think\Behaviors;
 
-namespace meSmart\Behavior;
+use Think\Behavior as Behavior;
+use Think\Debug as Debug;
 
-use meSmart;
-use meSmart\Debug as Debug;
-
-class ParseTemplate extends meSmart\Behavior {
+class ParseTemplate extends Behavior {
 
     protected $options = array(
         // 模板引擎的类型
@@ -15,7 +14,7 @@ class ParseTemplate extends meSmart\Behavior {
     public function run(&$_data){
 
         // 调用第三方模板引擎解析和输出
-        $class = 'meSmart\\Driver\\Template\\' . C('TMPL_ENGINE_TYPE');
+        $class = 'Think\\Driver\\Template\\' . C('TMPL_ENGINE_TYPE');
 
         // 加载类
         if(class_exists($class)) {

@@ -1,4 +1,4 @@
-<?php namespace meSmart;
+<?php namespace Think;
 
 abstract class Behavior {
 

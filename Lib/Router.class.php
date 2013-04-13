@@ -1,4 +1,5 @@
 <?php
+namespace Think;
 /**
  * Core/Router.class.php
  * MeSmart php
