@@ -182,7 +182,7 @@ class Smartthink {
         defined('DATA_PATH')    or define('DATA_PATH',      RUNTIME_PATH.'Data/');  // 项目数据目录
         defined('CACHE_PATH')   or define('CACHE_PATH',     RUNTIME_PATH.'Cache/'); // 项目模板缓存目录
 
-        defined('EXT')          or define('EXT',            '.class.php');          // 项目模板缓存目录
+        defined('EXT')          or define('EXT',            '.php');          // 项目模板缓存目录
     }
 
     /**

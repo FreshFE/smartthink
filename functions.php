@@ -2,6 +2,7 @@
 
 use Think\Config as Config;
 use Think\Log as Log;
+use Think\Lang as Lang;
 
 // 最后留着的方法, A, C, D, L, M, R, S, U
 
