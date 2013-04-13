@@ -109,39 +109,6 @@ class Smartthink {
         defined('APP_NAME') or define('APP_NAME', '');
 
         /**
-         * 在非命令行执行中定义常量
-         *
-         * @const _PHP_FILE_
-         * @const __ROOT__
-         *
-         * @const URL_COMMON
-         * @const URL_PATHINFO
-         * @const URL_REWRITE
-         * @const URL_COMPAT
-         */
-        if(!IS_CLI) {
-            // 当前文件名
-            if(!defined('_PHP_FILE_')) {
-                if(IS_CGI) {
-                    // CGI/FASTCGI模式下
-                    $_temp  = explode('.php',$_SERVER['PHP_SELF']);
-                    define('_PHP_FILE_',    rtrim(str_replace($_SERVER['HTTP_HOST'],'',$_temp[0].'.php'),'/'));
-                }else {
-                    define('_PHP_FILE_',    rtrim($_SERVER['SCRIPT_NAME'],'/'));
-                }
-            }
-            if(!defined('__ROOT__')) {
-                // 网站URL根目录
-                if( strtoupper(APP_NAME) == strtoupper(basename(dirname(_PHP_FILE_))) ) {
-                    $_root = dirname(dirname(_PHP_FILE_));
-                }else {
-                    $_root = dirname(_PHP_FILE_);
-                }
-                define('__ROOT__',   (($_root=='/' || $_root=='\\')?'':$_root));
-            }
-        }
-
-        /**
          * 基本文件路径
          * 路径设置 可在入口文件中重新定义 所有路径常量都必须以/ 结尾
          *

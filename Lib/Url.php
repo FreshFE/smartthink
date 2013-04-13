@@ -28,7 +28,7 @@ class Url {
 	 *
 	 * @return string
 	 */
-	public static function make($url, $vars, $suffix)
+	public static function make($url, $vars = null, $suffix = null, $prefix = null)
 	{
 		// 解析
 		$urls = parse_url($url);
@@ -65,7 +65,7 @@ class Url {
 	private static function parse_path($urls)
 	{
 		// 不存在scheme，则分析补全
-		if(!$urls['scheme'])
+		if(!isset($urls['scheme']))
 		{
 			$path = static::auto_path($urls['path']);
 		}
@@ -84,7 +84,7 @@ class Url {
 	 *
 	 * @return string
 	 */
-	private static function auto_path(string $url)
+	private static function auto_path($url)
 	{
 		// 根目录
 		if($url == '/') {
@@ -121,7 +121,13 @@ class Url {
 	 */
 	private static function parse_flag($urls)
 	{
-		return $urls['fragment'] ? '#' . $urls['fragment'] : '';
+		if(isset($urls['fragment']))
+		{
+			return '#' . $urls['fragment'];
+		}
+		else {
+			return '';
+		}
 	}
 
 	/**
@@ -132,7 +138,7 @@ class Url {
 	 *
 	 * @return string
 	 */
-	private static function parse_query(array $urls, mixed $vars)
+	private static function parse_query(array $urls, $vars)
 	{
 		$temp = '';
 
@@ -152,7 +158,7 @@ class Url {
 		}
 
 		// 写入$url字符串的形式
-		if($urls['query'])
+		if(isset($urls['query']))
 		{
 			$querys = explode('&', $urls['query']);
 
@@ -199,9 +205,9 @@ class Url {
 	 *
 	 * @return string
 	 */
-	private static function parse_prefix(string $url, string $prefix)
+	private static function parse_prefix($prefix)
 	{
-		return Config::get('URL_REWRITE') ? '/' : (_PHP_FILE_ . '/');
+		return (defined('INDEX_FILE') ? '/' . INDEX_FILE : '') . '/';
 	}
 
 	/**
@@ -211,10 +217,12 @@ class Url {
 	 *
 	 * @return string
 	 */
-	private static function beauty(string $url)
+	private static function beauty($url)
 	{
 
 		$url = strtolower($url);
+
+		$stop = false;
 
 		while (!$stop) {
 			// 删除最后位的index
