@@ -80,10 +80,10 @@ class meSmart {
 
     	/**
     	 * 入口文件必须定义
-    	 * FRAME_PATH, KIT_PATH, APP_PATH and APP_DEBUG
+    	 * FRAME_PATH & APP_PATH
     	 */
-    	if(!defined('FRAME_PATH') || !defined('KIT_PATH') || !defined('APP_PATH') || !defined('APP_DEBUG')) {
-    		die('No defined FRAME_PATH, KIT_PATH, APP_PATH and APP_DEBUG');
+    	if(!defined('FRAME_PATH') || !defined('APP_PATH')) {
+    		die('No defined FRAME_PATH & APP_PATH!!');
     	}
 
     	/**
@@ -94,16 +94,16 @@ class meSmart {
         /**
          * 框架版本
          *
-         * @const THINK_VERSION
+         * @const VERSION
          */
-        define('THINK_VERSION', '4.0.0 Beta');
+        define('VERSION', '2.0.0 Beta');
 
         /**
          * 设置PHP的MAGIC_QUOTES_GPC
          *
          * @const MAGIC_QUOTES_GPC
          */
-        define('MAGIC_QUOTES_GPC', false);
+        // define('MAGIC_QUOTES_GPC', false);
 
         /**
          * 当前系统和操作方式
@@ -157,11 +157,12 @@ class meSmart {
                 define('__ROOT__',   (($_root=='/' || $_root=='\\')?'':$_root));
             }
 
-            //支持的URL模式
-            define('URL_COMMON',      0);   //普通模式
-            define('URL_PATHINFO',    1);   //PATHINFO模式
-            define('URL_REWRITE',     2);   //REWRITE模式
-            define('URL_COMPAT',      3);   // 兼容模式
+            // TODO：删除原有URL模式，统一改为pathinfo模式
+            // 支持的URL模式
+            // define('URL_COMMON',      0);   //普通模式
+            // define('URL_PATHINFO',    1);   //PATHINFO模式
+            // define('URL_REWRITE',     2);   //REWRITE模式
+            // define('URL_COMPAT',      3);   // 兼容模式
         }
 
         /**
@@ -182,10 +183,15 @@ class meSmart {
          * @const CACHE_PATH
          * @const EXT
          */
+        // 删除CORE_PATH
         defined('CORE_PATH')    or define('CORE_PATH',      FRAME_PATH.'Lib/');     // 系统核心类库目录
 
+        // 删除COMMON_PATH
         defined('COMMON_PATH')  or define('COMMON_PATH',    APP_PATH.'Common/');    // 项目公共目录
+
+        // 合并LIB_PATH到APP目录
         defined('LIB_PATH')     or define('LIB_PATH',       APP_PATH.'Lib/');       // 项目类库目录
+
         defined('CONF_PATH')    or define('CONF_PATH',      APP_PATH.'Conf/');      // 项目配置目录
         defined('LANG_PATH')    or define('LANG_PATH',      APP_PATH.'Lang/');      // 项目语言包目录
         defined('TMPL_PATH')    or define('TMPL_PATH',      APP_PATH.'Tpl/');       // 项目模板目录
@@ -197,7 +203,6 @@ class meSmart {
         defined('CACHE_PATH')   or define('CACHE_PATH',     RUNTIME_PATH.'Cache/'); // 项目模板缓存目录
 
         defined('EXT')          or define('EXT',            '.class.php');          // 项目模板缓存目录
-
     }
 
     /**
@@ -248,7 +253,7 @@ class meSmart {
             
             // 创建项目目录结构
             if(!is_dir(LIB_PATH)) {
-                \Debug::throw_exception('不存在项目目录结构');
+                Debug::throw_exception('不存在项目目录结构');
             }
 
             // 检查缓存目录
