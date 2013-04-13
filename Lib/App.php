@@ -485,13 +485,14 @@ class App {
         // URL调度结束标签
         Tag::listen('url_dispatch');
 
+        // TODO: 删除页面压缩功能，改为使用Smarty进行页面压缩管理
         // 页面压缩输出支持
-        if(Config::get('OUTPUT_ENCODE')) {
-            $zlib = ini_get('zlib.output_compression');
-            if(empty($zlib)) {
-                ob_start('ob_gzhandler');
-            }
-        }
+        // if(Config::get('OUTPUT_ENCODE')) {
+        //     $zlib = ini_get('zlib.output_compression');
+        //     if(empty($zlib)) {
+        //         ob_start('ob_gzhandler');
+        //     }
+        // }
 
         // 系统变量安全过滤
         if(Config::get('VAR_FILTERS')) {

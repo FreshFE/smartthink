@@ -43,10 +43,10 @@ class Lang {
 	 *
 	 * @return $string
 	 */
-	public static function set($name, $value) {
+	public static function set($name, $value = null) {
 
 		if(is_array($name)) {
-			static::setAll($name);
+			return static::setAll($name);
 		}
 
 		// 大写

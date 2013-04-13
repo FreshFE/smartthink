@@ -60,27 +60,21 @@ class Tag {
 	 * @param Mixed $params 传人的参数
 	 * @return void
 	 */
-	public static function run($name, &$params = null) {
-
-	    $class = __NAMESPACE__ . '\\Behaviors\\' . $name;
-
-	    // 载入
-	    // Import::loads(array(
-     //        CORE_PATH . 'Behavior/' . $class . EXT,
-     //        LIB_PATH . 'Behavior/' . $class . EXT,
-     //        GROUP_PATH . 'Behavior/' . $class . EXT
-     //    ));
-
-	    if(APP_DEBUG) {
+	public static function run($name, &$params = null)
+	{
+	    if(APP_DEBUG)
+	    {
 	        Debug::mark('behaviorStart');
 	    }
 
 	    // 实例化并执行
+	    $class = __NAMESPACE__ . '\\Behaviors\\' . $name;
 	    $behavior = new $class();
 	    $behavior->run($params);
 
 	    // 记录行为的执行日志
-	    if(APP_DEBUG) {
+	    if(APP_DEBUG)
+	    {
 	        Debug::mark('behaviorEnd');
 	        Debug::trace('Run '.$name.' Behavior [ RunTime:'.Debug::mark('behaviorStart','behaviorEnd',6).'s ]','','INFO');
 	    }

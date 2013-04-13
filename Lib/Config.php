@@ -18,7 +18,7 @@ class Config {
 	 *
 	 * @return mix
 	 */
-	public static function set($name, $value) {
+	public static function set($name, $value = null) {
 
 		if(is_array($name)) {
 			return static::setAll($name);
