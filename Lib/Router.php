@@ -27,7 +27,7 @@ class Router {
 	public static function dispatch() {
 
 		// 获得并解析
-		$pathinfo = strip_tags($_SERVER['PATH_INFO']);
+		$pathinfo = strip_tags(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '');
 		$pathinfo = explode('.', $pathinfo);
 
 		// 定义后缀
@@ -74,6 +74,8 @@ class Router {
 	 * @return array
 	 */
 	private static function parsePathinfoQuery($pathinfo) {
+
+		$request = array();
 
 		// 奇数项赋值给偶数项
 		foreach ($pathinfo as $key => $value) {
