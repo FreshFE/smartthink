@@ -18,7 +18,7 @@ return array(
         // 'CheckLang' // 读取Lang
     ),
     'app_auth' => array(
-        'CheckAuth'
+        // 'CheckAuth'
     ),
     'route_check'   =>  array(
         'CheckRoute', // 路由检测

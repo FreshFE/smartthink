@@ -76,7 +76,7 @@ class Import {
 
 		// 生成class名称
 		$class = basename($controller);
-
+		
 		// 存在类则写入缓存
 		if (class_exists($class, false))
 		{

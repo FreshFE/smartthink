@@ -6,6 +6,7 @@ use Think\Lang as Lang;
 use Think\Debug as Debug;
 use Think\Model as Model;
 use Think\Import as Import;
+use Think\Url as Url;
 
 // 最后留着的方法, A, C, D, L, M, R, S, U
 

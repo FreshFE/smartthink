@@ -6,7 +6,7 @@ abstract class Controller {
 
     protected $view;
 
-    protected $vars;
+    protected $vars = array();
 
     public function __construct()
     {
@@ -18,7 +18,7 @@ abstract class Controller {
         if(is_array($name)) {
             $this->vars = array_merge($this->vars, $name);
         }
-        else {
+        else if(!is_null($value)) {
             $this->vars[$name] = $value;
         }
     }
@@ -33,8 +33,12 @@ abstract class Controller {
         return $this->view->fetch($name, $this->vars);
     }
 
-    protected function json()
+    protected function json($name = null, $value = null)
     {
+        if(!is_null($name))
+        {
+            $this->assign($name, $value);
+        }
         exit(json_encode($this->vars));
     }
 
