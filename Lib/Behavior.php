@@ -1,41 +1,75 @@
 <?php namespace Think;
+/**
+ * SmartThink PHP
+ * Copyright (c) 2004-2013 Methink
+ * Thanks for ThinkPHP & GEM-MIS
+ * @copyright     Copyright (c) Methink
+ * @link          http://smartthink.org
+ * @package       Think.Behavior
+ * @since         ThinkPHP 3.0.0
+ * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
+ */
 
-abstract class Behavior {
+use Think\Config as Config;
 
-    // 行为参数 和配置参数设置相同
-    protected $options =  array();
+/**
+ * 行为的父类，抽象方法，供其他行为继承
+ * 设计了$this->options覆盖Config
+ * 设计了run方法作为唯一执行入口
+ */
+abstract class Behavior
+{
+    /**
+     * 行为参数
+     * 在run运行时会将这里的参数和Config内参数进行匹配
+     * 若Config内不存在改参数，则将此处参数赋值于Config
+     *
+     * @var array
+     */
+    protected $options = array();
 
     /**
      * 架构函数
-     * @access public
+     * 遍历合并Config
+     *
+     * @return void
      */
-    public function __construct() {
-
-        if(!empty($this->options)) {
-            foreach($this->options as $name => $val) {
-
+    public function __construct()
+    {
+        if(!empty($this->options))
+        {
+            foreach($this->options as $name => $val)
+            {
                 // 参数已设置 则覆盖行为参数
-                if(NULL !== C($name))
+                if(Config::get($name) !== null)
+                {
                     $this->options[$name] = C($name);
-
+                }
                 // 参数未设置 则传入默认值到配置
-                else
-                    C($name,$val);
+                else {
+                    Config::set($name,$val);
+                }
             }
 
             array_change_key_case($this->options);
         }
     }
     
-    // 获取行为参数
-    public function __get($name) {
+    /**
+     * 魔术方法 获取行为参数
+     *
+     * @param $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
         return $this->options[strtolower($name)];
     }
 
     /**
-     * 执行行为 run方法是Behavior唯一的接口
-     * @access public
-     * @param mixed $params  行为参数
+     * 抽象方法，由子类实现作为该类的唯一执行入口
+     *
+     * @param mixed &$params
      * @return void
      */
     abstract public function run(&$params);
