@@ -5,6 +5,7 @@ use Think\Log as Log;
 use Think\Lang as Lang;
 use Think\Debug as Debug;
 use Think\Model as Model;
+use Think\Import as Import;
 
 // 最后留着的方法, A, C, D, L, M, R, S, U
 
@@ -71,19 +72,15 @@ function D($name = '', $layer = '') {
 
     // 默认Model Layer名称
     $layer = $layer ? $layer : Config::get('DEFAULT_M_LAYER');
-    $name = $layer . '/' . GROUP_NAME . '/' . $name;
+    $name = $layer . '/' . $name;
 
     // 缓存存在则返回
     if(isset($_model[$name])) {
         return $_model[$name];
     }
 
-    // 重新生成加载路径
-    $name = explode('/', $name);
-    $name = $name[1] . '/' . $name[0] . '/' . $name[2];
-
     // 加载
-    Import::load(LIB_PATH . $name . $layer . EXT);
+    Import::load(GROUP_PATH . $name . $layer . EXT);
 
     // 获得类名
     $class = basename($name . $layer);
