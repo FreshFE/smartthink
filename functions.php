@@ -4,6 +4,7 @@ use Think\Config as Config;
 use Think\Log as Log;
 use Think\Lang as Lang;
 use Think\Debug as Debug;
+use Think\Model as Model;
 
 // 最后留着的方法, A, C, D, L, M, R, S, U
 
@@ -155,6 +156,7 @@ function M($name = '', $tablePrefix = '', $connection = '') {
     $guid = $tablePrefix . $name . '_' . $class;
 
     if (!isset($_model[$guid])) {
+        $class = 'Think\\' . $class;
         $_model[$guid] = new $class($name, $tablePrefix, $connection);
     }
 

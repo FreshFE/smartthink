@@ -1,5 +1,5 @@
 <?php
-namespace Think\Drives\Db;
+namespace Think\Drivers\Db;
 
 use Think\Db as Db;
 use Think\Debug as Debug;

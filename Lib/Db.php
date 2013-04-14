@@ -10,6 +10,8 @@ namespace Think;
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+use \Exception;
+
 /**
  * ThinkPHP 数据库中间层实现类
  * @category   Think
@@ -66,36 +68,55 @@ class Db {
     }
 
     /**
-     * 加载数据库 支持配置文件或者 DSN
-     * @access public
-     * @param mixed $db_config 数据库配置信息
-     * @return string
-     */
-    public function factory($db_config='') {
-        // 读取数据库配置
-        $db_config = $this->parseConfig($db_config);
-        if(empty($db_config['dbms']))
-            Debug::throw_exception(L('_NO_DB_CONFIG_'));
-        // 数据库类型
-        $this->dbType = ucwords(strtolower($db_config['dbms']));
+    * 加载数据库 支持配置文件或者 DSN
+    * @access public
+    * @param mixed $db_config 数据库配置信息
+    * @return string
+    */
+    public function factory($db_config='')
+    {
+        try
+        {
+            // 读取数据库配置
+            $db_config = $this->parseConfig($db_config);
 
-        // 载入数据库
-        $class = 'Db'. $this->dbType;
-        Import::load(CORE_PATH . 'Driver/Db/' . $class . EXT);
+            // 不存数据库配置
+            if(empty($db_config['dbms']))
+            {
+                throw new Exception(L('_NO_DB_CONFIG_'));
+            }
 
-        // 检查驱动类
-        if(class_exists($class)) {
-            $db = new $class($db_config);
-            // 获取当前的数据库类型
-            if( 'pdo' != strtolower($db_config['dbms']) )
-                $db->dbType = strtoupper($this->dbType);
-            else
-                $db->dbType = $this->_getDsnType($db_config['dsn']);
-        }else {
+            // 数据库类型
+            $this->dbType = ucwords(strtolower($db_config['dbms']));
+
+            // 载入数据库
+            $class = 'Think\\Drivers\\Db\\Db' . $this->dbType;
+
+            // 检查驱动类
+            if(class_exists($class))
+            {
+                // 实例化
+                $db = new $class($db_config);
+                // 获取当前的数据库类型
+                if(strtolower($db_config['dbms']) != 'pdo')
+                {
+                    $db->dbType = strtoupper($this->dbType);
+                }
+                else {
+                    $db->dbType = $this->_getDsnType($db_config['dsn']);
+                }
+            }
             // 类没有定义
-            Debug::throw_exception(L('_NO_DB_DRIVER_').': ' . $class);
+            else {
+                throw new Exception(L('_NO_DB_DRIVER_'). ': ' . $class);
+            }
+
+            return $db;
         }
-        return $db;
+        catch(Exception $error)
+        {
+            exit($error->getMessage());
+        }
     }
 
     /**

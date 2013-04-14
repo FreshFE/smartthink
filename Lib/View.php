@@ -1,131 +1,121 @@
 <?php
 namespace Think;
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2012 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
+/**
+ * meSmart php
+ * Copyright (c) 2004-2013 Methink
+ * @copyright     Copyright (c) Methink
+ * @link          https://github.com/minowu/meSmart
+ * @package       meSmart.Views.Smarty
+ * @since         meSmart php 0.1.0
+ * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
+ */
+
+use \Smarty;
 
 /**
- * ThinkPHP 视图类
- * @category   Think
- * @package  Think
- * @subpackage  Core
- * @author liu21st <liu21st@gmail.com>
+ * 实现View接口
+ * 采用Smarty作为该类的模板引擎，并简单配置，提供些接口供开发者修改
+ * 开发者可以继承该文件，重新配置Smarty引擎
+ * 继承后，记得在Mapping中修改$view所使用的类名称
  */
 class View {
-    /**
-     * 模板输出变量
-     * @var tVar
-     * @access protected
-     */       
-    protected $tVar        =  array();
 
-    /**
-     * 模板变量赋值
-     * @access public
-     * @param mixed $name
-     * @param mixed $value
-     */
-    public function assign($name,$value=''){
-        if(is_array($name)) {
-            $this->tVar   =  array_merge($this->tVar,$name);
-        }else {
-            $this->tVar[$name] = $value;
-        }
-    }
+	/**
+	 * 实例化模板引擎文件的存放属性
+	 *
+	 * @var object
+	 */
+	public $engine;
 
-    /**
-     * 取得模板变量的值
-     * @access public
-     * @param string $name
-     * @return mixed
-     */
-    public function get($name=''){
-        if('' === $name) {
-            return $this->tVar;
-        }
-        return isset($this->tVar[$name])?$this->tVar[$name]:false;
-    }
+	/**
+	 * 构造函数
+	 * 先载入类包，再实例化Smarty，并执行配置Smarty
+	 */
+	public function __construct()
+	{
+		// 载入
+		$this->import();
 
-    /**
-     * 加载模板和页面输出 可以返回输出内容
-     * @access public
-     * @param string $templateFile 模板文件名
-     * @param string $charset 模板输出字符集
-     * @param string $contentType 输出类型
-     * @param string $content 模板输出内容
-     * @param string $prefix 模板缓存前缀
-     * @return mixed
-     */
-    public function display($templateFile='',$charset='',$contentType='',$content='',$prefix='') {
-        Debug::mark('viewStartTime');
-        // 视图开始标签
-        Tag::listen('view_begin',$templateFile);
-        // 解析并获取模板内容
-        $content = $this->fetch($templateFile,$content,$prefix);
-        // 输出模板内容
-        $this->render($content,$charset,$contentType);
-        // 视图结束标签
-        Tag::listen('view_end');
-    }
+		// 实例化
+		$this->engine = new Smarty();
 
-    /**
-     * 输出内容文本可以包括Html
-     * @access private
-     * @param string $content 输出内容
-     * @param string $charset 模板输出字符集
-     * @param string $contentType 输出类型
-     * @return mixed
-     */
-    private function render($content,$charset='',$contentType=''){
-        if(empty($charset))  $charset = C('DEFAULT_CHARSET');
-        if(empty($contentType)) $contentType = C('TMPL_CONTENT_TYPE');
-        // 网页字符编码
-        header('Content-Type:'.$contentType.'; charset='.$charset);
-        header('Cache-control: '.C('HTTP_CACHE_CONTROL'));  // 页面缓存控制
-        header('X-Powered-By:ThinkPHP');
-        // 输出模板文件
-        echo $content;
-    }
+		// 配置
+		$this->config();
+	}
 
-    /**
-     * 解析和获取模板内容 用于输出
-     * @access public
-     * @param string $templateFile 模板文件名
-     * @param string $content 模板输出内容
-     * @param string $prefix 模板缓存前缀
-     * @return string
-     */
-    public function fetch($templateFile='',$content='',$prefix='') {
-        if(empty($content)) {
-            // 模板文件解析标签
-            Tag::listen('view_template',$templateFile);
-            // 模板文件不存在直接返回
-            if(!is_file($templateFile)) return NULL;
-        }
-        // 页面缓存
-        ob_start();
-        ob_implicit_flush(0);
-        if('php' == strtolower(C('TMPL_ENGINE_TYPE'))) { // 使用PHP原生模板
-            // 模板阵列变量分解成为独立变量
-            extract($this->tVar, EXTR_OVERWRITE);
-            // 直接载入PHP模板
-            empty($content)?include $templateFile:eval('?>'.$content);
-        }else{
-            // 视图解析标签
-            $params = array('var'=>$this->tVar,'file'=>$templateFile,'content'=>$content,'prefix'=>$prefix);
-            Tag::listen('view_parse',$params);
-        }
-        // 获取并清空缓存
-        $content = ob_get_clean();
-        // 内容过滤标签
-        Tag::listen('view_filter',$content);
-        // 输出模板文件
-        return $content;
-    }
+	/**
+	 * 载入Smarty
+	 * 开发者可以在继承时重写这个函数以来达到改变载入路径的目的
+	 *
+	 * @return void
+	 */
+	protected function import()
+	{
+		include_once CORE_PATH . 'Views/Smarty/Smarty.class.php';
+	}
+
+	/**
+	 * 对Smarty进行配置
+	 *
+	 * @return void
+	 */
+	protected function config()
+	{
+		// 是否开启缓存, 模板目录, 编译目录, 缓存目录
+		$this->engine->caching           = defined('APP_DEBUG') ? APP_DEBUG : false;
+		$this->engine->template_dir      = GROUP_PATH . 'Tpl/';
+		$this->engine->compile_dir       = CACHE_PATH;
+		$this->engine->cache_dir         = TEMP_PATH;
+		$this->engine->debugging         = defined('TEMPLATE_DEBUG') ? TEMPLATE_DEBUG : false;
+		$this->engine->left_delimiter    = '{{';
+		$this->engine->right_delimiter   = '}}';
+	}
+
+	/**
+	 * 结束程序，直接输出，同时也关系到缓存等问题
+	 *
+	 * @param string $name
+	 * @param array $vars
+	 */
+	public function display($name, $vars)
+	{
+		$name = $this->parse_tpl($name);
+		$this->engine->assign($vars);
+		$this->engine->display($name);
+	}
+
+	/**
+	 * 渲染模板，返回字符串
+	 *
+	 * @param string $name
+	 * @param array $vars
+	 * @return string
+	 */
+	public function fetch($name, $vars)
+	{
+		$name = $this->parse_tpl($name);
+		$this->engine->assign($vars);
+		return $this->engine->fetch($name);
+	}
+
+	public function parse_tpl($name = null)
+	{
+		// 为空
+		if(is_null($name))
+		{
+			$name = CONTROLLER_NAME . '/' . ACTION_NAME;
+		}
+		// 当仅有一位时
+		else {
+			$names = explode('/', $name);
+
+			if(count($names) === 1)
+			{
+				$name = CONTROLLER_NAME . '/' . $name;
+			}
+		}
+
+		// 添加后缀
+		return $name . '.html';
+	}
 }
