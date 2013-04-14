@@ -1,8 +1,10 @@
-<?php namespace Think\Behaviors;
+<?php
+namespace Think\Behaviors;
 
 use Think\Behavior as Behavior;
 use Think\Cookie as Cookie;
 
+// TODO: 重构Lang类，删除行为，直接添加在核心内
 class CheckLang extends Behavior {
 
     // 行为参数定义（默认值） 可在项目配置中覆盖

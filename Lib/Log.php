@@ -10,6 +10,8 @@ namespace Think;
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+use Think\Response as Response;
+
 /**
  * 日志处理类
  * @category   Think
@@ -67,6 +69,8 @@ class Log {
      * @return void
      */
     static function save($type='',$destination='',$extra='') {
+        // TODO: 重构Log类
+        return false;
         if(empty(self::$log)) return ;
         $type = $type?$type:C('LOG_TYPE');
         if(self::FILE == $type) { // 文件方式记录日志信息
@@ -80,7 +84,7 @@ class Log {
             $extra   =  $extra?$extra:C('LOG_EXTRA');
         }
         $now = date(self::$format);
-        error_log($now.' '.Http::get_client_ip().' '.$_SERVER['REQUEST_URI']."\r\n".implode('',self::$log)."\r\n", $type,$destination ,$extra);
+        error_log($now.' '.' '.$_SERVER['REQUEST_URI']."\r\n".implode('',self::$log)."\r\n", $type,$destination ,$extra);
         // 保存后清空日志缓存
         self::$log = array();
         //clearstatcache();

@@ -239,7 +239,7 @@ class App {
         {
             $module = Import::controller('Empty');
             if(!$module){
-                Http::_404(L('_MODULE_NOT_EXIST_') . ':' . CONTROLLER_NAME);
+                Response::_404(L('_MODULE_NOT_EXIST_') . ':' . CONTROLLER_NAME);
             }
         }
 

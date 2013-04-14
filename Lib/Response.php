@@ -1,7 +1,7 @@
 <?php
 namespace Think;
 
-class Http {
+class Response {
 
 	/**
 	 * 获取客户端IP地址

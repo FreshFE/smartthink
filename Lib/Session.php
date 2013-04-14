@@ -48,7 +48,10 @@ class Session {
 		}
 
 		// 启动session
-		if(C('SESSION_AUTO_START'))  session_start();
+		if(C('SESSION_AUTO_START'))
+		{
+			session_start();
+		}
 	}
 
 	public static function get($name) {

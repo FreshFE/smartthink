@@ -1124,9 +1124,9 @@ class Model {
                 if(!is_numeric($end)) $end   =  strtotime($end);
                 return NOW_TIME >= $start && NOW_TIME <= $end;
             case 'ip_allow': // IP 操作许可验证
-                return in_array(Http::get_client_ip(),explode(',',$rule));
+                return in_array(Response::get_client_ip(),explode(',',$rule));
             case 'ip_deny': // IP 操作禁止验证
-                return !in_array(Http::get_client_ip(),explode(',',$rule));
+                return !in_array(Response::get_client_ip(),explode(',',$rule));
             case 'regex':
             default:    // 默认使用正则验证 可以使用验证类中定义的验证名称
                 // 检查附加规则

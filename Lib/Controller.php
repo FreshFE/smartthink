@@ -35,7 +35,6 @@ abstract class Controller {
 
     protected function json()
     {
-        header('Content-Type:application/json; charset=utf-8');
         exit(json_encode($this->vars));
     }
 
@@ -58,7 +57,7 @@ abstract class Controller {
                 // hack 方式定义扩展操作
                 __hack_action();
             }else{
-                Http::_404(L('_ERROR_ACTION_').':'.ACTION_NAME);
+                Response::_404(L('_ERROR_ACTION_').':'.ACTION_NAME);
             }
         }else{
             switch(strtolower($method)) {
