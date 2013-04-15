@@ -68,7 +68,13 @@ class Tag {
 	    }
 
 	    // 实例化并执行
-	    $class = __NAMESPACE__ . '\\Behaviors\\' . $name;
+	    // if($name == 'App\\Home\\Behaviors\\CheckSessionId') {
+	    	$class = $name;
+	    // }
+	    // else {
+	    // 	$class = __NAMESPACE__ . '\\Behaviors\\' . $name;	
+	    // }
+	    
 	    $behavior = new $class();
 	    $behavior->run($params);
 
