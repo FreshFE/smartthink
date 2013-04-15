@@ -1,9 +1,25 @@
 <?php namespace Think;
+/**
+ * SmartThink PHP
+ * Copyright (c) 2004-2013 Methink
+ * Thanks for ThinkPHP & GEM-MIS
+ * @copyright     Copyright (c) Methink
+ * @link          http://smartthink.org
+ * @package       Think.Route
+ * @since         SmartThink 1.0.0
+ * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
+ */
 
-use Think\Import as Import;
-
+/**
+ * 在执行了Dispatch后定义了常量GROUP_NAME
+ * 之后便在分组项目中开发本路由
+ * TODO：分离出路由驱动和路由行为
+ */
 class Route
 {
+	/**
+	 * 初始化方法
+	 */
 	public static function init()
 	{
 		$controller = static::get_controller_method();
@@ -23,6 +39,9 @@ class Route
 		static::set_query();
 	}
 
+	/**
+	 * 根据pathinfo得到控制器名和相关的方法
+	 */
 	public static function get_controller_method()
 	{
 		$paths = Dispatch::$paths;
