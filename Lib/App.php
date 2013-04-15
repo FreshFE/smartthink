@@ -34,29 +34,29 @@ class App {
     static public function run() {
 
         // -------------------------------------------
-        // 解析分组
+        // 解析分配器，找到分组设置
         // -------------------------------------------
-        static::parseGroupPath();
-
-        // -------------------------------------------
-        // 解析路由
-        // -------------------------------------------
-        static::loadRoutes();
+        Dispatch::init();
 
         // -------------------------------------------
         // 加载配置
         // -------------------------------------------
-        static::loadConfig();
+        static::load_config();
 
         // -------------------------------------------
         // 加载行为
         // -------------------------------------------
-        static::loadTag();
+        static::load_tag();
 
         // -------------------------------------------
         // 加载语言包
         // -------------------------------------------
-        static::loadLang();
+        static::load_lang();
+
+        // -------------------------------------------
+        // 分配分组内路由细节
+        // -------------------------------------------
+        Route::init();
 
         // -------------------------------------------
         // 项目初始化标签
@@ -107,29 +107,11 @@ class App {
     }
 
     /**
-     * 解析分组
-     */
-    private static function parseGroupPath()
-    {
-
-    }
-
-    /**
-     * 解析路由
-     *
-     * TODO: 分离路由，查找前缀目录
-     */
-    private static function loadRoutes()
-    {
-        Router::dispatch();
-    }
-
-    /**
      * 载入配置
      *
      * @return void
      */
-    private static function loadConfig()
+    private static function load_config()
     {
         foreach (array(FRAME_PATH, APP_PATH, GROUP_PATH) as $key => $path) {
             static::parseConfig($path);
@@ -191,7 +173,7 @@ class App {
      *
      * @return void
      */
-    private static function loadTag()
+    private static function load_tag()
     {
         // 核心行为
         Config::set('extends', include FRAME_PATH . 'Conf/tags.php');
@@ -212,7 +194,7 @@ class App {
      *
      * @return void
      */
-    private static function loadLang()
+    private static function load_lang()
     {
         Lang::set(include FRAME_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php');
     }
@@ -506,7 +488,6 @@ class App {
 
         // 配置主题目录
         define('THEME_PATH', GROUP_PATH . 'Tpl/');
-        define('APP_TMPL_PATH' , __ROOT__ . '/' . APP_NAME . (APP_NAME ? '/' : '') . basename(TMPL_PATH) . '/' . GROUP_NAME . '/');
 
         // 缓存路径
         Config::set('CACHE_PATH', CACHE_PATH . GROUP_NAME . '/');

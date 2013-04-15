@@ -56,7 +56,7 @@ class Redirect {
 
 	    // 设置路径
 	    if(!$url) {
-	    	$url = empty($_SERVER["HTTP_REFERER"]) ? __APP__ : $_SERVER["HTTP_REFERER"];
+	    	$url = empty($_SERVER["HTTP_REFERER"]) ? __GROUP__ : $_SERVER["HTTP_REFERER"];
 	    }
 
 	    // 设置提示信息session
