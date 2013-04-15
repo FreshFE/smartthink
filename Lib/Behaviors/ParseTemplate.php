@@ -42,8 +42,7 @@ class ParseTemplate extends Behavior {
             }
         }
         catch(Exception $error) {
-            echo $error->getMessage();
-            exit();
+            exit($error->getMessage());
         }
     }
 }
