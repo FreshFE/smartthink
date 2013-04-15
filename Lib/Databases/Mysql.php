@@ -1,10 +1,10 @@
 <?php
-namespace Think\Drivers\Db;
+namespace Think\Databases;
 
 use Think\Db as Db;
 use Think\Debug as Debug;
 
-class DbMysql extends Db
+class Mysql extends Db
 {
     /**
      * 架构函数 读取数据库配置信息

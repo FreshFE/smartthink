@@ -75,8 +75,7 @@ class Db {
     */
     public function factory($db_config='')
     {
-        try
-        {
+        try {
             // 读取数据库配置
             $db_config = $this->parseConfig($db_config);
 
@@ -90,7 +89,7 @@ class Db {
             $this->dbType = ucwords(strtolower($db_config['dbms']));
 
             // 载入数据库
-            $class = 'Think\\Drivers\\Db\\Db' . $this->dbType;
+            $class = 'Think\\Databases\\' . $this->dbType;
 
             // 检查驱动类
             if(class_exists($class))
