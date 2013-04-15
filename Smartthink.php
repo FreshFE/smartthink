@@ -160,61 +160,49 @@ class Smartthink {
      */
     public static function load_runtime_file() {
 
-        // 定义
-        $files = array(            
-            // TODO: 重构
-            CORE_PATH.'View/Helper'.EXT
-        );
+        try {
+            // 载入临时的Helper文件，将重构
+            include CORE_PATH . 'Library/Helper' . EXT;
 
-        // 载入
-        foreach ($files as $key => $file) {
-            include $file;
-        }
+            // 调试模式下检查路径和文件
+            if(APP_DEBUG) {
+                
+                // 创建项目目录结构
+                if(!is_dir(LIB_PATH)) {
+                    throw new Exception("不存在项目目录结构");
+                }
 
-        // 调试模式下检查路径和文件
-        if(APP_DEBUG) {
-            
-            // 创建项目目录结构
-            if(!is_dir(LIB_PATH)) {
-                Debug::throw_exception('不存在项目目录结构');
+                // 检查缓存目录
+                if(!is_dir(CACHE_PATH)) {
+                    
+                    // 如果不存在Runtime则创建
+                    if(!is_dir(RUNTIME_PATH))
+                    {
+                        mkdir(RUNTIME_PATH);
+                    }
+                    // 如果Runtime不可写返回
+                    else if(!is_writeable(RUNTIME_PATH))
+                    {
+                        throw new Exception(RUNTIME_PATH . "is no writeable");
+                    }
+
+                    // 检查并创建Runtime下的缓存目录
+                    foreach (array(CACHE_PATH, LOG_PATH, TEMP_PATH, DATA_PATH) as $key => $value)
+                    {
+                        if(!is_dir($value)) mkdir($value);
+                    }
+                }
             }
 
-            // 检查缓存目录
-            if(!is_dir(CACHE_PATH)) {
-                static::check_runtime();
-            }
+            // 记录文件加载时间
+            Debug::mark('loadTime');
+
+            // 启动
+            App::run();
         }
-
-        // 记录文件加载时间
-        Debug::mark('loadTime');
-
-        // 启动
-        App::run();
-    }
-
-    /**
-     * 检查缓存目录(Runtime)
-     * 如果不存在则自动创建
-     *
-     * @return bealoon
-     */
-    private static function check_runtime() {
-
-        // 如果不存在Runtime则创建
-        if(!is_dir(RUNTIME_PATH)) {
-            mkdir(RUNTIME_PATH);
+        catch(Exception $error) {
+            exit($error->getMessage());
         }
-        // 如果Runtime不可写返回
-        else if(!is_writeable(RUNTIME_PATH)) {
-            exit(RUNTIME_PATH . 'is no writeable');
-        }
-
-        // 检查并创建Runtime下的缓存目录
-        foreach (array(CACHE_PATH, LOG_PATH, TEMP_PATH, DATA_PATH) as $key => $value) {
-            if(!is_dir($value)) mkdir($value);
-        }
-
-        return true;
     }
 
     /**
