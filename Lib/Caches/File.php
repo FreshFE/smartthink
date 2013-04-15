@@ -1,10 +1,10 @@
 <?php
-namespace Think\Drivers\Cache;
+namespace Think\Caches;
 
 use Think\Cache as Cache;
 use Think\Debug as Debug;
 
-class CacheFile extends Cache {
+class File extends Cache {
 
     /**
      * 架构函数

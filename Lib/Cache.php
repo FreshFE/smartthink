@@ -40,15 +40,23 @@ class Cache {
      * @param array $options  配置数组
      * @return object
      */
-    public function connect($type='',$options=array()) {
-        if(empty($type))  $type = C('DATA_CACHE_TYPE');
-        $type  = strtolower(trim($type));
-        $class = 'Cache'.ucwords($type);
-        Import::load(CORE_PATH . 'Driver/Cache/' . $class . EXT);
+    public function connect($type = '', $options = array())
+    {
+        if(empty($type))
+        {
+            $type = C('DATA_CACHE_TYPE');
+        }
+
+        $class = 'Think\\Caches\\' . ucwords(strtolower(trim($type)));
+
         if(class_exists($class))
+        {
             $cache = new $class($options);
-        else
+        }
+        else {
             Debug::throw_exception(L('_CACHE_TYPE_INVALID_').':'.$type);
+        }
+
         return $cache;
     }
 
