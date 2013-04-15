@@ -44,7 +44,7 @@ class Smartthink {
         // -------------------------------------------
         // 注册错误和异常
         // -------------------------------------------
-        static::register_error();
+        // static::register_error();
 
         // -------------------------------------------
         // 执行runtime
@@ -86,7 +86,7 @@ class Smartthink {
          *
          * @const VERSION
          */
-        define('VERSION', '2.0.0 Beta');
+        define('VERSION', '1.0.0 Preview 2');
 
         /**
          * 当前系统和操作方式
@@ -111,20 +111,6 @@ class Smartthink {
         /**
          * 基本文件路径
          * 路径设置 可在入口文件中重新定义 所有路径常量都必须以/ 结尾
-         *
-         * @const CORE_PATH
-         * @const COMMON_PATH
-         * @const LIB_PATH
-         * @const CONF_PATH
-         * @const LANG_PATH
-         * @const TMPL_PATH
-         * @const HTML_PATH
-         *
-         * @const LOG_PATH
-         * @const TEMP_PATH
-         * @const DATA_PATH
-         * @const CACHE_PATH
-         * @const EXT
          */
         // 删除CORE_PATH
         defined('CORE_PATH')    or define('CORE_PATH',      FRAME_PATH.'Lib/');     // 系统核心类库目录
@@ -204,19 +190,6 @@ class Smartthink {
             exit($error->getMessage());
         }
     }
-
-    /**
-     * 注册错误和异常
-     *
-     * @return void
-     */
-    private static function register_error()
-    {
-        // register_shutdown_function(array('App','fatalError'));
-        // set_error_handler(array('App','appError'));
-        // set_exception_handler(array('App','appException'));
-    }
-
 }
 
 // 启动

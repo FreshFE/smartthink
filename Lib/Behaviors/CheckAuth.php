@@ -15,6 +15,7 @@ namespace Think\Behaviors;
 use Think\Behavior as Behavior;
 use Think\Config as Config;
 use Think\Import as Import;
+use Think\Auth as Auth;
 
 /**
  * CheckAuthBehavior Class
@@ -117,7 +118,7 @@ class CheckAuth extends Behavior {
 			$auth = $this->check();
 
 			// 将对象输出到全局
-			Config::set('auth', $auth);
+			Auth::init($auth);
 		}
 	}
 
