@@ -1,121 +1,159 @@
-<?php
-namespace Think;
-/**
- * meSmart php
- * Copyright (c) 2004-2013 Methink
- * @copyright     Copyright (c) Methink
- * @link          https://github.com/minowu/meSmart
- * @package       meSmart.Views.Smarty
- * @since         meSmart php 0.1.0
- * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
- */
+<?php namespace Think;
 
-use \Smarty;
+use Think\Debug as Debug;
+use Think\Tag as Tag;
 
 /**
- * 实现View接口
- * 采用Smarty作为该类的模板引擎，并简单配置，提供些接口供开发者修改
- * 开发者可以继承该文件，重新配置Smarty引擎
- * 继承后，记得在Mapping中修改$view所使用的类名称
+ * view视图类
+ * 主要接口是调用模板引擎类的fetch，display使用自身配置
+ * 该类主要是使用了ThinkPHP的代码
  */
-class View {
-
+class View
+{
 	/**
-	 * 实例化模板引擎文件的存放属性
+	 * 存放待输出变量的数组
 	 *
-	 * @var object
+	 * @var array
 	 */
-	public $engine;
+    protected $tVar = array();
 
-	/**
-	 * 构造函数
-	 * 先载入类包，再实例化Smarty，并执行配置Smarty
-	 */
-	public function __construct()
-	{
-		// 载入
-		$this->import();
+    /**
+     * 添加如$this->tVar值
+     *
+     * @param string|array $name
+     * @param value|null $value
+     * @return void
+     */
+    public function assign($name, $value = '')
+    {
+        if(is_array($name))
+        {
+            $this->tVar = array_merge($this->tVar, $name);
+        }
+        else {
+            $this->tVar[$name] = $value;
+        }
+    }
 
-		// 实例化
-		$this->engine = new Smarty();
+    /**
+     * 获得$this->tVar的值
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function get($name)
+    {
+        if(is_null($name))
+        {
+            return $this->tVar;
+        }
+        else {
+        	return isset($this->tVar[$name]) ? $this->tVar[$name] : false;
+        }
+    }
 
-		// 配置
-		$this->config();
-	}
+    /**
+     * 将html字符串输出返回给游览器
+     * 内部调用fetch和render方法，而非直接使用模板引擎的方法
+     *
+     */
+    public function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '')
+    {
+    	// 标记统计
+        Debug::mark('viewStartTime');
 
-	/**
-	 * 载入Smarty
-	 * 开发者可以在继承时重写这个函数以来达到改变载入路径的目的
-	 *
-	 * @return void
-	 */
-	protected function import()
-	{
-		include_once CORE_PATH . 'Views/Smarty/Smarty.class.php';
-	}
+        // 视图开始标签
+        Tag::listen('view_begin', $templateFile);
 
-	/**
-	 * 对Smarty进行配置
-	 *
-	 * @return void
-	 */
-	protected function config()
-	{
-		// 是否开启缓存, 模板目录, 编译目录, 缓存目录
-		$this->engine->caching           = defined('APP_DEBUG') ? APP_DEBUG : false;
-		$this->engine->template_dir      = GROUP_PATH . 'Tpl/';
-		$this->engine->compile_dir       = CACHE_PATH;
-		$this->engine->cache_dir         = TEMP_PATH;
-		$this->engine->debugging         = defined('TEMPLATE_DEBUG') ? TEMPLATE_DEBUG : false;
-		$this->engine->left_delimiter    = '{{';
-		$this->engine->right_delimiter   = '}}';
-	}
+        // 解析并获取模板内容
+        $content = $this->fetch($templateFile, $content, $prefix);
 
-	/**
-	 * 结束程序，直接输出，同时也关系到缓存等问题
-	 *
-	 * @param string $name
-	 * @param array $vars
-	 */
-	public function display($name, $vars)
-	{
-		$name = $this->parse_tpl($name);
-		$this->engine->assign($vars);
-		$this->engine->display($name);
-	}
+        // 输出模板内容
+        $this->render($content, $charset, $contentType);
 
-	/**
-	 * 渲染模板，返回字符串
-	 *
-	 * @param string $name
-	 * @param array $vars
-	 * @return string
-	 */
-	public function fetch($name, $vars)
-	{
-		$name = $this->parse_tpl($name);
-		$this->engine->assign($vars);
-		return $this->engine->fetch($name);
-	}
+        // 视图结束标签
+        Tag::listen('view_end');
+    }
 
-	public function parse_tpl($name = null)
-	{
-		// 为空
-		if(is_null($name))
-		{
-			$name = CONTROLLER_NAME . '/' . ACTION_NAME;
-		}
-		// 当仅有一位时
-		else {
-			$names = explode('/', $name);
+    /**
+     * 将内容输出到游览器
+     *
+     */
+    private function render($content, $charset = '', $contentType = '')
+    {
+    	// 默认字符编码
+        if(empty($charset))
+        {
+        	$charset = Config::get('DEFAULT_CHARSET');
+        }
 
-			if(count($names) === 1)
-			{
-				$name = CONTROLLER_NAME . '/' . $name;
-			}
-		}
+        // 默认文件类型
+        if(empty($contentType))
+        {
+        	$contentType = Config::get('TMPL_CONTENT_TYPE');
+        }
 
-		// 添加后缀
-		return $name . '.html';
-	}
+        // 输出header头
+        header('Content-Type:'.$contentType.'; charset='.$charset);
+        header('Cache-control: '.Config::get('HTTP_CACHE_CONTROL'));
+        header('X-Powered-By: SmartThink');
+        header('X-Thanks: Thanks for ThinkPHP, Lavarel, Smarty & Composer');
+        header('X-Develop-Team: http://smartthink.org');
+
+        // 打印内容
+        echo $content;
+    }
+
+    /**
+     * 从模板引擎处获得内容
+     */
+    public function fetch($templateFile = '', $content = '', $prefix = '')
+    {
+        if(empty($content))
+        {
+            // 模板文件解析标签
+            Tag::listen('view_template',$templateFile);
+
+            // 模板文件不存在直接返回
+            if(!is_file($templateFile))
+            {
+            	return null;
+            }
+        }
+
+        // 页面缓存
+        ob_start();
+        ob_implicit_flush(0);
+
+        // 使用PHP原生模板
+        if('php' == strtolower(Config::get('TMPL_ENGINE_TYPE')))
+        {
+            // 模板阵列变量分解成为独立变量
+            extract($this->tVar, EXTR_OVERWRITE);
+
+            // 直接载入PHP模板
+            empty($content) ? include $templateFile : eval('?>' . $content);
+        }
+        else {
+            // 视图解析标签
+            $params = array(
+            	'var' => $this->tVar,
+            	'file' => $templateFile,
+            	'content' => $content,
+            	'prefix' => $prefix
+            );
+
+            // 解析模板
+            Tag::listen('view_parse',$params);
+        }
+
+        // 获取并清空缓存
+        $content = ob_get_clean();
+
+        // 内容过滤标签
+        Tag::listen('view_filter',$content);
+
+        // 返回内容
+        return $content;
+    }
 }

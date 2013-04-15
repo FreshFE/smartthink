@@ -1,40 +1,35 @@
-<?php
-namespace Think\Drivers\Template;
+<?php namespace Think\Views;
 /**
- * Driver/Template/TemplateSmarty.class.php
- * Smart ThinkPHP
+ * SmartThink PHP
  * Copyright (c) 2004-2013 Methink
- *
+ * Thanks for ThinkPHP & GEM-MIS
  * @copyright     Copyright (c) Methink
- * @link          https://github.com/minowu/thinkphp
- * @package       Driver/Template/TemplateSmarty
- * @since         Smart ThinkPHP 2.0.0
+ * @link          http://smartthink.org
+ * @package       Think.Views.Smarty
+ * @since         SmartThink 1.0.0 & ThinkPHP 3.0.0
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-use \Smarty;
+use \Smarty as SmartyEngine;
 use Think\Import as Import;
 use Think\Config as Config;
 
-Import::load(CORE_PATH . 'Library/Smarty/Smarty' . EXT);
-
 /**
- * TemplateSmarty Class
  * Smarty模板引擎的驱动
  */
 class Smarty {
 
     /**
-     * 渲染模板输出
-     * @access public
-     * @param string $templateFile 模板文件名
-     * @param array $var 模板变量
-     * @return void
+     * 被调用接口
+     * 载入Smarty模板引擎，获得相关内容
      */
-    public function fetch($templateFile, $var) {
+    public function fetch($templateFile, $var)
+    {
+        // 载入Smarty文件
+        include_once CORE_PATH . 'Views/Smarty/Smarty.class.php';
 
         // 实例化
-        $tpl = new Smarty();
+        $tpl = new SmartyEngine();
 
         // 是否开启缓存, 模板目录, 编译目录, 缓存目录
         $tpl->caching           = Config::get('TMPL_CACHE_ON');

@@ -78,9 +78,14 @@ abstract class Controller {
      * @param string $name
      * @return void
      */
-    protected function display($name)
+    protected function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '')
     {
-        $this->view->display($name, $this->vars);
+        if($this->vars)
+        {
+            $this->view->assign($this->vars);
+        }
+        
+        $this->view->display($templateFile, $charset, $contentType, $content, $prefix);
     }
 
     /**
@@ -91,9 +96,14 @@ abstract class Controller {
      * @param string $name
      * @return string
      */
-    protected function fetch($name)
+    protected function fetch($templateFile = '', $content = '', $prefix = '')
     {
-        return $this->view->fetch($name, $this->vars);
+        if($this->vars)
+        {
+            $this->view->assign($this->vars);
+        }
+
+        return $this->view->fetch($templateFile, $content, $prefix);
     }
 
     /**
