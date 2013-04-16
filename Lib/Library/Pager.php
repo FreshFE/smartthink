@@ -66,7 +66,7 @@ class Pager {
      *
      * @return array 页码数组
      */
-    public function output(int $totalRows, int $listRows) {
+    public function output($totalRows, $listRows) {
 
         // 配置总条数和列出条数
         if($totalRows) $this->totalRows = $totalRows;
@@ -102,7 +102,7 @@ class Pager {
      *
      * @return string url链接
      */
-    private function getPageUrl(int $page) {
+    private function getPageUrl($page) {
 
         // 生成url
         if(!$this->url) {
