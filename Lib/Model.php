@@ -1548,16 +1548,16 @@ class Model {
      *
      * @return $this
      */
-    public function page(int $page, int $listRows) {
+    public function page($page, $listRows) {
 
         $this->options['page'] = $page . ',' . $listRows;
         return $this;
     }
 
-    public function pager(int $page, int $listRows) {
+    public function pager($page, $listRows) {
 
-        Import::load(CORE_PATH . 'Library/Pager' . EXT);
-        $Pager = new Think\Library\Pager();
+        // Import::load(CORE_PATH . 'Library/Pager' . EXT);
+        $Pager = new \Think\Library\Pager();
         
         return $Pager->output($this->count(), $listRows);
     }
