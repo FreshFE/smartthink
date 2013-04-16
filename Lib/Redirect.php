@@ -25,9 +25,9 @@ class Redirect {
 	 *
 	 * @return void
 	 */
-	static public function success(string $message, string $url) {
-
-		Redirect::to($message, $url, true);
+	static public function success($message, $url)
+	{
+		static::to($message, $url, true);
 	}
 
 	/**
@@ -38,9 +38,9 @@ class Redirect {
 	 *
 	 * @return void
 	 */
-	static public function error(string $message, string $url) {
-
-		Redirect::to($message, $url, false);
+	static public function error($message, $url)
+	{
+		static::to($message, $url, false);
 	}
 
 	/**
@@ -52,8 +52,8 @@ class Redirect {
 	 *
 	 * @return void
 	 */
-	static public function to(string $message, string $url, bealoon $status) {
-
+	static public function to($message, $url, $status)
+	{
 	    // 设置路径
 	    if(!$url) {
 	    	$url = empty($_SERVER["HTTP_REFERER"]) ? __GROUP__ : $_SERVER["HTTP_REFERER"];
@@ -67,7 +67,7 @@ class Redirect {
 	    }
 
 	    // 重定向
-	    Redirect::send($url);
+	    static::send($url);
 	}
 
 	/**
@@ -77,8 +77,8 @@ class Redirect {
 	 *
 	 * @return void
 	 */
-	static private function send(string $url) {
-
+	static private function send($url)
+	{
 	    if(!headers_sent()) {
 	        header('Location: ' . $url);
 	    }
