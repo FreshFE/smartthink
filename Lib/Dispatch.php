@@ -169,9 +169,14 @@ class Dispatch
 			$name = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
 		}
 
-		if(!empty($name)) {
+		if(!empty($name))
+		{
 			$paths = trim($name, '/');
-			static::$paths = explode('/', $paths);
+
+			if($paths !== '')
+			{
+				static::$paths = explode('/', $paths);
+			}
 		}
 	}
 
