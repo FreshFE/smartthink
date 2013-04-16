@@ -18,7 +18,7 @@
  * @author      minowu
  */
 
-\Import::load(dirname(__FILE__) . 'Image' . EXT);
+use Think\Library\Upload\Image as Image;
 
 /*
 array(11) {
