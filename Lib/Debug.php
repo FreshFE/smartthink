@@ -212,10 +212,14 @@ class Debug {
 	}
 
 	public static function output(Exception $error)
-	{
-		// echo $error->getMessage();
-		
-		include Config::get('TMPL_EXCEPTION_FILE');
+	{	
+		if(APP_DEBUG)
+		{
+			include Config::get('TMPL_EXCEPTION_FILE');
+		}
+		else {
+			echo '程序异常，给您带来麻烦，非常抱歉！';
+		}
 		exit();
 	}
 }
