@@ -113,7 +113,7 @@ class Helper {
 	 * @param string $type 图片类型，默认为o类型
 	 * @return string
 	 */
-	public static function img(string $name, string $type) {
+	public static function img($name, $type) {
 
 		// 定义type类型
 		$type = $type ? $type : 'o';
@@ -133,7 +133,7 @@ class Helper {
 	 * @param int $bytesize 字节
 	 * @return string
 	 */
-	public static function sizeformat(int $bytesize){
+	public static function sizeformat($bytesize){
 
 		$i=0;
 

@@ -1,4 +1,4 @@
-<?php namespace Think\Library;
+<?php namespace Think\Library\Upload;
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------

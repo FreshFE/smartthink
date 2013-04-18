@@ -110,4 +110,27 @@ class Response {
 	    }
 	}
 
+	public static function json($array, $charset = '', $contentType = 'application/json')
+	{
+		// 默认字符编码
+	    if(empty($charset))
+	    {
+	    	$charset = Config::get('DEFAULT_CHARSET');
+	    }
+
+	    // 默认文件类型
+	    if(empty($contentType))
+	    {
+	    	$contentType = Config::get('TMPL_CONTENT_TYPE');
+	    }
+
+		// 输出header头
+		header('Content-Type:'.$contentType.'; charset='.$charset);
+		header('Cache-control: '.Config::get('HTTP_CACHE_CONTROL'));
+		header('X-Powered-By: SmartThink');
+		header('X-Thanks: Thanks for ThinkPHP, Lavarel, Smarty & Composer');
+		header('X-Develop-Team: http://smartthink.org');
+		exit(json_encode($array));
+	}
+
 }
