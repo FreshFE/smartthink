@@ -16,6 +16,7 @@ use Think\View as View;
 use Think\Response as Response;
 use Think\File as File;
 use Think\Debug as Debug;
+use Think\Exception as Exception;
 
 /**
  * 控制器抽象类，供项目开发的控制器类继承
@@ -142,7 +143,7 @@ abstract class Controller {
                 // hack 方式定义扩展操作
                 __hack_action();
             }else{
-                Response::_404(L('_ERROR_ACTION_').':'.ACTION_NAME);
+                Debug::output(new Exception("Controller method 无效"));
             }
         }else{
             switch(strtolower($method)) {
