@@ -5,9 +5,29 @@
 // -------------------------------------------
 spl_autoload_register(function($classname)
 {
-   $filename = str_replace('\\', '/', $classname);
-   $filename = str_replace('Think/', CORE_PATH, $filename);
-   $filename = str_replace('App/', LIB_PATH, $filename);
+	// 定义别名路径
+	$alias = array(
+		'App' => LIB_PATH,
+		'Think' => CORE_PATH
+	);
 
+	// 遍历别名路径
+	foreach ($alias as $key => $path)
+	{
+		if(strpos($classname, $key) === 0)
+		{
+			// 根据名字该路径
+			$filename = $path . ltrim(str_replace('\\', '/', $classname), $key);
+			$return = true;
+			break;
+		}
+	}
+
+	// 没有被alias改写
+	if(!$return) {
+		$filename = VENDOR_PATH . str_replace('\\', '/', $classname);
+	}
+
+	// 加载文件
    include_once $filename . EXT;
 });
