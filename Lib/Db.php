@@ -10,7 +10,7 @@ namespace Think;
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-use \Exception;
+use Think\Exception as Exception;
 
 /**
  * ThinkPHP 数据库中间层实现类

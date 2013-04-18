@@ -13,10 +13,10 @@ namespace Think;
  */
 
 use Think\Session as Session;
+use Think\Exception as Exception;
 use \ReflectionException;
 use \ReflectionMethod;
 use \ReflectionClass;
-use \Exception;
 
 /**
  * App Class

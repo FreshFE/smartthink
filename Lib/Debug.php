@@ -1,7 +1,7 @@
 <?php
 namespace Think;
 
-use \Exception;
+use Think\Exception as Exception;
 
 class Debug {
 
@@ -209,6 +209,11 @@ class Debug {
 	    if(false !== $save) {
 	        S('N_'.$key, $_num[$key], $save);
 	    }
+	}
+
+	public static function error($str, $code)
+	{
+		static::output(new Exception($str, $code));
 	}
 
 	public static function output(Exception $error)
