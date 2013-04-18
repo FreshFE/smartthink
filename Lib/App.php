@@ -223,7 +223,7 @@ class App {
             {
                 $module = Import::controller('Empty');
                 if(!$module){
-                    throw new Exception("Controller不存在：" . CONTROLLER_NAME);
+                    throw new Exception("Controller不存在，\"" . CONTROLLER_NAME . "\"");
                 }
             }
         }
@@ -325,128 +325,6 @@ class App {
             // 方法调用发生异常后 引导到__call方法处理
             $method = new ReflectionMethod($module,'__call');
             $method->invokeArgs($module,array($action,''));
-        }
-    }
-
-    /**
-     * 系统自动加载ThinkPHP类库
-     * 并且支持配置自动加载路径
-     *
-     * @param string $class 对象类名
-     *
-     * @return void
-     */
-    // public static function autoload($classname) {
-
-        
-    // }
-
-    /**
-     * 取得对象实例 支持调用类的静态方法
-     *
-     * @param string $classname 对象类名
-     * @param string $method 类的静态方法名
-     *
-     * @return object
-     */
-    public static function instance($classname, $method = '') {
-
-        // 静态缓存
-        static $_instance = array();
-
-        // 标识
-        $identify = $classname . $method;
-
-        // 不存在缓存
-        if(!isset($_instance[$identify]))
-        {
-            // 存在该类名
-            if(class_exists($classname))
-            {
-                $obj = new $classname();
-                if(!empty($method) && method_exists($obj,$method))
-                {
-                    $_instance[$identify] = call_user_func_array(array(&$obj, $method));
-                }                   
-                else {
-                    $_instance[$identify] = $obj;
-                }
-            }
-            else {
-                Debug::halt(L('_CLASS_NOT_EXIST_') . ':' . $classname);
-            }
-        }
-        // 返回缓存
-        return $_instance[$identify];
-    }
-
-    /**
-     * 自定义异常处理
-     *
-     * @param mixed $e 异常对象
-     *
-     * @return void
-     */
-    public static function appException($e) {
-        Debug::halt($e->__toString());
-    }
-
-    /**
-     * 自定义错误处理
-     *
-     * @param int $errno 错误类型
-     * @param string $errstr 错误信息
-     * @param string $errfile 错误文件
-     * @param int $errline 错误行数
-     *
-     * @return void
-     */
-    public static function appError($errno, $errstr, $errfile, $errline)
-    {
-        switch ($errno) {
-            case E_ERROR:
-            case E_PARSE:
-            case E_CORE_ERROR:
-            case E_COMPILE_ERROR:
-            case E_USER_ERROR:
-
-                ob_end_clean();
-
-                // 页面压缩输出支持
-                if(Config::get('OUTPUT_ENCODE')) {
-                    $zlib = ini_get('zlib.output_compression');
-                    if(empty($zlib)) ob_start('ob_gzhandler');
-                }
-
-                $errorStr = "$errstr " . $errfile . " 第 $errline 行.";
-
-                if(Config::get('LOG_RECORD')) {
-                    Log::write("[$errno] " . $errorStr, Log::ERR);
-                }
-
-                function_exists('halt') ? Debug::halt($errorStr) : exit('ERROR:' . $errorStr);
-                break;
-
-            case E_STRICT:
-            case E_USER_WARNING:
-            case E_USER_NOTICE:
-            default:
-
-                $errorStr = "[$errno] $errstr " . $errfile . " 第 $errline 行.";
-                Debug::trace($errorStr, '', 'NOTIC');
-                break;
-        }
-    }
-    
-    /**
-     * 致命错误捕获
-     *
-     * @return void
-     */
-    public static function fatalError()
-    {
-        if ($e = error_get_last()) {
-            App::appError($e['type'], $e['message'], $e['file'], $e['line']);
         }
     }
 

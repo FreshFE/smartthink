@@ -143,7 +143,7 @@ abstract class Controller {
                 // hack 方式定义扩展操作
                 __hack_action();
             }else{
-                Debug::output(new Exception("Controller method 无效"));
+                Debug::output(new Exception("Controller method 无效，\"". ACTION_NAME . "\""));
             }
         }else{
             switch(strtolower($method)) {
