@@ -1,6 +1,8 @@
 <?php
 namespace Think;
 
+use \Exception;
+
 class Debug {
 
 	/**
@@ -69,6 +71,8 @@ class Debug {
 	 */
 	public static function throw_exception($msg, $type = 'meSmart\\Exception', $code = 0)
 	{
+		// throw new Exception($msg, $code);
+
 	    if(class_exists($type, false)) {
 	    	throw new $type($msg, $code, true);
 	    }
@@ -205,5 +209,13 @@ class Debug {
 	    if(false !== $save) {
 	        S('N_'.$key, $_num[$key], $save);
 	    }
+	}
+
+	public static function output(Exception $error)
+	{
+		// echo $error->getMessage();
+		
+		include Config::get('TMPL_EXCEPTION_FILE');
+		exit();
 	}
 }

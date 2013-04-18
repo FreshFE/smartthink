@@ -16,6 +16,7 @@ use Think\Session as Session;
 use \ReflectionException;
 use \ReflectionMethod;
 use \ReflectionClass;
+use \Exception;
 
 /**
  * App Class
@@ -217,12 +218,17 @@ class App {
         }
 
         // 执行空控制器
-        if(!$module)
-        {
-            $module = Import::controller('Empty');
-            if(!$module){
-                Response::_404(L('_MODULE_NOT_EXIST_') . ':' . CONTROLLER_NAME);
+        try {
+            if(!$module)
+            {
+                $module = Import::controller('Empty');
+                if(!$module){
+                    throw new Exception("Controller不存在：" . CONTROLLER_NAME);
+                }
             }
+        }
+        catch(Exception $error) {
+            Debug::output($error);
         }
 
         // 获取控制器操作名

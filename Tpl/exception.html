@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ThinkSmart Exception</title>
+	<style type="text/css">
+		body {
+			margin: 30px 60px;
+			font-size: 14px;
+			color: #000;
+			line-height: 25px;
+		}
+
+		h1 {
+			color: #000;
+			border-bottom: double 3px #ccc;
+			line-height: 32px;
+			padding-bottom: 10px;
+		}
+
+		pre {
+			/*padding: 0 3px 2px;*/
+			/*margin: 10px;*/
+			font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+			font-size: 12px;
+			/*color: #650019;*/
+			color: #777;
+		}
+
+		pre {
+			display: block;
+			padding: 10px;
+			/*padding: 9.5px;*/
+			/*margin: 0 0 10px;*/
+			font-size: 13px;
+			line-height: 20px;
+			white-space: pre;
+			/*background-color: #fb6c90;*/
+			background: #eee;
+			border: 1px solid #ccc;
+			border: 1px solid rgba(0, 0, 0, 0.15);
+			border-radius: 2px;
+			box-shadow: -1px 3px 5px rgba(0,0,0,.15);
+		}
+
+		#footer {
+			color: #bbb;
+			text-align: right;
+			padding: 20px;
+			font-size: 10px;
+		}
+	</style>
+</head>
+<body>
+
+	<h1>
+		<?php echo $error->getMessage(); ?>
+	</h1>
+
+	<p>
+		文件: <?php echo $error->getFile(); ?><br>
+		行: <?php echo $error->getLine(); ?>
+	</p>
+
+	<pre>
+<?php echo $error->getTraceAsString(); ?>
+	</pre>
+
+	<div id="footer">
+		smartthink&copy;2013
+	</div>
+
+</body>
+</html>

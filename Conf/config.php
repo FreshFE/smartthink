@@ -214,9 +214,9 @@ return  array(
     /* 模板引擎设置 */
     'TMPL_CONTENT_TYPE'     => 'text/html', // 默认模板输出类型
     'TMPL_TRACE_FILE'       => FRAME_PATH.'Tpl/page_trace.html',    // 调用trace页面
-    'TMPL_ACTION_ERROR'     => FRAME_PATH.'Tpl/dispatch_jump.html', // 默认错误跳转对应的模板文件
-    'TMPL_ACTION_SUCCESS'   => FRAME_PATH.'Tpl/dispatch_jump.html', // 默认成功跳转对应的模板文件
-    'TMPL_EXCEPTION_FILE'   => FRAME_PATH.'Tpl/think_exception.html',// 异常页面的模板文件
+    // 'TMPL_ACTION_ERROR'     => FRAME_PATH.'Tpl/dispatch_jump.html', // 默认错误跳转对应的模板文件
+    // 'TMPL_ACTION_SUCCESS'   => FRAME_PATH.'Tpl/dispatch_jump.html', // 默认成功跳转对应的模板文件
+    'TMPL_EXCEPTION_FILE'   => FRAME_PATH.'Tpl/exception.html',// 异常页面的模板文件
     'TMPL_DETECT_THEME'     => false,       // 自动侦测模板主题
     'TMPL_TEMPLATE_SUFFIX'  => '.html',     // 默认模板文件后缀
     'TMPL_FILE_DEPR'        =>  '/', //模板文件CONTROLLER_NAME与ACTION_NAME之间的分割符
