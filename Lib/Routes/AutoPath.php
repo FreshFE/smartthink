@@ -1,4 +1,4 @@
-<?php namespace Think;
+<?php namespace Think\Routes;
 /**
  * SmartThink PHP
  * Copyright (c) 2004-2013 Methink
@@ -10,12 +10,14 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
+use Think\Dispatch as Dispatch;
+
 /**
  * 在执行了Dispatch后定义了常量GROUP_NAME
  * 之后便在分组项目中开发本路由
  * TODO：分离出路由驱动和路由行为
  */
-class Route
+class AutoPath
 {
 	/**
 	 * 初始化方法

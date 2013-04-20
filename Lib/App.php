@@ -57,7 +57,7 @@ class App {
         // -------------------------------------------
         // 分配分组内路由细节
         // -------------------------------------------
-        Route::init();
+        static::load_route();
 
         // -------------------------------------------
         // 项目初始化标签
@@ -198,6 +198,18 @@ class App {
     private static function load_lang()
     {
         Lang::set(include FRAME_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php');
+    }
+
+    private static function load_route()
+    {
+        $class = Config::get('GROUP_ROUTE_CLASS');
+        
+        if(class_exists($class)) {
+            $class::init();
+        }
+        else {
+            Debug::output(new Exception("不存在被定义的Route文件,\"" . $class . "\""));
+        }
     }
 
     /**

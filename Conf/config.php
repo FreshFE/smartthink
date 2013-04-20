@@ -50,6 +50,8 @@ return  array(
     'APP_GROUP_MODE'        =>  0,
     'APP_GROUP_PATH'        =>  'Modules',
 
+    'GROUP_ROUTE_CLASS'     => 'Think\\Routes\\AutoPath',
+
     /**
      * 操作方法后缀
      * create => create_action
