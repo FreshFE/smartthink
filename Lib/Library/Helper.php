@@ -115,17 +115,23 @@ class Helper {
 	 */
 	public static function img($name, $type) {
 
-		// 定义type类型
-		$type = $type ? $type : 'o';
+		if(!empty($name))
+		{
+			// 定义type类型
+			$type = $type ? $type : 'o';
 
-		// 获得配置里的路径
-		$viewPath = C('TMPL_PARSE_STRING');
-		$viewPath = $viewPath['@/images'];
+			// 获得配置里的路径
+			$viewPath = C('TMPL_PARSE_STRING');
+			$viewPath = $viewPath['@/images'];
 
-		if(!$viewPath)
-			$viewPath = '/upload/images';
+			if(!$viewPath)
+				$viewPath = '/upload/images';
 
-		return $viewPath . '/' . $type . '/' . $name;
+			return $viewPath . '/' . $type . '/' . $name;
+		}
+		else {
+			return 'http://web2536.magic2008.cn/uFile/2536/20108993655562.jpg';
+		}
 	}
 
 	/**
