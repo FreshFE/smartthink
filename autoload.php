@@ -8,7 +8,8 @@ spl_autoload_register(function($classname)
 	// 定义别名路径
 	$alias = array(
 		'App' => LIB_PATH,
-		'Think' => CORE_PATH
+		'Think' => CORE_PATH,
+		'Smartadmin' => VENDOR_PATH . 'smartadmin/'
 	);
 
 	// 遍历别名路径
