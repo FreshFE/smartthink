@@ -26,7 +26,7 @@ class AutoPath
 	{
 		$controller = static::get_controller_method();
 
-		define('CONTROLLER_NAME', 	$controller[0]);
+		define('CONTROLLER_NAME', 	ucfirst($controller[0]));
         define('ACTION_NAME', 		$controller[1]);
 		define('__URL__', 			__GROUP__ . '/' . strtolower(CONTROLLER_NAME));
 		define('__ACTION__', 		__URL__ . '/' . strtolower(ACTION_NAME));
