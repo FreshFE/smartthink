@@ -130,7 +130,7 @@ class Helper {
 			return $viewPath . '/' . $type . '/' . $name;
 		}
 		else {
-			return 'http://web2536.magic2008.cn/uFile/2536/20108993655562.jpg';
+			return 'http://42.121.118.13/noimage.jpg';
 		}
 	}
 
