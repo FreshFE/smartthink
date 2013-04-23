@@ -111,7 +111,7 @@ class Auth {
 	 * @param $id int 登录时保存的user_id
 	 * @param $expire int session保存时间
 	 */
-	public function login(int $id, int $expire) {
+	public function login($id, $expire) {
 
 		// 设置默认值
 		if(!$expire) $expire = 60 * 60 * 60 * 24 * 30;
