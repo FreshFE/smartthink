@@ -129,6 +129,10 @@ class Helper {
 
 			return $viewPath . '/' . $type . '/' . $name;
 		}
+		else if(C('PROJ_THUMB_LINK'))
+		{
+			return C('PROJ_THUMB_LINK');
+		}
 		else {
 			return 'http://42.121.118.13/noimage.jpg';
 		}
