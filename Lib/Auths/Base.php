@@ -1,4 +1,4 @@
-<?php namespace Think\Library;
+<?php namespace Think\Auths;
 /**
  * Library/Auth.class.php
  * Smart ThinkPHP
@@ -11,20 +11,11 @@
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
+use Think\Redirect as Redirect;
 use Think\Session as Session;
 
-/**
- * Auth Class
- * 判断当前模块是否允许当前用户访问，仅分unlogined和logined组
- * 检查当前用户是否登录
- * 保存用户登录时的session信息
- * 检索用户的session信息
- * 清除用户的session信息
- *
- * 实例化Auth类，在构造函数执行时，优先传入$auth_key和$rules参数
- */
-class Auth {
-
+class Base
+{
 	/**
 	 * 过滤器访问规则，由实例化时通过构造函数初始化
 	 *
@@ -160,7 +151,7 @@ class Auth {
 	 */
 	public function error($msg, $url) {
 
-		\Redirect::error($msg, $url);
+		Redirect::error($msg, $url);
 	}
 
 	/**
