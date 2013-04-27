@@ -121,7 +121,7 @@ abstract class Controller {
         {
             $this->assign($name, $value);
         }
-        exit(json_encode($this->vars));
+        Response::json($this->vars);
     }
 
     /**
