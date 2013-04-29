@@ -95,7 +95,7 @@ class Helper {
 	 */
 	public static function widget($action, $data, $base) {
 		
-		// 如果action前带有'@.'，则表示本模块内的调用
+		// 如果$base为true，则代表调用本Controller内的方法
 		if($base) {
 			return R(CONTROLLER_NAME . '/' . $action, array($data));
 		}
