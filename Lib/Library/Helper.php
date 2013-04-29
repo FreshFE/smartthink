@@ -34,7 +34,7 @@ class Helper {
 	 * 		action 			=> 当前module为默认下的action
 	 * @return string
 	 */
-	public static function active($controller) {
+	public static function active($controller, $class = null) {
 
 		$arr = split('[/]', $controller);
 		
@@ -55,8 +55,18 @@ class Helper {
 			}
 		}
 
-		if($active)
+		if(is_null($class) && $active)
+		{
 			return " class='active'";
+		}
+		else if(!is_null($class) && $active)
+		{
+			return " class='active " . $class . "'";
+		}
+		else if(!is_null($class) && !$active)
+		{
+			return " class='" . $class . "'";
+		}
 	}
 
 	/**
