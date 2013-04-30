@@ -1,6 +1,9 @@
 <?php
 namespace Think;
 
+use Think\Debug as Debug;
+use Think\Exception as Exception;
+
 class Response {
 
 	/**
@@ -96,18 +99,16 @@ class Response {
 	 * @param string $url 跳转URL地址
 	 * @return void
 	 */
-	public static function _404($msg='',$url='') {
-	    APP_DEBUG && Debug::throw_exception($msg);
-	    if($msg && C('LOG_EXCEPTION_RECORD')) Log::write($msg);
-	    if(empty($url) && C('URL_404_REDIRECT')) {
-	        $url    =   C('URL_404_REDIRECT');
-	    }
-	    if($url) {
-	        redirect($url);
-	    }else{
-	        static::send_http_status(404);
+	public static function _404($message = '', $url)
+	{
+		if(APP_DEBUG)
+		{
+			Debug::output(new Exception($message));
+		}
+		else {
+			static::send_http_status(404);
 	        exit;
-	    }
+		}
 	}
 
 	public static function json($array, $charset = '', $contentType = 'application/json')
