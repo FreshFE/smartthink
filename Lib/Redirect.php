@@ -79,8 +79,21 @@ class Redirect {
 	 */
 	static private function send($url)
 	{
-	    if(!headers_sent()) {
+	    if(!headers_sent())
+	    {
 	        header('Location: ' . $url);
+	    }
+	    else {
+	    	echo '
+	    		<!DOCTYPE html>
+	    		<html>
+					<head>
+						<meta http-equiv="refresh" content="0; url=http://'.$_SERVER['HTTP_HOST'].$url.' ">
+					</head>
+					<body>
+					</body>
+				</html>
+	    	';
 	    }
 
 	    exit('跳转失败');
