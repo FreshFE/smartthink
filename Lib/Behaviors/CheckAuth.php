@@ -85,7 +85,7 @@ class CheckAuth extends Behavior {
 		 *
 		 * var string
 		 */
-		'AUTH_CLASS' => 'Think\Library\RbacAuth',
+		'AUTH_CLASS' => 'Think\\Library\\RbacAuth',
 
 		/**
 		 * 已经登录的跳转地址
