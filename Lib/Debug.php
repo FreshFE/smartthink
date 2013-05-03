@@ -42,7 +42,8 @@ class Debug {
 	        $_trace[$level][] = $info;
 
 	        if((defined('IS_AJAX') && IS_AJAX) || !C('SHOW_PAGE_TRACE')  || $record) {
-	            Log::record($info,$level,$record);
+	            // Log::record($info,$level,$record);
+	            // Log::info($info, $record);
 	        }
 	    }
 	}

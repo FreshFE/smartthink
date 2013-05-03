@@ -103,7 +103,8 @@ class App {
         // 保存日志记录
         // -------------------------------------------
         if(Config::get('LOG_RECORD')) {
-            Log::save();
+            // Log::save();
+            // Log::info('------------------- |' . CONTROLLER_NAME . ' & ' . ACTION_NAME);
         }
     }
 

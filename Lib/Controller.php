@@ -262,6 +262,9 @@ abstract class Controller {
      */
     public function __destruct()
     {
-        if(Config::get('LOG_RECORD')) Log::save();
+        if(Config::get('LOG_RECORD'))
+        {
+            // Log::info('控制器结束，' . __NAMESPACE__);
+        }
     }
 }
