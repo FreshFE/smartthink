@@ -199,6 +199,16 @@ class App {
     private static function load_lang()
     {
         Lang::set(include FRAME_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php');
+
+        // 项目行为
+        if(is_file(APP_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php')) {
+            Lang::set(include APP_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php');
+        }
+
+        // 分组行为
+        if(is_file(GROUP_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php')) {
+            Lang::set(include GROUP_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php');
+        }
     }
 
     private static function load_route()
