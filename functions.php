@@ -7,6 +7,7 @@ use Think\Debug as Debug;
 use Think\Model as Model;
 use Think\Import as Import;
 use Think\Url as Url;
+use Think\Cache as Cache;
 
 // 最后留着的方法, A, C, D, L, M, R, S, U
 
