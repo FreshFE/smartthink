@@ -65,4 +65,9 @@ class Request
 	    }
 	    return false;
 	}
+
+	public static function query($name)
+	{
+		return isset($_GET[$name]) ? $_GET[$name] : null;
+	}
 }
