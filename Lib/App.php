@@ -223,132 +223,60 @@ class App {
         }
     }
 
-    /**
-     * 执行controller->action
-     *
-     * @return void
-     */
-    static public function exec()
-    {
-        // Controller name 安全过滤
-        if(!preg_match('/^[A-Za-z](\w)*$/', CONTROLLER_NAME))
-        {
-            $module = false;
-        }
-        // 通过A方法实例化Controller
-        else {
-            $module = Import::controller(GROUP_NAME, CONTROLLER_NAME);
-        }
+    public static function exec()
+    {   
+        $groupName = GROUP_NAME;
+        $controllerName = CONTROLLER_NAME;
+        $actionName = ACTION_NAME;
 
-        // 执行空控制器
+        // 安全过滤
         try {
-            if(!$module)
-            {
-                $module = Import::controller(GROUP_NAME, 'Empty');
-                if(!$module){
-                    throw new Exception("Controller不存在，\"" . CONTROLLER_NAME . "\"");
-                }
+            if(!preg_match('/^[A-Za-z](\w)*$/', $controllerName)) {
+                throw new Exception("控制器名不符合规范");
+            }
+            if(!preg_match('/^[A-Za-z](\w)*$/', $actionName)) {
+                throw new Exception("方法名不符合规范");
             }
         }
         catch(Exception $error) {
             Debug::output($error);
         }
 
-        // 获取控制器操作名
-        $action = ACTION_NAME;
+        // 是否存在控制器
+        try {
+            $ControllerClass = static::getControllerClass($groupName, $controllerName);
 
-        // 定义模板名称
-        Config::set('TEMPLATE_NAME', THEME_PATH . CONTROLLER_NAME . '/' . $action . '.html');
-
-        try
-        {
-            // Action name 安全过滤
-            if(!preg_match('/^[A-Za-z](\w)*$/', $action)) {
-                throw new ReflectionException();
+            if(!class_exists($ControllerClass)) {
+                throw new Exception("不存在该控制器");
             }
 
-            // 对当前控制器的方法执行操作映射
-            $method = new ReflectionMethod($module, $action);
-            
-            // public方法
-            if($method->isPublic())
-            {
-                // 映射执行
-                $class = new ReflectionClass($module);
-
-                // 前置操作
-                if($class->hasMethod('_before_' . $action))
-                {
-                    $before = $class->getMethod('_before_' . $action);
-
-                    // public并执行
-                    if($before->isPublic()) {
-                        $before->invoke($module);
-                    }
-                }
-
-                // URL参数绑定检测
-                if(Config::get('URL_PARAMS_BIND') && $method->getNumberOfParameters() > 0)
-                {
-                    switch ($_SERVER['REQUEST_METHOD'])
-                    {
-                        case 'POST':
-                            $vars = $_POST;
-                            break;
-                        case 'PUT':
-                            parse_str(file_get_contents('php://input'), $vars);
-                            break;
-                        default:
-                            $vars = $_GET;
-                    }
-
-                    $params = $method->getParameters();
-
-                    foreach ($params as $param)
-                    {
-                        $name = $param->getName();
-
-                        if(isset($vars[$name]))
-                        {
-                            $args[] =  $vars[$name];
-                        }
-                        elseif($param->isDefaultValueAvailable())
-                        {
-                            $args[] = $param->getDefaultValue();
-                        }
-                        else {
-                            Debug::throw_exception(L('_PARAM_ERROR_').':'.$name);
-                        }
-                    }
-
-                    $method->invokeArgs($module,$args);
-                }
-                else {
-                    $method->invoke($module);
-                }
-
-                // 后置操作
-                if($class->hasMethod('_after_' . $action)) {
-
-                    $after = $class->getMethod('_after_' . $action);
-
-                    // public并执行
-                    if($after->isPublic()) {
-                        $after->invoke($module);
-                    }
-                }
-            }
-            // 操作方法不是Public 抛出异常
-            else {
-                throw new ReflectionException();
-            }
+            $Controller = new $ControllerClass;
         }
-        catch (ReflectionException $e)
-        { 
-            // 方法调用发生异常后 引导到__call方法处理
-            $method = new ReflectionMethod($module,'__call');
-            $method->invokeArgs($module,array($action,''));
+        catch(Exception $error) {
+            Debug::output($error);
         }
+
+        // 执行控制器方法
+        try {
+
+            $method = 'action_' . $actionName;
+
+            if(method_exists($Controller, $method)) {
+                
+            }
+
+
+        }
+        catch(Exception $error) {
+            Debug::output($error);
+        }
+
+        dump($Controller);
+    }
+
+    public static function getControllerClass($groupName, $controllerName)
+    {
+        return "App\\" . $groupName . "\\Controller\\" . $controllerName . "Controller";
     }
 
     /**
