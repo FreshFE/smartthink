@@ -262,16 +262,36 @@ class App {
             $method = 'action_' . $actionName;
 
             if(method_exists($Controller, $method)) {
-                
+                $Controller->$method();
             }
+            else {
 
+                $current = strtolower($_SERVER['REQUEST_METHOD']);
+                $method = array('get', 'post', 'put', 'delete', 'head');
 
+                if(in_array($current, $method)) {
+
+                    // method和操作名组成的类
+                    $current = $current . '_' . $actionName;
+
+                    // 该类是否存在该方法
+                    if(method_exists($Controller, $current)) {
+                        $Controller->$current();
+                    }
+                    // 不存在输出
+                    else {
+                        throw new Exception("不存在指定的控制器方法");
+                    }
+                }
+                // 方法错误输出
+                else {
+                    throw new Exception("不存在'$method'方法");
+                }
+            }
         }
         catch(Exception $error) {
             Debug::output($error);
         }
-
-        dump($Controller);
     }
 
     public static function getControllerClass($groupName, $controllerName)
