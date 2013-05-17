@@ -237,14 +237,14 @@ class App {
         }
         // 通过A方法实例化Controller
         else {
-            $module = Import::controller(CONTROLLER_NAME);
+            $module = Import::controller(GROUP_NAME, CONTROLLER_NAME);
         }
 
         // 执行空控制器
         try {
             if(!$module)
             {
-                $module = Import::controller('Empty');
+                $module = Import::controller(GROUP_NAME, 'Empty');
                 if(!$module){
                     throw new Exception("Controller不存在，\"" . CONTROLLER_NAME . "\"");
                 }
