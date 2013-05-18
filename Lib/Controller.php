@@ -43,13 +43,6 @@ abstract class Controller {
     protected $vars = array();
 
     /**
-     * 允许检测的方法
-     *
-     * @var array
-     */
-    protected $_method = array('get', 'post', 'put', 'delete', 'head');
-
-    /**
      * 构造函数
      * 实例化视图类
      *
@@ -131,129 +124,6 @@ abstract class Controller {
         Response::json($this->vars);
     }
 
-    /**
-     * 魔术方法 有不存在的操作的时候执行
-     *
-     * @param string $method
-     * @param array $args
-     * @return mixed
-     */
-    public function __call($method,$args) {
-        if( 0 === strcasecmp($method,ACTION_NAME.C('ACTION_SUFFIX'))) {
-            if(method_exists($this,'_empty')) {
-                // 如果定义了_empty操作 则调用
-                $this->_empty($method,$args);
-            }elseif(File::exists_case(C('TEMPLATE_NAME'))){
-                // 检查是否存在默认模版 如果有直接输出模版
-                $this->display();
-            }elseif(function_exists('__hack_action')) {
-                // hack 方式定义扩展操作
-                __hack_action();
-            }else{
-                Debug::output(new Exception("Controller method 无效，\"". ACTION_NAME . "\""));
-            }
-        }else{
-            switch(strtolower($method)) {
-                // 判断提交方式
-                case 'ispost'   :
-                case 'isget'    :
-                case 'ishead'   :
-                case 'isdelete' :
-                case 'isput'    :
-                    return strtolower($_SERVER['REQUEST_METHOD']) == strtolower(substr($method,2));
-                // 获取变量 支持过滤和默认值 调用方式 $this->_post($key,$filter,$default);
-                case '_get'     :   $input =& $_GET;break;
-                case '_post'    :   $input =& $_POST;break;
-                case '_put'     :   parse_str(file_get_contents('php://input'), $input);break;
-                case '_param'   :  
-                    switch($_SERVER['REQUEST_METHOD']) {
-                        case 'POST':
-                            $input  =  $_POST;
-                            break;
-                        case 'PUT':
-                            parse_str(file_get_contents('php://input'), $input);
-                            break;
-                        default:
-                            $input  =  $_GET;
-                    }
-                    if(C('VAR_URL_PARAMS')){
-                        $params = $_GET[C('VAR_URL_PARAMS')];
-                        $input  =   array_merge($input,$params);
-                    }
-                    break;
-                case '_request' :   $input =& $_REQUEST;   break;
-                case '_session' :   $input =& $_SESSION;   break;
-                case '_cookie'  :   $input =& $_COOKIE;    break;
-                case '_server'  :   $input =& $_SERVER;    break;
-                case '_globals' :   $input =& $GLOBALS;    break;
-                default:
-                    Debug::throw_exception(__CLASS__.':'.$method.L('_METHOD_NOT_EXIST_'));
-            }
-            if(!isset($args[0])) { // 获取全局变量
-                $data       =   $input; // 由VAR_FILTERS配置进行过滤
-            }elseif(isset($input[$args[0]])) { // 取值操作
-                $data       =	$input[$args[0]];
-                $filters    =   isset($args[1])?$args[1]:C('DEFAULT_FILTER');
-                if($filters) {// 2012/3/23 增加多方法过滤支持
-                    $filters    =   explode(',',$filters);
-                    foreach($filters as $filter){
-                        if(function_exists($filter)) {
-                            $data   =   is_array($data)?array_map($filter,$data):$filter($data); // 参数过滤
-                        }
-                    }
-                }
-            }else{ // 变量默认值
-                $data       =	 isset($args[2])?$args[2]:NULL;
-            }
-            return $data;
-        }
-    }
-
-    /**
-     * 空方法执行请求方法属性的检查
-     * 查找相对应的get, post, put, delete等方法并执行
-     *
-     * @return void
-     */
-    public function _empty()
-    {
-        try
-        {
-            $method = $this->_method;
-
-            // 当前http请求方法
-            $current = strtolower($_SERVER['REQUEST_METHOD']);
-
-            if(in_array($current, $method))
-            {
-                $class = $current . '_' . ACTION_NAME;
-
-                // 是否存在this/get_login
-                if(method_exists($this, $class))
-                {
-                    $this->$class();
-                }
-                // 是否存在this/get
-                else if(method_exists($this, $current))
-                {
-                    $this->$current();
-                }
-                // 不存在输出
-                else {
-                    throw new Exception("不存在指定的控制器方法");
-                }
-            }
-            // 方法错误输出
-            else {
-                throw new Exception("不存在'$method'方法");
-            }
-
-        }
-        catch (Exception $e) {
-            Debug::output($e);
-        }
-    }
-
     public function getModel($name)
     {
         return D($name);
@@ -266,10 +136,5 @@ abstract class Controller {
      * @return void
      */
     public function __destruct()
-    {
-        if(Config::get('LOG_RECORD'))
-        {
-            // Log::info('控制器结束，' . __NAMESPACE__);
-        }
-    }
+    {}
 }
