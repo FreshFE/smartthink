@@ -40,7 +40,6 @@ class Request
 		$storage = static::$storage;
 
 		if(isset($storage[$name]) && !$force) {
-			// Log::info();
 			return false;
 		}
 
@@ -101,8 +100,8 @@ class Request
 		}
 
 		// 获得IP
-		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-		{
+		if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+
 		    $arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
 		    $pos = array_search('unknown',$arr);
 		    if($pos !== false) {
@@ -110,12 +109,12 @@ class Request
 		    }
 		    $ip = trim($arr[0]);
 		}
-		elseif(isset($_SERVER['HTTP_CLIENT_IP']))
-		{
+		elseif(isset($_SERVER['HTTP_CLIENT_IP'])) {
+
 		    $ip = $_SERVER['HTTP_CLIENT_IP'];
 		}
-		elseif(isset($_SERVER['REMOTE_ADDR']))
-		{
+		elseif(isset($_SERVER['REMOTE_ADDR'])) {
+
 		    $ip = $_SERVER['REMOTE_ADDR'];
 		}
 
@@ -131,12 +130,15 @@ class Request
 	 *
 	 * @return boolean
 	 */
-	public static function is_ssl() {
-	    if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
-	        return true;
-	    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
+	public static function is_ssl()
+	{
+	    if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))) {
 	        return true;
 	    }
+	    elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
+	        return true;
+	    }
+
 	    return false;
-	}	
+	}
 }
