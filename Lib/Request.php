@@ -3,9 +3,83 @@ namespace Think;
 
 class Request
 {
+	/**
+	 * 全局存储器
+	 * 专门用于储存在请求时需要保存的全局变量
+	 *
+	 * @var array
+	 */
+	public static $storage = array();
+
+	/**
+	 * 得到存储器内的数据
+	 *
+	 * @param string $name
+	 * @return mixed
+	 */
+	public static function getStorage($name = null)
+	{
+		if(is_null($name)) {
+			return static::$storage;
+		}
+
+		return static::$storage[$name];
+	}
+
+	/**
+	 * 设置存储器内的数据
+	 * 如果储存器内已经有该数据，需要强制才能替换
+	 *
+	 * @param string $name
+	 * @param mixed $value 
+	 * @param boolean $force 是否强制写入
+	 * @return mixed
+	 */
+	public static function setStorage($name, $value, $force = false)
+	{
+		$storage = static::$storage;
+
+		if(isset($storage[$name]) && !$force) {
+			// Log::info();
+			return false;
+		}
+
+		return static::$storage[$name] = $value;
+	}
+
+	/**
+	 * 检查当前请求方法和设定的方法是否一致
+	 *
+	 * @param string $method
+	 * @return boolean
+	 */
 	public static function is($method)
 	{
 		return strtolower($_SERVER['REQUEST_METHOD']) == $method ? true : false;
+	}
+
+	/**
+	 * 得到$_GET内的值
+	 * 该方法主要用于过滤$_GET值
+	 *
+	 * @param string $name
+	 * @return mixed
+	 */
+	public static function query($name)
+	{
+		return isset($_GET[$name]) ? $_GET[$name] : null;
+	}
+
+	/**
+	 * 得到$_POST内的值
+	 * 该方法主要用于过滤$_POST值
+	 *
+	 * @param string $name
+	 * @return mixed
+	 */
+	public static function post($name)
+	{
+		return isset($_POST[$name]) ? $_POST[$name] : null;
 	}
 
 	/**
@@ -64,15 +138,5 @@ class Request
 	        return true;
 	    }
 	    return false;
-	}
-
-	public static function query($name)
-	{
-		return isset($_GET[$name]) ? $_GET[$name] : null;
-	}
-
-	public static function post($name)
-	{
-		return isset($_POST[$name]) ? $_POST[$name] : null;
-	}
+	}	
 }
