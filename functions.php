@@ -179,7 +179,7 @@ function R($url, $vars=array(), $layer = '') {
     $module =   $info['dirname'];
 
     // 载入Controller
-    $class  = Import::controller($module);
+    $class  = Import::controller(GROUP_NAME, $module);
 
     // 判断是否存在并执行
     if($class){
