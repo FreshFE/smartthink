@@ -219,9 +219,15 @@ class Debug {
 
 	public static function output(Exception $error)
 	{	
-		if(APP_DEBUG)
-		{
+		if(APP_DEBUG) {
+
+			if(IS_AJAX) {
+				Response::json($error->getMessage());
+				exit();
+			}
+
 			include Config::get('TMPL_EXCEPTION_FILE');
+			exit();
 		}
 		else {
 			echo '程序异常，给您带来麻烦，非常抱歉！';
