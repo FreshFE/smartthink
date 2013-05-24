@@ -7,6 +7,7 @@ use Think\Cookie;
 use Think\Response;
 use Think\Redirect;
 use Think\Url;
+use Think\Lang;
 use Think\Exception;
 use Think\Auths\Authentication;
 use Think\Auths\Authorization;
@@ -84,7 +85,7 @@ class CheckAuth extends Behavior
 			exit(Response::send_http_status(401));
 		}
 		else {
-			Redirect::error(Lang::get('ERROR_401'), Url::make($this->loginPage));
+			Redirect::error(Lang::get('_ERROR_401'), Url::make($this->loginPage));
 		}
 	}
 
@@ -100,7 +101,7 @@ class CheckAuth extends Behavior
 			exit(Response::send_http_status(403));
 		}
 		else {
-			exit('error, 403');
+			exit(Lang::get('_ERROR_403'));
 		}
 	}
 
