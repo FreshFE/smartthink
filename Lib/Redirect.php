@@ -61,7 +61,7 @@ class Redirect {
 
 	    // 设置提示信息session
 	    // 写入两个session，分别是提示信息和操作状态
-	    if(C('JUMP_SESSION_ON')) {
+	    if(C('JUMP_SESSION_ON') && !empty($message)) {
 	        Session::set(C('JUMP_SESSION_INFO'), $message);
 	        Session::set(C('JUMP_SESSION_STATUS'), $status);
 	    }
