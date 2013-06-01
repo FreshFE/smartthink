@@ -30,7 +30,8 @@ class Response {
 	        302 => 'Moved Temporarily ',  // 1.1
 	        // Client Error 4xx
 	        400 => 'Bad Request',
-	        403 => 'Forbidden',
+	        401 => 'Not login',
+	        403 => 'Forbidden No Power',
 	        404 => 'Not Found',
 	        // Server Error 5xx
 	        500 => 'Internal Server Error',

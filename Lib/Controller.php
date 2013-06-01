@@ -254,6 +254,11 @@ abstract class Controller {
         }
     }
 
+    public function getModel($name)
+    {
+        return D($name);
+    }
+
     /**
      * 析构方法
      * 根据配置来调整是否添加Log记录

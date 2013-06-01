@@ -53,41 +53,20 @@ class Import {
 	/**
 	 * 加载控制器
 	 *
-	 * @param string $name controller name
-	 *
-	 * @return mixed
+	 * @param string $name 控制器名称
+	 * @return object | false
 	 */
-	public static function controller($name)
+	public static function controller($groupName, $controllerName)
 	{
-		// 静态缓存
-		static $_storage = array();
+		// 定义控制器命名
+		$class = "App\\" . $groupName . "\\Controller\\" . $controllerName . "Controller";
 
-		// 生成控制器名称
-		$controller = GROUP_PATH . 'Controller/' . $name . 'Controller';
-
-		// 静态缓存内是否存在
-		if (isset($_storage[$controller]))
-		{
-		    return $_storage[$controller];
+		// 是否存在该类
+		if(class_exists($class)) {
+			return new $class;
 		}
-
-		// 加载
-		static::load($controller . EXT);
-
-		// 生成class名称
-		$class = basename($controller);
-		
-		// 存在类则写入缓存
-		if (class_exists($class, false))
-		{
-		    $object = new $class();
-		    $_storage[$controller] = $object;
-		    return $object;
-		}
-		// 不存在类则返回
-		else
-		{
-		    return false;
+		else {
+			return false;
 		}
 	}
 }
