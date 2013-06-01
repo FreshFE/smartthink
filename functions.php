@@ -64,39 +64,39 @@ function C($name=null, $value=null) {
  *
  * @return Model
  */
-function D($name = '', $layer = '') {
-
+function D($name = null, $groupName = null)
+{
     // 空值，返回实力化后的Model类
-    if(empty($name)) return new Model;
+    if(is_null($name)) {
+        return new Model;
+    }
 
     // 缓存
     static $_model = array();
 
-    // 默认Model Layer名称
-    $layer = $layer ? $layer : Config::get('DEFAULT_M_LAYER');
-    $name = $layer . '/' . $name;
-
-    // 缓存存在则返回
-    if(isset($_model[$name])) {
-        return $_model[$name];
+    // 分组名默认值
+    if(is_null($groupName)) {
+        $groupName = GROUP_NAME;
     }
 
-    // 加载
-    Import::load(GROUP_PATH . $name . $layer . EXT);
-
     // 获得类名
-    $class = basename($name . $layer);
+    $class = "App\\" . $groupName . "\\Model\\" . $name . "Model";
+
+    // 缓存存在则返回
+    if(isset($_model[$class])) {
+        return $_model[$class];
+    }
 
     // 检查类是否存在，如果不存在则实例化Model类
     if(class_exists($class)) {
-        $model = new $class(basename($name));
+        $model = new $class($name);
     }
     else {
-        $model = new Model(basename($name));
+        $model = new Model($name);
     }
 
     // 存入缓存
-    return $_model[$name] = $model;
+    return $_model[$class] = $model;
 }
 
 /**
@@ -179,7 +179,7 @@ function R($url, $vars=array(), $layer = '') {
     $module =   $info['dirname'];
 
     // 载入Controller
-    $class  = Import::controller($module);
+    $class  = Import::controller(GROUP_NAME, $module);
 
     // 判断是否存在并执行
     if($class){

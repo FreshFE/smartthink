@@ -50,4 +50,8 @@ return array(
     '_RECORD_HAS_UPDATE_'   =>  '记录已经更新',
     '_NOT_ALLOW_PHP_'       =>  '模板禁用PHP代码',
     '_PARAM_ERROR_'         =>  '参数错误或者未定义',
+
+    // Auths 相关
+    '_ERROR_401'            =>  '需要账号和密码登录',
+    '_ERROR_403'            =>  '您当前的账号没有操作该资源的权限'
 );
