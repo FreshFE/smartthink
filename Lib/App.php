@@ -12,8 +12,8 @@ namespace Think;
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-use Think\Session as Session;
-use Think\Exception as Exception;
+use Think\Session;
+use Think\Exception;
 use \ReflectionException;
 use \ReflectionMethod;
 use \ReflectionClass;
@@ -42,12 +42,12 @@ class App {
         // -------------------------------------------
         // 加载配置
         // -------------------------------------------
-        static::load_config();
+        static::loadConfig();
 
         // -------------------------------------------
         // 加载行为
         // -------------------------------------------
-        static::load_tag();
+        static::loadTag();
 
         // -------------------------------------------
         // 语言包标签
@@ -57,12 +57,12 @@ class App {
         // -------------------------------------------
         // 加载语言包
         // -------------------------------------------
-        static::load_lang();
+        static::loadLang();
 
         // -------------------------------------------
         // 分配分组内路由细节
         // -------------------------------------------
-        static::load_route();
+        static::loadRoute();
 
         // -------------------------------------------
         // 项目初始化标签
@@ -118,7 +118,7 @@ class App {
      *
      * @return void
      */
-    private static function load_config()
+    private static function loadConfig()
     {
         foreach (array(FRAME_PATH, APP_PATH, GROUP_PATH) as $key => $path) {
             static::parseConfig($path);
@@ -180,7 +180,7 @@ class App {
      *
      * @return void
      */
-    private static function load_tag()
+    private static function loadTag()
     {
         // 核心行为
         Config::set('extends', include FRAME_PATH . 'Conf/tags.php');
@@ -201,7 +201,7 @@ class App {
      *
      * @return void
      */
-    private static function load_lang()
+    private static function loadLang()
     {
         Lang::set(include FRAME_PATH . 'Lang/' . strtolower(Config::get('DEFAULT_LANG')) . '.php');
 
@@ -216,7 +216,7 @@ class App {
         }
     }
 
-    private static function load_route()
+    private static function loadRoute()
     {
         $class = Config::get('GROUP_ROUTE_CLASS');
         
