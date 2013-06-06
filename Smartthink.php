@@ -1,13 +1,13 @@
 <?php namespace Think;
 /**
- * SmartThink.class.php
+ * Smartthink.class.php
  * Smart ThinkPHP
  * Copyright (c) 2004-2013 Methink
  *
  * @copyright     Copyright (c) Methink
  * @link          https://github.com/minowu/extend
  * @package       Library.Auth
- * @since         Smart ThinkPHP 2.0.0
+ * @since         Smart ThinkPHP 1.0.0
  * @license       Apache License (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
@@ -39,17 +39,17 @@ class Smartthink {
         // -------------------------------------------
         // 定义常量
         // -------------------------------------------
-        static::define_const();
+        static::initConstant();
 
         // -------------------------------------------
         // 注册错误和异常
         // -------------------------------------------
-        // static::register_error();
+        // static::registerError();
 
         // -------------------------------------------
         // 执行runtime
         // -------------------------------------------
-        static::load_runtime_file();
+        static::initRuntime();
     }
 
     /**
@@ -57,7 +57,7 @@ class Smartthink {
      *
      * @return void
      */
-    public static function define_const() {
+    private static function initConstant() {
 
     	/**
     	 * 记录开始运行时间
@@ -144,7 +144,7 @@ class Smartthink {
      *
      * @return void
      */
-    public static function load_runtime_file() {
+    private static function initRuntime() {
 
         try {
             // 载入临时的Helper文件，将重构
